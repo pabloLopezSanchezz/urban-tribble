@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiempo de Calidad</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* Reproductor Musica */
+    .music-container {
+      background-color: #fff;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 300px; /* Reduce el tamaño del reproductor */
+      z-index: 10;
+    }
+      
+      .img-container {
+        position: relative;
+        width: 110px;
+      }
+      
+      .img-container::after {
+        content: '';
+        background-color: #fff;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 50%;
+        bottom: 1.5pc;
+        border-radius: 50%;
+        border: 5px solid #333;
+        transform: translate(-50%, -50%);
+      }
+      
+      .img-container img {
+        background-color: #000;
+        box-shadow: -5px -5px 5px 0px rgba(115, 115, 115, 0.5);
+        width: inherit;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        
+        animation: rotate 3s linear infinite;
+        animation-play-state: paused;
+      }
+      
+      .music-container.play .img-container img {
+        animation-play-state: running;
+      }
+      
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+      .navigation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+      
+      .action-btn {
+        background-color: #fff;
+        border: none;
+        color: #737373;
+        font-size: 20px;
+        padding: 10px;
+        margin: 0 20px;
+        cursor: pointer;
+      }
+      
+      .action-btn:hover {
+        background-color: #e6e6e6;
+        border-radius: 10px;
+      }
+      
+      .action-btn-big {
+        color: #737373;
+        font-size: 30px;
+      }
+      
+      .action-btn:focus {
+        outline: 0;
+      }
+      
+      .music-info {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 15px 15px 0 0;
+        position: absolute;
+        top: 0;
+        left: 20px;
+        width: calc(100% - 40px);
+        padding: 10px 10px 10px 150px;
+        opacity: 0;
+        transform: translateY(0%);
+        transition: transform 0.3s ease-in,
+                    opacity 0.3s ease-in;
+      }
+      
+      .music-info h4 {
+        margin: 0;
+        text-align: center;
+        color: #fff;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      
+      .music-container.play .music-info {
+        opacity: 1;
+        transform: translateY(-100%);
+      }
+      
+      .progress-container {
+        background-color: #cdc2d0;
+        border-radius: 5px;
+        margin: 10px 0;
+        height: 4px;
+        width: 100%;
+        cursor: pointer;
+      }
+      
+      .progress {
+        background-color: #404040;
+        border-radius: 5px;
+        height: 100%;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+      
+      footer {
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.8em;
+        color: #a6a6a6;
+        font-family: serif;
+          bottom: 0;
+          padding: 0.5em;
+      }
+
+    /* Fin reproductor musica */
+
+    :root {
+      /* Paleta de colores */
+      --color1: #E1D9D3;  /* Fondo general */
+      --color2: #E4BEAF;
+      --color3: #B5E3AB;
+      --color4: #E8BAD2;
+      --color5: #62CBB8;
+      --color6: #FBFEFE;  /* Fondos claros */
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0; 
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--color1);
+      color: #333;
+      min-height: 100vh;
+    }
+    header {
+      background-color: var(--color5);
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: #fff;
+    }
+    header h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    /* CARRUSEL DINÁMICO PRINCIPAL */
+    .carousel {
+      position: relative;
+      margin: 2rem auto;
+      max-width: 700px;
+    }
+    .slides {
+      position: relative;
+      overflow: hidden;
+    }
+    .slide {
+      display: none;         
+      width: 100%;
+      height: 600px;         /* Mayor altura para ver mejor imágenes verticales */
+      object-fit: cover;     
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      margin: 0 auto;
+    }
+    .slide.active {
+      display: block;
+    }
+    .carousel-controls {
+      margin-top: 1rem;
+    }
+    .carousel-controls button {
+      background-color: var(--color2);
+      color: #333;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 5px;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .carousel-controls button:hover {
+      background-color: var(--color3);
+    }
+
+    /* POEMA */
+    .poem {
+      max-width: 800px;
+      margin: 2rem auto;
+      text-align: center;
+      font-style: italic;
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+
+    /* TABS */
+    .tabs {
+      margin: 2rem auto 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.2rem;
+      max-width: 800px;
+    }
+    .tab {
+      background-color: var(--color2);
+      cursor: pointer;
+      padding: 1rem 1.5rem;
+      border-radius: 5px 5px 0 0;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .tab:hover {
+      background-color: var(--color3);
+    }
+    .tab.active {
+      background-color: var(--color3);
+    }
+    .tab-content {
+      display: none;
+      background-color: var(--color6);
+      border: 2px solid var(--color3);
+      border-radius: 0 0 5px 5px;
+      padding: 1rem;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      text-align: left; /* Para el texto interno */
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab-content h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    .tab-content p {
+      margin-bottom: 1rem;
+    }
+
+    /* Películas - Cita 1 */
+    .peliculas-cine {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .pelicula {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background-color: var(--color1);
+      padding: 0.8rem;
+      border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      cursor: pointer; /* Para indicar que se puede clicar */
+    }
+    .pelicula img {
+      width: 60px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .pelicula-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    /* Centros comerciales - Cita 2 */
+    .centros-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .centro-card {
+      background-color: var(--color1);
+      border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      width: 180px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+    }
+    .centro-card:hover {
+      background-color: var(--color3);
+      color: #fff;
+    }
+
+    /* Carrusel pequeño en Cita 3 */
+    .carousel-sorpresa {
+      position: relative;
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+    .slides-sorpresa {
+      position: relative;
+      overflow: hidden;
+    }
+    .sorpresa-slide {
+        display: none;
+        width: 100%;
+        height: 750px; /* Ajustar según el diseño */
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto;
+      }
+      
+      .sorpresa-slide.active {
+        display: block;
+      }
+    .carousel-controls-sorpresa {
+      margin-top: 1rem;
+    }
+    .carousel-controls-sorpresa button {
+      background-color: var(--color2);
+      color: #333;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .carousel-controls-sorpresa button:hover {
+      background-color: var(--color3);
+    }
+
+    @media (max-width: 600px) {
+      .tab {
+        padding: 0.5rem 1rem;
+      }
+      .tab-content {
+        border: none;
+      }
+      .pelicula img {
+        width: 50px;
+        height: 70px;
+      }
+      .slide {
+        height: 400px; /* Ajusta para móvil */
+      }
+      .centro-card {
+        width: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Tiempo de Calidad Sábado 25 Enero</h1>
+  </header>
+
+  <div class="container">
+    <!-- CARRUSEL PRINCIPAL (Dinámico) -->
+    <div class="carousel">
+      <div id="carouselSlides" class="slides">
+        <!-- Se insertan dinámicamente con JS -->
+      </div>
+      <div class="carousel-controls">
+        <button id="prevBtn">Anterior</button>
+        <button id="nextBtn">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- POESÍA -->
+    <div class="poem">
+      "Por que cuando un hombre ama a una mujer,<br/>
+       lo sabe desde el momento en que la ve,<br/>
+       y no importa si algo falla,<br/>
+       o de la mano de quien vaya,<br/>
+       si se ríe o si se calla..."
+       <br/>
+       <br/>
+       <br/>
+       <br/>
+    </div>
+
+    <!-- Reproductor de música -->
+    <div class="music-container">
+        <div class="music-info">
+          <h4 id="title">traitor</h4>
+          <div class="progress-container">
+            <div class="progress"></div>
+          </div>
+        </div>
+        <!-- audio -->
+        <audio id="audio"></audio>
+        <!-- cover image -->
+        <div class="img-container">
+          <img src="" alt="music-cover" id="cover" />
+        </div>
+        <!-- buttons -->
+        <div class="navigation">
+          <button id="prev" class="action-btn">
+            <i class="fas fa-backward"></i>
+          </button>
+          <button id="play" class="action-btn action-btn-big">
+            <i class="fas fa-play"></i>
+          </button>
+          <button id="next" class="action-btn">
+            <i class="fas fa-forward"></i>
+          </button>
+        </div>
+      </div>
+    
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" data-target="cita1">Cita 1</div>
+      <div class="tab" data-target="cita2">Cita 2</div>
+      <div class="tab" data-target="cita3">Cita 3</div>
+    </div>
+
+    <!-- CITA 1 (Películas) -->
+    <div id="cita1" class="tab-content active">
+      <h2>Cita 1</h2>
+      <p>Película en el Cine + Cena</p>
+      <p style="font-style: italic; margin-bottom: 1rem;">
+        Volvemos a donde todo comenzó... nuestros inicios, 
+        siempre dicen que donde has sido feliz, debes volver....
+      </p>
+
+      <div class="peliculas-cine">
+        <div class="pelicula" data-movie="Mufasa: El rey León">
+          <img src="assets/peliculas/mufasa.png" alt="Mufasa: El rey Leon">
+          <div class="pelicula-title">Mufasa: El rey León</div>
+        </div>
+
+        <div class="pelicula" data-movie="Vaiana 2">
+          <img src="assets/peliculas/vaiana.png" alt="Vaiana 2">
+          <div class="pelicula-title">Vaiana 2</div>
+        </div>
+
+        <div class="pelicula" data-movie="Wicked">
+          <img src="assets/peliculas/wicked.png" alt="Wicked">
+          <div class="pelicula-title">Wicked</div>
+        </div>
+
+        <div class="pelicula" data-movie="Vivirl el Momento">
+          <img src="assets/peliculas/vivirelmomento.png" alt="Vivir el Momento">
+          <div class="pelicula-title">Vivirl el Momento</div>
+        </div>
+
+        <div class="pelicula" data-movie="Babygirl">
+          <img src="assets/peliculas/babygirl.png" alt="Babygirl">
+          <div class="pelicula-title">Babygirl</div>
+        </div>
+
+        <div class="pelicula" data-movie="Bambi, una vida en el bosque">
+          <img src="assets/peliculas/bambi.png" alt="Bambi, una vida en el bosque">
+          <div class="pelicula-title">Bambi, una vida en el bosque</div>
+        </div>
+
+        <div class="pelicula" data-movie="Betterman">
+          <img src="assets/peliculas/betterman.png" alt="Betterman">
+          <div class="pelicula-title">Betterman</div>
+        </div>
+
+        <div class="pelicula" data-movie="La Infiltrada">
+          <img src="assets/peliculas/lainfiltrada.png" alt="La Infiltrada">
+          <div class="pelicula-title">La Infiltrada</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CITA 2 (Bolera + Cena) -->
+    <!-- CITA 2 (Ruta Especial por Madrid) -->
+<div id="cita2" class="tab-content">
+    <h2>Cita 2: Ruta Especial por Madrid</h2>
+    <p>Te propongo un día lleno de actividades especiales, recorriendo algunos de los sitios más espectaculares de Madrid.</p>
+    <p style="font-style: italic; margin-bottom: 1rem;">
+      Comenzaremos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un paseo por el Parque del Retiro, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
+    </p>
+  
+    <!-- Descripción de la Ruta -->
+    <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+      <ol>
+        <li>
+          <strong>Oh La La Candle Cafe</strong><br>
+          <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
+        </li>
+        <li>
+          <strong>Parque de El Retiro</strong><br>
+          <p>Despues ponemos rumbo al parque de El Retiro para disfrutar de un atardecer espectacular.</p>
+        </li>
+        <li>
+          <strong>Aux Merveilleux de Fred</strong><br>
+          <p>Continuaremos nuestro recorrido hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
+        </li>
+        <li>
+          <strong>Restaurante Cokima</strong><br>
+          <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
+        </li>
+      </ol>
+    </div>
+  
+    <!-- Mapa de la Ruta -->
+    <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
+        <iframe src="https://www.google.com/maps/d/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
+    </div>
+  </div>
+
+    <!-- CITA 3 (Plan especial Madrid) -->
+    <div id="cita3" class="tab-content">
+      <h2>Cita 3</h2>
+      <p style="font-style: italic; margin-bottom: 1rem;">
+        Te propongo un plan lleno de pequeños placeres:
+        comenzaremos con un dulce único que sé que te encanta,
+        seguiremos con un lugar lleno de encanto,
+        donde cada rincón te hará sentir parte de un cuento,
+        y terminaremos en una acogedora cabaña de los Alpes,
+        perfecta para desconectar del mundo y disfrutar juntos de una velada íntima.
+
+        Porque a veces, lo mejor está en los detalles… ¿te animas?
+      </p>
+
+      <!-- Pequeño carrusel interno de la cita 3 -->
+      <div class="carousel-sorpresa" id="carouselSecret">
+        <div class="slides-sorpresa" id="slidesSecret">
+          <!-- Insertamos imágenes manualmente para el “sitio secreto” -->
+          <img src="assets/secretSite/secret1.png" class="sorpresa-slide active" alt="Sitio Secreto 1">
+          <img src="assets/secretSite/secret2.png" class="sorpresa-slide" alt="Sitio Secreto 2">
+          <img src="assets/secretSite/secret3.png" class="sorpresa-slide" alt="Sitio Secreto 3">
+          <img src="assets/secretSite/secret4.png" class="sorpresa-slide" alt="Sitio Secreto 3">
+          <img src="assets/secretSite/secret5.png" class="sorpresa-slide" alt="Sitio Secreto 3">
+          <video 
+                autoplay="autoplay" 
+                loop="loop" 
+                muted="muted" 
+                playsinline 
+                class="sorpresa-slide"
+                poster="https://lacazaendulzada.com/wp-content/uploads/2023/09/WhatsApp-Image-2024-05-19-at-13.57.17-1.jpeg">
+                <source src="https://lacazaendulzada.com/wp-content/uploads/2024/09/wa5-1.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+        <div class="carousel-controls-sorpresa">
+          <button id="prevSecret">Anterior</button>
+          <button id="nextSecret">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // -------------------------------
+    // CONFIGURACIÓN DE TELEGRAM
+    // Sustituye tu BOT TOKEN y chat_id
+    // -------------------------------
+    const TELEGRAM_BOT_TOKEN = "5979062101:AAG3ifapspWVoTkQ4T1o0EzkqWxyvVyqF4g";
+    const TELEGRAM_CHAT_ID   = "72034934";
+
+    function telegramSendMessage(text) {
+      const baseUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const encodedText = encodeURIComponent(text);
+      const finalUrl = `${baseUrl}?chat_id=${TELEGRAM_CHAT_ID}&text=${encodedText}`;
+
+      fetch(finalUrl)
+        .then(res => {
+          if (!res.ok) {
+            console.error("Error al enviar mensaje a Telegram:", res.statusText);
+          } else {
+            console.log("Mensaje enviado a Telegram:", text);
+          }
+        })
+        .catch(err => console.error("Error en fetch Telegram:", err));
+    }
+
+    // -------------------------------
+    // FUNCIÓN PARA ESTIMAR DISPOSITIVO
+    // -------------------------------
+    function guessDeviceDetails() {
+      const ua = navigator.userAgent || "Unknown UA";
+
+      // Ejemplo muy simplificado (no es 100% fiable)
+      if (ua.includes("iPhone")) {
+        // Buscar la versión de iOS
+        const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
+        if (match) {
+          const major = match[1];
+          // Podríamos decir "iPhone (iOS 16)" etc.
+          return `iPhone (iOS ${major}) - *modelo aproximado*`;
+        } else {
+          return "iPhone (versión iOS desconocida)";
+        }
+      }
+
+      if (ua.includes("iPad")) {
+        return "iPad";
+      }
+      if (ua.includes("Android")) {
+        return "Android device";
+      }
+      if (ua.includes("Mac OS")) {
+        return "Mac OS device";
+      }
+      if (ua.includes("Windows")) {
+        return "Windows PC";
+      }
+      return "Dispositivo desconocido";
+    }
+
+    // ---------------------------------------
+    // 1) Notificar al abrir la página (más info)
+    // ---------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      // Info básica
+      const ua = navigator.userAgent || "Unknown UA";
+      const plat = navigator.platform || "Unknown Platform";
+      const lang = navigator.language || "Unknown Lang";
+      const guessedDevice = guessDeviceDetails();
+
+      const deviceInfo = `-----------------Página abierta.----------------\nUserAgent: ${ua}\nPlatform: ${plat}\nLanguage: ${lang}\nAproximación: ${guessedDevice}`;
+
+      telegramSendMessage(deviceInfo);
+    });
+
+    // ----------------------------------------------
+    // 2) LISTA DE IMÁGENES DE CARRUSEL PRINCIPAL
+    // ----------------------------------------------
+    const imageList = [
+    'assets/images/slide1.jpg',
+    'assets/images/slide2.jpg',
+    'assets/images/slide3.jpg',
+    // Agrega aquí todas las imágenes renombradas secuencialmente
+    // 'assets/images/slide4.jpg',
+    // 'assets/images/slide5.jpg',
+    // ...
+    ];
+
+    // ----------------------------------------------
+    // 3) CREAR CARRUSEL PRINCIPAL
+    // ----------------------------------------------
+    let slides = [];
+    let currentIndex = 0;
+
+    const carouselSlides = document.getElementById('carouselSlides');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function showSlide(index) {
+    slides.forEach((img, i) => {
+    img.classList.remove('active');
+    if(i === index) {
+        img.classList.add('active');
+    }
+    });
+    }
+
+    function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(currentIndex);
+    }
+
+    // ----------------------------------------------
+    // 8) INICIALIZACIÓN FINAL
+    // ----------------------------------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+    // Cargar carrusel principal
+    imageList.forEach((imgUrl, idx) => {
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.alt = 'Slide ' + (idx + 1);
+    img.classList.add('slide');
+    if(idx === 0) {
+        img.classList.add('active');
+    }
+    carouselSlides.appendChild(img);
+    });
+    slides = Array.from(document.querySelectorAll('.slide'));
+
+    // Botones del carrusel principal
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    });
+
+    // ----------------------------------------------
+    // 4) TABS
+    // ----------------------------------------------
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        const targetId = tab.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+
+    // ----------------------------------------------
+    // 5) Notificar PELÍCULA elegida (Cita 1)
+    // ----------------------------------------------
+    const peliculas = document.querySelectorAll('.pelicula');
+    peliculas.forEach(p => {
+      p.addEventListener('click', () => {
+        const movieTitle = p.dataset.movie || 'Película desconocida';
+        const message = `He elegido la película: ${movieTitle}`;
+        telegramSendMessage(message);
+        alert(`Has elegido: ${movieTitle} (notificado a Telegram)`);
+      });
+    });
+
+    // ----------------------------------------------
+    // 7) CARRUSEL PEQUEÑO (CITA 3) - SITIO SECRETO
+    // ----------------------------------------------
+    const secretSlides = Array.from(document.querySelectorAll('.sorpresa-slide'));
+    let secretIndex = 0;
+
+    const prevSecretBtn = document.getElementById('prevSecret');
+    const nextSecretBtn = document.getElementById('nextSecret');
+
+    function showSecretSlide(index) {
+    secretSlides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) {
+        slide.classList.add('active');
+        }
+    });
+    }
+
+    function nextSecretSlide() {
+    secretIndex = (secretIndex + 1) % secretSlides.length;
+    showSecretSlide(secretIndex);
+    }
+
+    function prevSecretSlide() {
+    secretIndex = (secretIndex - 1 + secretSlides.length) % secretSlides.length;
+    showSecretSlide(secretIndex);
+    }
+
+    if (prevSecretBtn && nextSecretBtn) {
+    prevSecretBtn.addEventListener('click', prevSecretSlide);
+    nextSecretBtn.addEventListener('click', nextSecretSlide);
+    }
+
+    // ----------------------------------------------
+    // 8) INICIALIZACIÓN FINAL
+    // ----------------------------------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Cargar carrusel principal
+      const imageList = await getImagesFromFolder('assets/images/');
+      imageList.forEach((imgUrl, idx) => {
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.alt = 'Slide ' + (idx + 1);
+        img.classList.add('slide');
+        if(idx === 0) {
+          img.classList.add('active');
+        }
+        carouselSlides.appendChild(img);
+      });
+      slides = Array.from(document.querySelectorAll('.slide'));
+
+      // Botones del carrusel principal
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
+    });
+
+    // ----------------------------------------
+    // REPRODUCTOR DE MÚSICA CON LOCALSTORAGE
+    // ----------------------------------------
+
+
+    const musicContainer = document.querySelector(".music-container");
+    const playBtn = document.querySelector("#play");
+    const prevButton = document.querySelector("#prev");
+    const nextButton = document.querySelector("#next");
+    const audio = document.querySelector("#audio");
+    const title = document.querySelector("#title");
+    const cover = document.querySelector("#cover");
+    const progress = document.querySelector(".progress");
+    const progressContainer = document.querySelector(".progress-container");
+
+    const songs_list = [
+    { src: 'assets/music/promesa.mp3', cover: 'assets/music/promesa.png', title: 'La Promesa - Melendi' },
+      { src: 'assets/music/memories.mp3', cover: 'assets/music/memories.png', title: 'Memories - Maroon 5' },
+      { src: 'assets/music/Dandelions.mp3', cover: 'assets/music/Dandelions.png', title: 'Dandelions - Ruth B' },
+      { src: 'assets/music/hastamifinal.mp3', cover: 'assets/music/hastamifinal.png', title: 'Hasta mi Final - Il Divo' }
+    ];
+
+    let songIndex = localStorage.getItem('songIndex') ? parseInt(localStorage.getItem('songIndex')) : 0;
+    let currentTime = localStorage.getItem('currentTime') ? parseFloat(localStorage.getItem('currentTime')) : 0;
+
+    function loadSong(song) {
+      title.innerText = song.title;
+      audio.src = song.src;
+      cover.src = song.cover;
+    }
+
+    function playSong() {
+      musicContainer.classList.add('play');
+      playBtn.querySelector('i.fas').classList.remove('fa-play');
+      playBtn.querySelector('i.fas').classList.add('fa-pause');
+      audio.play();
+    }
+
+    function pauseSong() {
+      musicContainer.classList.remove('play');
+      playBtn.querySelector('i.fas').classList.remove('fa-pause');
+      playBtn.querySelector('i.fas').classList.add('fa-play');
+      audio.pause();
+    }
+
+    function prevSong() {
+      songIndex--;
+      if (songIndex < 0) {
+        songIndex = songs_list.length - 1;
+      }
+      loadSong(songs_list[songIndex]);
+      playSong();
+    }
+
+    function nextSong() {
+      songIndex++;
+      if (songIndex > songs_list.length - 1) {
+        songIndex = 0;
+      }
+      loadSong(songs_list[songIndex]);
+      playSong();
+    }
+
+    playBtn.addEventListener('click', () => {
+      const isPlaying = musicContainer.classList.contains('play');
+      if (isPlaying) {
+        pauseSong();
+      } else {
+        playSong();
+      }
+    });
+
+    prevButton.addEventListener('click', prevSong);
+    nextButton.addEventListener('click', nextSong);
+
+    audio.addEventListener('timeupdate', updateProgress);
+    progressContainer.addEventListener('click', setProgress);
+    audio.addEventListener('ended', nextSong);
+
+    function updateProgress(e) {
+      const { duration, currentTime } = e.srcElement;
+      const progressPercent = (currentTime / duration) * 100;
+      progress.style.width = `${progressPercent}%`;
+      localStorage.setItem('currentTime', currentTime);
+    }
+
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+      audio.currentTime = (clickX / width) * duration;
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+        audio.currentTime = currentTime;
+      });
+  
+      window.addEventListener('beforeunload', () => {
+        localStorage.setItem('songIndex', songIndex);
+        localStorage.setItem('currentTime', audio.currentTime);
+      });
+
+    loadSong(songs_list[songIndex]);
+  </script>
+</body>
+</html>
