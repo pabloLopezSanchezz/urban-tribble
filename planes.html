@@ -11,6 +11,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
+    /* Scratch Card Styles */
+    .scratch-card {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        cursor: pointer;
+    }
+    
+    .scratch-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    .scratch-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 10px;
+        background-color: #C0C0C0; /* Color del "sticker" */
+    }
+
     /* Reproductor Musica */
     .music-container {
       background-color: #fff;
@@ -470,6 +493,7 @@
       <div class="tab active" data-target="cita1">Cita 1</div>
       <div class="tab" data-target="cita2">Cita 2</div>
       <div class="tab" data-target="cita3">Cita 3</div>
+      <div class="tab" data-target="cita4">Cita 4</div>
     </div>
 
     <!-- CITA 1 (Películas) -->
@@ -524,42 +548,41 @@
       </div>
     </div>
 
-    <!-- CITA 2 (Bolera + Cena) -->
     <!-- CITA 2 (Ruta Especial por Madrid) -->
-<div id="cita2" class="tab-content">
-    <h2>Cita 2: Ruta Especial por Madrid</h2>
-    <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
-    <p style="font-style: italic; margin-bottom: 1rem;">
-      Tenemos que comenzar medio pronto, ya que nos esperan varios planes a los que debemos llegar a todos (lo se... voy tarde a todo, de ahi lo de comenzar pronto jajaja).Empezamos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un atardecer en el Templo de Debod o Mirador del Palacio Real, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
-    </p>
-  
-    <!-- Descripción de la Ruta -->
-    <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
-      <ol>
-        <li>
-          <strong>Oh La La Candle Cafe</strong><br>
-          <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
-        </li>
-        <li>
-          <strong>Atardecer en Palacio Real o Templo de Debod</strong><br>
-          <p>Despues nos dirigimos a disfrutar de un atardecer en el Templo de Debod o el Mirador de el Palacio Real. Tu eliges!</p>
-        </li>
-        <li>
-          <strong>Aux Merveilleux de Fred</strong><br>
-          <p>Continuaremos hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
-        </li>
-        <li>
-          <strong>Restaurante Cokima</strong><br>
-          <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
-        </li>
-      </ol>
+    <div id="cita2" class="tab-content">
+        <h2>Cita 2: Ruta Especial por Madrid</h2>
+        <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
+        <p style="font-style: italic; margin-bottom: 1rem;">
+        Tenemos que comenzar medio pronto, ya que nos esperan varios planes a los que debemos llegar a todos (lo se... voy tarde a todo, de ahi lo de comenzar pronto jajaja).Empezamos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un atardecer en el Templo de Debod o Mirador del Palacio Real, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
+        </p>
+    
+        <!-- Descripción de la Ruta -->
+        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+        <ol>
+            <li>
+            <strong>Oh La La Candle Cafe</strong><br>
+            <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
+            </li>
+            <li>
+            <strong>Atardecer en Palacio Real o Templo de Debod</strong><br>
+            <p>Despues nos dirigimos a disfrutar de un atardecer en el Templo de Debod o el Mirador de el Palacio Real. Tu eliges!</p>
+            </li>
+            <li>
+            <strong>Aux Merveilleux de Fred</strong><br>
+            <p>Continuaremos hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
+            </li>
+            <li>
+            <strong>Restaurante Cokima</strong><br>
+            <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
+            </li>
+        </ol>
+        </div>
+    
+        <!-- Mapa de la Ruta -->
+        <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
+            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
+        </div>
     </div>
-  
-    <!-- Mapa de la Ruta -->
-    <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
-        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
-    </div>
-  </div>
 
     <!-- CITA 3 (Plan especial Madrid) -->
     <div id="cita3" class="tab-content">
@@ -600,6 +623,48 @@
           <button id="nextSecret">Siguiente</button>
         </div>
       </div>
+    </div>
+
+    <!-- CITA 4 (Desconexión en la Sierra) -->
+    <div id="cita4" class="tab-content">
+        <h2>Cita 4: Desconexión en la Sierra</h2>
+        <p>Te propongo un día de total desconexión en la sierra de Madrid. Partiremos en coche hacia Navacerrada, donde realizaremos una ruta por el pueblo y senderos para conectar con la naturaleza y con nosotros mismos. Después de la caminata, disfrutaremos de una deliciosa comida en una auténtica cabaña suiza, degustando una tradicional Racclette.</p>
+        
+        <!-- Descripción del Plan -->
+        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+        <ol>
+            <li>
+            <strong>Salida en Coche hacia Navacerrada</strong><br>
+            <p>Comenzamos el día saliendo en coche hacia Navacerrada para llegar antes de las 11 de la mañana.</p>
+            </li>
+            <li>
+            <strong>Ruta por el Pueblo y Senderos</strong><br>
+            <p>Realizaremos una caminata por el encantador pueblo y los senderos de la sierra, disfrutando de la naturaleza y de momentos de tranquilidad.</p>
+            </li>
+            <li>
+            <strong>Comida en una Cabaña Suiza</strong><br>
+            <p>Finalizaremos el día con una auténtica experiencia suiza en una cabaña, donde podremos degustar una deliciosa Racclette.</p>
+            </li>
+
+        </ol>
+        </div>
+        
+        <!-- Imágenes con Efecto de Rascar -->
+        <div class="cita4-images" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+        <div class="scratch-card">
+            <canvas class="scratch-canvas" width="300" height="200"></canvas>
+            <img src="assets/cita4/image1.png" alt="Navacerrada" class="scratch-image">
+        </div>
+        <div class="scratch-card">
+            <canvas class="scratch-canvas" width="300" height="200"></canvas>
+            <img src="assets/cita4/image2.png" alt="Ruta en la Sierra" class="scratch-image">
+        </div>
+        <div class="scratch-card">
+            <canvas class="scratch-canvas" width="300" height="200"></canvas>
+            <img src="assets/cita4/image3.png" alt="Cabaña Suiza" class="scratch-image">
+        </div>
+        <!-- Añade más imágenes según sea necesario -->
+        </div>
     </div>
   </div>
 
@@ -969,6 +1034,98 @@
       });
 
     loadSong(songs_list[songIndex]);
+
+    // -------------------------------
+// Efecto de Rascar para Cita 4
+// -------------------------------
+
+function setupScratchCard(canvas, image) {
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    let isDrawing = false;
+    const brushRadius = 20;
+  
+    // Cargar la imagen
+    const img = new Image();
+    img.src = image.src;
+    img.onload = () => {
+      ctx.fillStyle = '#C0C0C0'; // Color del "sticker"
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+  
+    // Función para borrar el área
+    function erase(e) {
+      if (!isDrawing) return;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, brushRadius, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
+  
+    // Eventos de ratón
+    canvas.addEventListener('mousedown', () => {
+      isDrawing = true;
+    });
+  
+    canvas.addEventListener('mousemove', erase);
+  
+    canvas.addEventListener('mouseup', () => {
+      isDrawing = false;
+      checkScratchCompletion(canvas, image);
+    });
+  
+    // Eventos táctiles
+    canvas.addEventListener('touchstart', () => {
+      isDrawing = true;
+    });
+  
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, brushRadius, 0, Math.PI * 2, false);
+      ctx.fill();
+    }, { passive: false });
+  
+    canvas.addEventListener('touchend', () => {
+      isDrawing = false;
+      checkScratchCompletion(canvas, image);
+    });
+  }
+  
+  function checkScratchCompletion(canvas, image) {
+    const ctx = canvas.getContext('2d');
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixelsData = pixels.data;
+    let transparent = 0;
+  
+    for (let i = 3; i < pixelsData.length; i += 4) {
+      if (pixelsData[i] === 0) {
+        transparent++;
+      }
+    }
+  
+    const percent = (transparent / (canvas.width * canvas.height)) * 100;
+    if (percent > 50) { // Porcentaje para considerar completado
+      // Reveal the image
+      canvas.style.display = 'none';
+    }
+  }
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    const scratchCards = document.querySelectorAll('.scratch-card');
+  
+    scratchCards.forEach(card => {
+      const canvas = card.querySelector('.scratch-canvas');
+      const image = card.querySelector('.scratch-image');
+      setupScratchCard(canvas, image);
+    });
+  });
   </script>
 </body>
 </html>
