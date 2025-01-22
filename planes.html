@@ -11,29 +11,47 @@
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
-    /* Scratch Card Styles */
-    .scratch-card {
-        position: relative;
-        width: 300px;
-        height: 200px;
-        cursor: pointer;
-    }
-    
-    .scratch-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-    
-    .scratch-canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-radius: 10px;
-        background-color: #C0C0C0; /* Color del "sticker" */
-    }
-
+    /* Nuevo Carrusel para Cita 4 */
+.carousel-cita4 {
+    position: relative;
+    margin: 2rem auto;
+    max-width: 700px;
+  }
+  .cita4-slides {
+    position: relative;
+    overflow: hidden;
+  }
+  .cita4-slide {
+    display: none;
+    width: 100%;
+    height: 200px; /* Ajusta la altura según tus necesidades */
+    object-fit: cover;
+    border-radius: 10px;
+    transition: opacity 1s ease-in-out;
+    opacity: 0;
+  }
+  .cita4-slide.active {
+    display: block;
+    opacity: 1;
+  }
+  .cita4-carousel-controls {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .cita4-carousel-controls button {
+    background-color: var(--color2);
+    color: #333;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  .cita4-carousel-controls button:hover {
+    background-color: var(--color3);
+  }
     /* Reproductor Musica */
     .music-container {
       background-color: #fff;
@@ -651,30 +669,20 @@
             </li>
           </ol>
         </div>
-        <!-- Imágenes con Efecto de Rascar -->
-        <div class="cita4-images" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-            <div class="scratch-card">
-                <canvas class="scratch-canvas" width="300" height="200"></canvas>
-                <img src="assets/cita4/atardecer.png" alt="Navacerrada" class="scratch-image">
+        <!-- Nuevo Carrusel para Cita 4 -->
+        <div class="carousel-cita4">
+            <div class="cita4-slides">
+            <img src="assets/cita4/navacerrada.png" alt="Navacerrada" class="cita4-slide active">
+            <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
+            <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
+            <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
+            <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
             </div>
-            <div class="scratch-card">
-                <canvas class="scratch-canvas" width="300" height="200"></canvas>
-                <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="scratch-image">
+            <div class="cita4-carousel-controls">
+            <button id="prevCita4">Anterior</button>
+            <button id="nextCita4">Siguiente</button>
             </div>
-            <div class="scratch-card">
-                <canvas class="scratch-canvas" width="300" height="200"></canvas>
-                <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="scratch-image">
-            </div>
-            <div class="scratch-card">
-                <canvas class="scratch-canvas" width="300" height="200"></canvas>
-                <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="scratch-image">
-            </div>
-            <div class="scratch-card">
-                <canvas class="scratch-canvas" width="300" height="200"></canvas>
-                <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="scratch-image">
-            </div>
-            <!-- Puedes añadir más imágenes si lo deseas -->
-          </div>
+        </div>
   </div>
 
   <script>
@@ -1044,97 +1052,40 @@
 
     loadSong(songs_list[songIndex]);
 
-    // -------------------------------
-// Efecto de Rascar para Cita 4
-// -------------------------------
+// ----------------------------------------------
+// 6) CARRUSEL PARA CITA 4
+// ----------------------------------------------
+const cita4Slides = Array.from(document.querySelectorAll('.cita4-slide'));
+let cita4CurrentIndex = 0;
+const cita4PrevBtn = document.getElementById('prevCita4');
+const cita4NextBtn = document.getElementById('nextCita4');
 
-function setupScratchCard(canvas, image) {
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.getBoundingClientRect();
-    let isDrawing = false;
-    const brushRadius = 20;
-  
-    // Cargar la imagen
-    const img = new Image();
-    img.src = image.src;
-    img.onload = () => {
-      ctx.fillStyle = '#C0C0C0'; // Color del "sticker"
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    };
-  
-    // Función para borrar el área
-    function erase(e) {
-      if (!isDrawing) return;
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, brushRadius, 0, Math.PI * 2, false);
-      ctx.fill();
+function showCita4Slide(index) {
+  cita4Slides.forEach((slide, i) => {
+    slide.classList.remove('active');
+    if (i === index) {
+      slide.classList.add('active');
     }
-  
-    // Eventos de ratón
-    canvas.addEventListener('mousedown', () => {
-      isDrawing = true;
-    });
-  
-    canvas.addEventListener('mousemove', erase);
-  
-    canvas.addEventListener('mouseup', () => {
-      isDrawing = false;
-      checkScratchCompletion(canvas, image);
-    });
-  
-    // Eventos táctiles
-    canvas.addEventListener('touchstart', () => {
-      isDrawing = true;
-    });
-  
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, brushRadius, 0, Math.PI * 2, false);
-      ctx.fill();
-    }, { passive: false });
-  
-    canvas.addEventListener('touchend', () => {
-      isDrawing = false;
-      checkScratchCompletion(canvas, image);
-    });
-  }
-  
-  function checkScratchCompletion(canvas, image) {
-    const ctx = canvas.getContext('2d');
-    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const pixelsData = pixels.data;
-    let transparent = 0;
-  
-    for (let i = 3; i < pixelsData.length; i += 4) {
-      if (pixelsData[i] === 0) {
-        transparent++;
-      }
-    }
-  
-    const percent = (transparent / (canvas.width * canvas.height)) * 100;
-    if (percent > 50) { // Porcentaje para considerar completado
-      // Reveal the image
-      canvas.style.display = 'none';
-    }
-  }
-  
-  window.addEventListener('DOMContentLoaded', () => {
-    const scratchCards = document.querySelectorAll('.scratch-card');
-  
-    scratchCards.forEach(card => {
-      const canvas = card.querySelector('.scratch-canvas');
-      const image = card.querySelector('.scratch-image');
-      setupScratchCard(canvas, image);
-    });
   });
+}
+
+function nextCita4Slide() {
+  cita4CurrentIndex = (cita4CurrentIndex + 1) % cita4Slides.length;
+  showCita4Slide(cita4CurrentIndex);
+}
+
+function prevCita4Slide() {
+  cita4CurrentIndex = (cita4CurrentIndex - 1 + cita4Slides.length) % cita4Slides.length;
+  showCita4Slide(cita4CurrentIndex);
+}
+
+// Botones del carrusel Cita 4
+cita4PrevBtn.addEventListener('click', prevCita4Slide);
+cita4NextBtn.addEventListener('click', nextCita4Slide);
+
+// Transición automática cada 5 segundos
+setInterval(nextCita4Slide, 3000); // 5000ms = 5s
+
   </script>
 </body>
 </html>
