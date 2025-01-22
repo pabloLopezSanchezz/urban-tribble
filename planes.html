@@ -12,46 +12,64 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     /* Nuevo Carrusel para Cita 4 */
-.carousel-cita4 {
-    position: relative;
-    margin: 2rem auto;
-    max-width: 700px;
-  }
-  .cita4-slides {
-    position: relative;
-    overflow: hidden;
-  }
-  .cita4-slide {
-    display: none;
-    width: 100%;
-    height: 200px; /* Ajusta la altura según tus necesidades */
-    object-fit: cover;
-    border-radius: 10px;
-    transition: opacity 1s ease-in-out;
-    opacity: 0;
-  }
-  .cita4-slide.active {
-    display: block;
-    opacity: 1;
-  }
-  .cita4-carousel-controls {
-    margin-top: 1rem;
-    text-align: center;
-  }
-  .cita4-carousel-controls button {
-    background-color: var(--color2);
-    color: #333;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    margin: 0 0.5rem;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  .cita4-carousel-controls button:hover {
-    background-color: var(--color3);
-  }
+    .carousel-cita4 {
+        position: relative;
+        margin: 2rem auto;
+        max-width: 700px;
+        height: 300px; /* Aumentar la altura del carrusel */
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      }
+      .cita4-slides {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .cita4-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 1s ease-in-out;
+        opacity: 0;
+        z-index: 0;
+      }
+      .cita4-slide.active {
+        opacity: 1;
+        z-index: 1;
+      }
+      .cita4-carousel-controls {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 2;
+      }
+      .cita4-carousel-controls button {
+        background-color: rgba(228, 190, 175, 0.8); /* var(--color2) con transparencia */
+        color: #333;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      .cita4-carousel-controls button:hover {
+        background-color: rgba(181, 227, 171, 0.8); /* var(--color3) con transparencia */
+      }
+
+      /* ------------------------------------------------ */
+      /* ------------------------------------------------ */
+      /* ------------------------------------------------ */
+      /* ------------------------------------------------ */
+
     /* Reproductor Musica */
     .music-container {
       background-color: #fff;
@@ -676,6 +694,7 @@
             <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
             <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
             <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
+            <img src="assets/cita4/terraza_hita.png" alt="Terraza Hita" class="cita4-slide">
             <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
             </div>
             <div class="cita4-carousel-controls">
