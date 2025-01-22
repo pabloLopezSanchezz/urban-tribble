@@ -320,19 +320,21 @@
   }
   
   .poem-slide {
-    display: none;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-  }
-  
-  .poem-slide.active {
-    display: block;
-    opacity: 1;
-  }
+    pointer-events: none; /* Evita interacciones con diapositivas invisibles */
+    z-index: 1;
+   }
+
+    .poem-slide.active {
+        opacity: 1;
+        pointer-events: all; /* Permite interacciones con la diapositiva activa */
+        z-index: 2; /* Asegura que la diapositiva activa esté por encima */
+    }
   
   .poem-carousel-controls {
     position: absolute;
@@ -657,16 +659,26 @@
             Amándote hasta mi final"
         </div>
         <div class="poem-slide">
-            "Tanto la quería, tanto que yo<br/>
+            "Porque eres la cuna que mece sin nada<br/>
+            Porque eres la lluvia que no hace mojar<br/>
+            Sin ti yo veía tardes de historias<br/>
+            Historias que nunca quise ver acabar<br/>
+            Tanto la quería, tanto que yo<br/>
             Por ella moría, eso bien lo sabe Dios<br/>
             Ella es la reina de mi inspiración<br/>
             Por la que yo sufro la musa de mi amor..."
         </div>
         <div class="poem-slide">
-            "Tanto la quería, tanto que yo<br/>
-            Por ella moría, eso bien lo sabe Dios<br/>
-            Ella es la reina de mi inspiración<br/>
-            Por la que yo sufro la musa de mi amor..."
+            "I put my armor on, show you how strong I am<br/>
+            I put my armor on, I'll show you that I am<br/>
+            I'm unstoppable<br/>
+            I'm a Porsche with no brakes<br/>
+            I'm invincible<br/>
+            Yeah, I win every single game<br/>
+            I'm so powerful<br/>
+            I don't need batteries to play<br/>
+            I'm so confident<br/>
+            Yeah, I'm unstoppable today..."
         </div>
         <!-- Agrega más .poem-slide según sea necesario -->
         </div>
@@ -944,19 +956,71 @@
           }
           return "Dispositivo desconocido";
         }
-      
-        // ---------------------------------------
-        // NOTIFICACIÓN AL ABRIR LA PÁGINA
-        // ---------------------------------------
-        // Info básica
-        const ua = navigator.userAgent || "Unknown UA";
-        const plat = navigator.platform || "Unknown Platform";
-        const lang = navigator.language || "Unknown Lang";
-        const guessedDevice = guessDeviceDetails();
-      
-        const deviceInfo = `-----------------Página abierta.----------------\nUserAgent: ${ua}\nPlatform: ${plat}\nLanguage: ${lang}\nAproximación: ${guessedDevice}`;
-      
-        telegramSendMessage(deviceInfo);
+        
+        // -------------------------------
+        // FUNCIÓN PARA OBTENER LA IP Y GEOLocalIZACIÓN DEL USUARIO
+        // -------------------------------
+        async function getUserIPAndLocation() {
+            try {
+              // Obtener la IP
+              const ipResponse = await fetch('https://api.ipify.org?format=json');
+              const ipData = await ipResponse.json();
+              const userIP = ipData.ip;
+        
+              // Verificar si la IP es la de pruebas
+              if (userIP === '139.47.73.163') {
+                console.log("IP de pruebas detectada. No se enviará el mensaje a Telegram.");
+                return null; // No enviar mensaje
+              }
+        
+              // Obtener la ubicación basada en la IP
+              const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
+              const geoData = await geoResponse.json();
+        
+              // Construir la dirección aproximada
+              const direccion = geoData.city ? `${geoData.city}, ${geoData.region}, ${geoData.country_name}` : "Dirección desconocida";
+              const codigoPostal = geoData.postal ? geoData.postal : "Código postal desconocido";
+              const latitud = geoData.latitude ? geoData.latitude : "Latitud desconocida";
+              const longitud = geoData.longitude ? geoData.longitude : "Longitud desconocida";
+        
+              return {
+                ip: userIP,
+                direccion: direccion,
+                codigoPostal: codigoPostal,
+                pais: geoData.country_name,
+                region: geoData.region,
+                ciudad: geoData.city,
+                latitud: latitud,
+                longitud: longitud
+              };
+            } catch (error) {
+              console.error("Error al obtener la IP y geolocalización:", error);
+              return {
+                ip: 'IP desconocida',
+                direccion: 'Dirección desconocida',
+                latitud: 'Latitud desconocida',
+                longitud: 'Longitud desconocida'
+              };
+            }
+          }
+        
+          // ---------------------------------------
+          // NOTIFICACIÓN AL ABRIR LA PÁGINA
+          // ---------------------------------------
+          // Info básica
+          const plat = navigator.platform || "Unknown Platform";
+          const lang = navigator.language || "Unknown Lang";
+          const guessedDevice = guessDeviceDetails();
+        
+          // Obtener la IP y la ubicación, luego enviar el mensaje si no es la IP de pruebas
+          getUserIPAndLocation().then(locationData => {
+              if (locationData === null) return; // No enviar mensaje si es la IP de pruebas
+  
+              const { ip, direccion, codigoPostal, pais, region, ciudad, latitud, longitud } = locationData;
+              const deviceInfo = `Platform: ${plat}\nIP: ${ip}\nDirección Aproximada: ${direccion}, ${codigoPostal}, ${pais}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
+              telegramSendMessage(deviceInfo);
+          });
+    
       
         // ----------------------------------------------
         // CARRUSEL PRINCIPAL (Dinámico)
@@ -1160,46 +1224,53 @@
         const prevPoemBtn = document.getElementById('prevPoem');
         const nextPoemBtn = document.getElementById('nextPoem');
 
-        // Función para mostrar una diapositiva específica
-        function showPoemSlide(index) {
-        poemSlides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            if (i === index) {
-            slide.classList.add('active');
-            }
-        });
+        // Función para mostrar una diapositiva específica con transiciones suaves
+        function showPoemSlide(newIndex) {
+            const currentSlide = poemSlides[poemCurrentIndex];
+            const nextSlide = poemSlides[newIndex];
+            
+            if (currentSlide === nextSlide) return; // Evita cambios si es la misma diapositiva
+
+            // Añade la clase 'active' a la nueva diapositiva para que comience a desvanecerse
+            nextSlide.classList.add('active');
+            
+            // Después de 0.5 segundos (duración de la transición), remueve 'active' de la diapositiva anterior
+            setTimeout(() => {
+                currentSlide.classList.remove('active');
+                poemCurrentIndex = newIndex; // Actualiza el índice actual
+            }, 500); // 500 ms = 0.5 segundos
         }
 
         // Función para avanzar a la siguiente diapositiva
         function nextPoemSlide() {
-        poemCurrentIndex = (poemCurrentIndex + 1) % poemSlides.length;
-        showPoemSlide(poemCurrentIndex);
+            const newIndex = (poemCurrentIndex + 1) % poemSlides.length;
+            showPoemSlide(newIndex);
         }
 
         // Función para retroceder a la diapositiva anterior
         function prevPoemSlide() {
-        poemCurrentIndex = (poemCurrentIndex - 1 + poemSlides.length) % poemSlides.length;
-        showPoemSlide(poemCurrentIndex);
+            const newIndex = (poemCurrentIndex - 1 + poemSlides.length) % poemSlides.length;
+            showPoemSlide(newIndex);
         }
 
         // Event listeners para los botones de navegación
         prevPoemBtn.addEventListener('click', () => {
-        prevPoemSlide();
-        resetPoemInterval();
+            prevPoemSlide();
+            resetPoemInterval();
         });
 
         nextPoemBtn.addEventListener('click', () => {
-        nextPoemSlide();
-        resetPoemInterval();
+            nextPoemSlide();
+            resetPoemInterval();
         });
 
-        // Intervalo para el cambio automático cada 4 segundos
-        let poemInterval = setInterval(nextPoemSlide, 4000);
+        // Intervalo para el cambio automático cada 5.5 segundos
+        let poemInterval = setInterval(nextPoemSlide, 8500);
 
         // Función para reiniciar el intervalo (se usa al navegar manualmente)
         function resetPoemInterval() {
-        clearInterval(poemInterval);
-        poemInterval = setInterval(nextPoemSlide, 4000);
+            clearInterval(poemInterval);
+            poemInterval = setInterval(nextPoemSlide, 8500);
         }
       
         // ----------------------------------------
@@ -1218,6 +1289,7 @@
       
         const songs_list = [
           { src: 'assets/music/promesa.mp3', cover: 'assets/music/promesa.png', title: 'La Promesa - Melendi' },
+          { src: 'assets/music/halloffame.mp3', cover: 'assets/music/halloffame.png', title: 'Hall Of Fame - The Script' },
           { src: 'assets/music/memories.mp3', cover: 'assets/music/memories.png', title: 'Memories - Maroon 5' },
           { src: 'assets/music/principiodealgo.mp3', cover: 'assets/music/principiodealgo.png', title: 'El principio de Algo - La La Love You' },
           { src: 'assets/music/Dandelions.mp3', cover: 'assets/music/Dandelions.png', title: 'Dandelions - Ruth B' },
