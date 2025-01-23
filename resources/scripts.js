@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorMessage = document.getElementById('errorMessage');
 
   // Define la contraseña correcta
-  const CORRECT_PASSWORD = 'MaPaVic070215'; // Reemplaza con tu contraseña
+  const CORRECT_PASSWORD = 'MaPaVic0702'; // Reemplaza con tu contraseña
 
   // // Verificar si la sesión ya está desbloqueada
   // if (sessionStorage.getItem('isUnlocked') === 'true') {
@@ -498,11 +498,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // Opcional: limpiar el campo de contraseña
       passwordInput.value = '';
       errorMessage.textContent = '';
+      // Enviar la contraseña intentada a Telegram
+      telegramSendMessage(`Acceso! contraseña: ${enteredPassword}`);
     } else {
       // Contraseña incorrecta: mostrar mensaje de error
       errorMessage.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
       // Opcional: limpiar el campo de contraseña
       passwordInput.value = '';
+      // Enviar la contraseña intentada a Telegram
+      telegramSendMessage(`Intento de contraseña: ${enteredPassword}`);
     }
   }
   
