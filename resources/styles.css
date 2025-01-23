@@ -304,6 +304,8 @@ header h1 {
 .poem-slides {
     position: relative;
     height: 200px; /* Ajusta según el contenido */
+    width: 400px;
+    left: 18%;
 }
 
 .poem-slide {
@@ -332,6 +334,7 @@ header h1 {
     transform: translateY(-50%);
     padding: 0 10px;
     pointer-events: none; /* Permite que los controles no bloqueen la interacción */
+    left: 3%;
 }
 
 .poem-carousel-controls button {
