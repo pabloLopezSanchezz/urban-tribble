@@ -595,3 +595,74 @@ header h1 {
         width: 140px;
     }
 }
+    /* ----------------------------- */
+    /* ----- PASSWORD OVERLAY ----- */
+    /* ----------------------------- */
+
+.tab-content-container {
+    position: relative; /* Necesario para posicionar el overlay absolutamente dentro de este contenedor */
+  }
+  
+  .tab-content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo ligeramente más opaco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(5px); /* Mayor desenfoque */
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.password-box {
+    background-color: rgba(255, 255, 255, 1);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 80%;
+    max-width: 450px;
+}
+
+.password-box h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.password-box input[type="password"] {
+    width: 85%;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+.password-box button {
+    background-color: var(--color5);
+    color: #fff;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.password-box button:hover {
+    background-color: var(--color4);
+}
+  
+  .error-message {
+    color: red;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+

@@ -470,4 +470,50 @@ document.addEventListener('DOMContentLoaded', () => {
   
     loadSong(songs_list[songIndex]);
   
+  // -----------------------------
+  // ----- PASSWORD OVERLAY -----
+  // -----------------------------
+  const tabContentOverlay = document.getElementById('tabContentOverlay');
+  const submitPasswordBtn = document.getElementById('submitPassword');
+  const passwordInput = document.getElementById('passwordInput');
+  const errorMessage = document.getElementById('errorMessage');
+
+  // Define la contraseña correcta
+  const CORRECT_PASSWORD = 'MaPaVic070215'; // Reemplaza con tu contraseña
+
+  // // Verificar si la sesión ya está desbloqueada
+  // if (sessionStorage.getItem('isUnlocked') === 'true') {
+  //   tabContentOverlay.style.display = 'none';
+  // }
+
+  // Función para verificar la contraseña
+  function verifyPassword() {
+    const enteredPassword = passwordInput.value.trim();
+
+    if (enteredPassword === CORRECT_PASSWORD) {
+      // Contraseña correcta: ocultar el overlay
+      tabContentOverlay.style.display = 'none';
+      // Marcar como desbloqueado en sessionStorage
+      sessionStorage.setItem('isUnlocked', 'true');
+      // Opcional: limpiar el campo de contraseña
+      passwordInput.value = '';
+      errorMessage.textContent = '';
+    } else {
+      // Contraseña incorrecta: mostrar mensaje de error
+      errorMessage.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.';
+      // Opcional: limpiar el campo de contraseña
+      passwordInput.value = '';
+    }
+  }
+  
+
+  // Evento al hacer clic en el botón de enviar
+  submitPasswordBtn.addEventListener('click', verifyPassword);
+
+  // Evento al presionar Enter en el campo de contraseña
+  passwordInput.addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+      verifyPassword();
+    }
+  });
 });

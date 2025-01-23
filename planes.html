@@ -124,181 +124,197 @@
       <div class="tab" data-target="cita2">Cita 2</div>
       <div class="tab" data-target="cita3">Cita 3</div>
       <div class="tab" data-target="cita4">Cita 4</div>
+      <div class="tab" data-target="cita3">Cita 5</div>
+      <div class="tab" data-target="cita4">Cita 6</div>
+      <div class="tab" data-target="cita4">Cita 7</div>
+      <div class="tab" data-target="cita4">Cita 8</div>
     </div>
 
-    <!-- CITA 1 (Películas) -->
-    <div id="cita1" class="tab-content active">
-      <h2>Cita 1 y Cena, nunca falla</h2>
-      <p>Película en el Cine + Cena</p>
-      <p style="font-style: italic; margin-bottom: 1rem;">
-        Volvemos a donde todo comenzó... nuestros inicios, 
-        siempre dicen que donde has sido feliz, debes volver....
-      </p>
-
-      <div class="peliculas-cine">
-        <div class="pelicula" data-movie="Mufasa: El rey León">
-          <img src="assets/peliculas/mufasa.webp" alt="Mufasa: El rey Leon">
-          <div class="pelicula-title">Mufasa: El rey León</div>
-        </div>
-
-        <div class="pelicula" data-movie="Vaiana 2">
-          <img src="assets/peliculas/vaiana.webp" alt="Vaiana 2">
-          <div class="pelicula-title">Vaiana 2</div>
-        </div>
-
-        <div class="pelicula" data-movie="Wicked">
-          <img src="assets/peliculas/wicked.webp" alt="Wicked">
-          <div class="pelicula-title">Wicked</div>
-        </div>
-
-        <div class="pelicula" data-movie="Vivirl el Momento">
-          <img src="assets/peliculas/vivirelmomento.webp" alt="Vivir el Momento">
-          <div class="pelicula-title">Vivirl el Momento</div>
-        </div>
-
-        <div class="pelicula" data-movie="Babygirl">
-          <img src="assets/peliculas/babygirl.webp" alt="Babygirl">
-          <div class="pelicula-title">Babygirl</div>
-        </div>
-
-        <div class="pelicula" data-movie="Bambi, una vida en el bosque">
-          <img src="assets/peliculas/bambi.webp" alt="Bambi, una vida en el bosque">
-          <div class="pelicula-title">Bambi, una vida en el bosque</div>
-        </div>
-
-        <div class="pelicula" data-movie="Betterman">
-          <img src="assets/peliculas/betterman.webp" alt="Betterman">
-          <div class="pelicula-title">Betterman</div>
-        </div>
-
-        <div class="pelicula" data-movie="La Infiltrada">
-          <img src="assets/peliculas/lainfiltrada.webp" alt="La Infiltrada">
-          <div class="pelicula-title">La Infiltrada</div>
+    <!-- Contenedor para las Tab-Contents con Overlay -->
+    <div id="tabContentContainer" class="tab-content-container">
+      <!-- Overlay de Protección -->
+      <div id="tabContentOverlay" class="tab-content-overlay">
+        <div class="password-box">
+          <h2>Acceso Restringido</h2>
+          <input type="password" id="passwordInput" placeholder="Ingresa la contraseña">
+          <button id="submitPassword">Entrar</button>
+          <p id="errorMessage" class="error-message"></p>
         </div>
       </div>
+
+      <!-- CITA 1 (Películas) -->
+      <div id="cita1" class="tab-content active">
+        <h2>Cita 1 y Cena, nunca falla</h2>
+        <p>Película en el Cine + Cena</p>
+        <p style="font-style: italic; margin-bottom: 1rem;">
+          Volvemos a donde todo comenzó... nuestros inicios, 
+          siempre dicen que donde has sido feliz, debes volver....
+        </p>
+
+        <div class="peliculas-cine">
+          <div class="pelicula" data-movie="Mufasa: El rey León">
+            <img src="assets/peliculas/mufasa.webp" alt="Mufasa: El rey Leon">
+            <div class="pelicula-title">Mufasa: El rey León</div>
+          </div>
+
+          <div class="pelicula" data-movie="Vaiana 2">
+            <img src="assets/peliculas/vaiana.webp" alt="Vaiana 2">
+            <div class="pelicula-title">Vaiana 2</div>
+          </div>
+
+          <div class="pelicula" data-movie="Wicked">
+            <img src="assets/peliculas/wicked.webp" alt="Wicked">
+            <div class="pelicula-title">Wicked</div>
+          </div>
+
+          <div class="pelicula" data-movie="Vivirl el Momento">
+            <img src="assets/peliculas/vivirelmomento.webp" alt="Vivir el Momento">
+            <div class="pelicula-title">Vivirl el Momento</div>
+          </div>
+
+          <div class="pelicula" data-movie="Babygirl">
+            <img src="assets/peliculas/babygirl.webp" alt="Babygirl">
+            <div class="pelicula-title">Babygirl</div>
+          </div>
+
+          <div class="pelicula" data-movie="Bambi, una vida en el bosque">
+            <img src="assets/peliculas/bambi.webp" alt="Bambi, una vida en el bosque">
+            <div class="pelicula-title">Bambi, una vida en el bosque</div>
+          </div>
+
+          <div class="pelicula" data-movie="Betterman">
+            <img src="assets/peliculas/betterman.webp" alt="Betterman">
+            <div class="pelicula-title">Betterman</div>
+          </div>
+
+          <div class="pelicula" data-movie="La Infiltrada">
+            <img src="assets/peliculas/lainfiltrada.webp" alt="La Infiltrada">
+            <div class="pelicula-title">La Infiltrada</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CITA 2 (Ruta Especial por Madrid) -->
+      <div id="cita2" class="tab-content">
+        <h2>Cita 2: Ruta Especial por Madrid</h2>
+        <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
+        <p style="font-style: italic; margin-bottom: 1rem;">
+          Tenemos que comenzar medio pronto, ya que nos esperan varios planes a los que debemos llegar a todos (lo se... voy tarde a todo, de ahi lo de comenzar pronto jajaja).Empezamos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un atardecer en el Templo de Debod o Mirador del Palacio Real, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
+        </p>
+
+        <!-- Descripción de la Ruta -->
+        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+          <ol>
+            <li>
+              <strong>Oh La La Candle Cafe</strong><br>
+              <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
+            </li>
+            <li>
+              <strong>Atardecer en Palacio Real o Templo de Debod</strong><br>
+              <p>Despues nos dirigimos a disfrutar de un atardecer en el Templo de Debod o el Mirador de el Palacio Real. Tu eliges!</p>
+            </li>
+            <li>
+              <strong>Aux Merveilleux de Fred</strong><br>
+              <p>Continuaremos hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
+            </li>
+            <li>
+              <strong>Restaurante Cokima</strong><br>
+              <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Mapa de la Ruta -->
+        <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
+          <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
+        </div>
+      </div>
+
+      <!-- CITA 3 (Plan especial Madrid) -->
+      <div id="cita3" class="tab-content">
+        <h2>Cita 3: Plan culinario en Madrid</h2>
+        <p style="font-style: italic; margin-bottom: 1rem;">
+          Te propongo un plan lleno de pequeños placeres:
+          comenzaremos con un dulce único que sé que te encanta,
+          seguiremos con un lugar lleno de encanto,
+          donde cada rincón te hará sentir parte de un cuento,
+          y terminaremos en una acogedora cabaña de los Alpes,
+          perfecta para desconectar del mundo y disfrutar juntos de una velada íntima.
+
+          Porque a veces, lo mejor está en los detalles… ¿te animas?
+        </p>
+
+        <!-- Pequeño carrusel interno de la cita 3 -->
+        <div class="carousel-sorpresa" id="carouselSecret">
+          <div class="slides-sorpresa" id="slidesSecret">
+            <!-- Insertamos imágenes manualmente para el “sitio secreto” -->
+            <img src="assets/secretSite/secret1.webp" class="sorpresa-slide active" alt="Sitio Secreto 1">
+            <img src="assets/secretSite/secret2.webp" class="sorpresa-slide" alt="Sitio Secreto 2">
+            <img src="assets/secretSite/secret3.webp" class="sorpresa-slide" alt="Sitio Secreto 3">
+            <img src="assets/secretSite/secret4.webp" class="sorpresa-slide" alt="Sitio Secreto 4">
+            <img src="assets/secretSite/secret5.webp" class="sorpresa-slide" alt="Sitio Secreto 5">
+            <video 
+                  autoplay="autoplay" 
+                  loop="loop" 
+                  muted="muted" 
+                  playsinline 
+                  class="sorpresa-slide"
+                  poster="https://lacazaendulzada.com/wp-content/uploads/2023/09/WhatsApp-Image-2024-05-19-at-13.57.17-1.jpeg">
+                  <source src="https://lacazaendulzada.com/wp-content/uploads/2024/09/wa5-1.mp4" type="video/mp4">
+                  Tu navegador no soporta la reproducción de video.
+              </video>
+          </div>
+          <div class="carousel-controls-sorpresa">
+            <button id="prevSecret">Anterior</button>
+            <button id="nextSecret">Siguiente</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CITA 4 (Desconexión en la Sierra) -->
+      <div id="cita4" class="tab-content">
+        <h2>Cita 4: Escapada a la Sierra y Hotel Hita</h2>
+        <p>Este plan es algo mas completo... un fin de semana de desconexión en la sierra de Madrid, tiempo de calidad por un tubo, coge el abrigo, guantes y gorro que nos vamos a la sierra!</p>
+        
+        <!-- Descripción del Plan -->
+        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+          <ol>
+            <li>
+              <strong>Ruta en la Sierra</strong><br>
+              <p>Debemos llegar medio pronto, sobre las 10-11 de la mañana, la idea es realizar una ruta por la Sierra, y... Si tenemos suerte estara nevada!</p>
+            </li>
+            <li>
+              <strong>Comida en Petit Raclette</strong><br>
+              <p>Después de la ruta, comeremos en Petit Raclette, un restaurante con auténtica comida suiza donde podremos degustar una deliciosa Racclette.</p>
+            </li>
+            <li>
+              <strong>Alojamiento en Hotel Hita</strong><br>
+              <p>Nos alojaremos en el Hotel Hita, un espectacular hotel en la montaña con vistas increibles. La idea es que tras la ruta y la comida, estemos destrozados, por eso este plan cierra con broche de oro, podemos disfrutar de la piscina privada y climatizada que tiene el hotel, ver el atardecer en su mirador con musica en directo y cerrarlo cenando en su restaurante.</p>
+            </li>
+            <li>
+              <strong>Regreso a Madrid</strong><br>
+              <p>El domingo, regresaremos a Madrid, con las pilas cargadas, las piernas cansadas y el cora lleno ;)</p>
+            </li>
+          </ol>
+        </div>
+        <!-- Nuevo Carrusel para Cita 4 -->
+        <div class="carousel-cita4">
+          <div class="cita4-slides">
+            <img src="assets/cita4/atardecer.png" alt="Navacerrada" class="cita4-slide active">
+            <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
+            <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
+            <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
+            <img src="assets/cita4/terraza_hita.png" alt="Terraza Hita" class="cita4-slide">
+            <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
+          </div>
+          <div class="cita4-carousel-controls">
+            <button id="prevCita4">Anterior</button>
+            <button id="nextCita4">Siguiente</button>
+          </div>
+        </div>
     </div>
 
-    <!-- CITA 2 (Ruta Especial por Madrid) -->
-    <div id="cita2" class="tab-content">
-      <h2>Cita 2: Ruta Especial por Madrid</h2>
-      <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
-      <p style="font-style: italic; margin-bottom: 1rem;">
-        Tenemos que comenzar medio pronto, ya que nos esperan varios planes a los que debemos llegar a todos (lo se... voy tarde a todo, de ahi lo de comenzar pronto jajaja).Empezamos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un atardecer en el Templo de Debod o Mirador del Palacio Real, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
-      </p>
-
-      <!-- Descripción de la Ruta -->
-      <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
-        <ol>
-          <li>
-            <strong>Oh La La Candle Cafe</strong><br>
-            <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
-          </li>
-          <li>
-            <strong>Atardecer en Palacio Real o Templo de Debod</strong><br>
-            <p>Despues nos dirigimos a disfrutar de un atardecer en el Templo de Debod o el Mirador de el Palacio Real. Tu eliges!</p>
-          </li>
-          <li>
-            <strong>Aux Merveilleux de Fred</strong><br>
-            <p>Continuaremos hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
-          </li>
-          <li>
-            <strong>Restaurante Cokima</strong><br>
-            <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
-          </li>
-        </ol>
-      </div>
-
-      <!-- Mapa de la Ruta -->
-      <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
-        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
-      </div>
-    </div>
-
-    <!-- CITA 3 (Plan especial Madrid) -->
-    <div id="cita3" class="tab-content">
-      <h2>Cita 3: Plan culinario en Madrid</h2>
-      <p style="font-style: italic; margin-bottom: 1rem;">
-        Te propongo un plan lleno de pequeños placeres:
-        comenzaremos con un dulce único que sé que te encanta,
-        seguiremos con un lugar lleno de encanto,
-        donde cada rincón te hará sentir parte de un cuento,
-        y terminaremos en una acogedora cabaña de los Alpes,
-        perfecta para desconectar del mundo y disfrutar juntos de una velada íntima.
-
-        Porque a veces, lo mejor está en los detalles… ¿te animas?
-      </p>
-
-      <!-- Pequeño carrusel interno de la cita 3 -->
-      <div class="carousel-sorpresa" id="carouselSecret">
-        <div class="slides-sorpresa" id="slidesSecret">
-          <!-- Insertamos imágenes manualmente para el “sitio secreto” -->
-          <img src="assets/secretSite/secret1.webp" class="sorpresa-slide active" alt="Sitio Secreto 1">
-          <img src="assets/secretSite/secret2.webp" class="sorpresa-slide" alt="Sitio Secreto 2">
-          <img src="assets/secretSite/secret3.webp" class="sorpresa-slide" alt="Sitio Secreto 3">
-          <img src="assets/secretSite/secret4.webp" class="sorpresa-slide" alt="Sitio Secreto 4">
-          <img src="assets/secretSite/secret5.webp" class="sorpresa-slide" alt="Sitio Secreto 5">
-          <video 
-                autoplay="autoplay" 
-                loop="loop" 
-                muted="muted" 
-                playsinline 
-                class="sorpresa-slide"
-                poster="https://lacazaendulzada.com/wp-content/uploads/2023/09/WhatsApp-Image-2024-05-19-at-13.57.17-1.jpeg">
-                <source src="https://lacazaendulzada.com/wp-content/uploads/2024/09/wa5-1.mp4" type="video/mp4">
-                Tu navegador no soporta la reproducción de video.
-            </video>
-        </div>
-        <div class="carousel-controls-sorpresa">
-          <button id="prevSecret">Anterior</button>
-          <button id="nextSecret">Siguiente</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- CITA 4 (Desconexión en la Sierra) -->
-    <div id="cita4" class="tab-content">
-      <h2>Cita 4: Escapada a la Sierra y Hotel Hita</h2>
-      <p>Este plan es algo mas completo... un fin de semana de desconexión en la sierra de Madrid, tiempo de calidad por un tubo, coge el abrigo, guantes y gorro que nos vamos a la sierra!</p>
-      
-      <!-- Descripción del Plan -->
-      <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
-        <ol>
-          <li>
-            <strong>Ruta en la Sierra</strong><br>
-            <p>Debemos llegar medio pronto, sobre las 10-11 de la mañana, la idea es realizar una ruta por la Sierra, y... Si tenemos suerte estara nevada!</p>
-          </li>
-          <li>
-            <strong>Comida en Petit Raclette</strong><br>
-            <p>Después de la ruta, comeremos en Petit Raclette, un restaurante con auténtica comida suiza donde podremos degustar una deliciosa Racclette.</p>
-          </li>
-          <li>
-            <strong>Alojamiento en Hotel Hita</strong><br>
-            <p>Nos alojaremos en el Hotel Hita, un espectacular hotel en la montaña con vistas increibles. La idea es que tras la ruta y la comida, estemos destrozados, por eso este plan cierra con broche de oro, podemos disfrutar de la piscina privada y climatizada que tiene el hotel, ver el atardecer en su mirador con musica en directo y cerrarlo cenando en su restaurante.</p>
-          </li>
-          <li>
-            <strong>Regreso a Madrid</strong><br>
-            <p>El domingo, regresaremos a Madrid, con las pilas cargadas, las piernas cansadas y el cora lleno ;)</p>
-          </li>
-        </ol>
-      </div>
-      <!-- Nuevo Carrusel para Cita 4 -->
-      <div class="carousel-cita4">
-        <div class="cita4-slides">
-          <img src="assets/cita4/atardecer.png" alt="Navacerrada" class="cita4-slide active">
-          <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
-          <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
-          <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
-          <img src="assets/cita4/terraza_hita.png" alt="Terraza Hita" class="cita4-slide">
-          <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
-        </div>
-        <div class="cita4-carousel-controls">
-          <button id="prevCita4">Anterior</button>
-          <button id="nextCita4">Siguiente</button>
-        </div>
-      </div>
-  </div>
-
-  <!-- Enlace al JS externo -->
-  <script src="resources/scripts.js"></script>
-</body>
-</html>
+    <!-- Enlace al JS externo -->
+    <script src="resources/scripts.js"></script>
+  </body>
+  </html>
