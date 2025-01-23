@@ -10,606 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <style>
-    /* Nuevo Carrusel para Cita 4 */
-    .carousel-cita4 {
-        position: relative;
-        margin: 2rem auto;
-        max-width: 700px;
-        height: 300px; /* Aumentar la altura del carrusel */
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      }
-      .cita4-slides {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      .cita4-slide {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: opacity 1s ease-in-out;
-        opacity: 0;
-        z-index: 0;
-      }
-      .cita4-slide.active {
-        opacity: 1;
-        z-index: 1;
-      }
-      .cita4-carousel-controls {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 2;
-      }
-      .cita4-carousel-controls button {
-        background-color: rgba(228, 190, 175, 0.8); /* var(--color2) con transparencia */
-        color: #333;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s;
-      }
-      .cita4-carousel-controls button:hover {
-        background-color: rgba(181, 227, 171, 0.8); /* var(--color3) con transparencia */
-      }
-
-      /* ------------------------------------------------ */
-      /* ------------------------------------------------ */
-      /* ------------------------------------------------ */
-      /* ------------------------------------------------ */
-
-    /* Reproductor Musica */
-    .music-container {
-      background-color: #fff;
-      border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 10px;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 300px; /* Reduce el tamaño del reproductor */
-      z-index: 10;
-    }
-      
-      .img-container {
-        position: relative;
-        width: 110px;
-      }
-      
-      .img-container::after {
-        content: '';
-        background-color: #fff;
-        width: 20px;
-        height: 20px;
-        position: absolute;
-        left: 50%;
-        bottom: 1.5pc;
-        border-radius: 50%;
-        border: 5px solid #333;
-        transform: translate(-50%, -50%);
-      }
-      
-      .img-container img {
-        background-color: #000;
-        box-shadow: -5px -5px 5px 0px rgba(115, 115, 115, 0.5);
-        width: inherit;
-        height: 110px;
-        border-radius: 50%;
-        object-fit: cover;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        
-        animation: rotate 3s linear infinite;
-        animation-play-state: paused;
-      }
-      
-      .music-container.play .img-container img {
-        animation-play-state: running;
-      }
-      
-      @keyframes rotate {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      
-      .navigation {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-      }
-      
-      .action-btn {
-        background-color: #fff;
-        border: none;
-        color: #737373;
-        font-size: 20px;
-        padding: 10px;
-        margin: 0 20px;
-        cursor: pointer;
-      }
-      
-      .action-btn:hover {
-        background-color: #e6e6e6;
-        border-radius: 10px;
-      }
-      
-      .action-btn-big {
-        color: #737373;
-        font-size: 30px;
-      }
-      
-      .action-btn:focus {
-        outline: 0;
-      }
-      
-      .music-info {
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 15px 15px 0 0;
-        position: absolute;
-        top: 0;
-        left: 20px;
-        width: calc(100% - 40px);
-        padding: 10px 10px 10px 150px;
-        opacity: 0;
-        transform: translateY(0%);
-        transition: transform 0.3s ease-in,
-                    opacity 0.3s ease-in;
-      }
-      
-      .music-info h4 {
-        margin: 0;
-        text-align: center;
-        color: #fff;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-      
-      .music-container.play .music-info {
-        opacity: 1;
-        transform: translateY(-100%);
-      }
-      
-      .progress-container {
-        background-color: #cdc2d0;
-        border-radius: 5px;
-        margin: 10px 0;
-        height: 4px;
-        width: 100%;
-        cursor: pointer;
-      }
-      
-      .progress {
-        background-color: #404040;
-        border-radius: 5px;
-        height: 100%;
-        width: 0%;
-        transition: width 0.1s linear;
-      }
-      
-      footer {
-        position: absolute;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 0.8em;
-        color: #a6a6a6;
-        font-family: serif;
-          bottom: 0;
-          padding: 0.5em;
-      }
-
-    /* Fin reproductor musica */
-
-    :root {
-      /* Paleta de colores */
-      --color1: #E1D9D3;  /* Fondo general */
-      --color2: #E4BEAF;
-      --color3: #B5E3AB;
-      --color4: #E8BAD2;
-      --color5: #62CBB8;
-      --color6: #FBFEFE;  /* Fondos claros */
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0; 
-      padding: 0;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--color1);
-      color: #333;
-      min-height: 100vh;
-    }
-    header {
-      background-color: var(--color5);
-      text-align: center;
-      padding: 1.5rem 1rem;
-      color: #fff;
-    }
-    header h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.5rem;
-      margin: 0;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    /* CARRUSEL DINÁMICO PRINCIPAL */
-    .carousel {
-      position: relative;
-      margin: 2rem auto;
-      max-width: 700px;
-    }
-    .slides {
-      position: relative;
-      overflow: hidden;
-    }
-    .slide {
-      display: none;         
-      width: 100%;
-      height: 600px;         /* Mayor altura para ver mejor imágenes verticales */
-      object-fit: cover;     
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      margin: 0 auto;
-    }
-    .slide.active {
-      display: block;
-    }
-    .carousel-controls {
-      margin-top: 1rem;
-    }
-    .carousel-controls button {
-      background-color: var(--color2);
-      color: #333;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: 5px;
-      margin: 0 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-    .carousel-controls button:hover {
-      background-color: var(--color3);
-    }
-
-
-/* ------------------------------ */
-/* ----- POEMA CAROUSEL -------- */
-/* ------------------------------ */
-
-.poem-carousel {
-    position: relative; /* Aseguramos que los controles se posicionen relativamente al carrusel */
-    max-width: 650px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: var(--color6);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-  
-  .poem-slides {
-    position: relative;
-    height: 200px; /* Ajusta según el contenido */
-  }
-  
-  .poem-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    pointer-events: none; /* Evita interacciones con diapositivas invisibles */
-    z-index: 1;
-   }
-
-    .poem-slide.active {
-        opacity: 1;
-        pointer-events: all; /* Permite interacciones con la diapositiva activa */
-        z-index: 2; /* Asegura que la diapositiva activa esté por encima */
-    }
-  
-  .poem-carousel-controls {
-    position: absolute;
-    top: 50%;
-    width: 95%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-    padding: 0 10px;
-    pointer-events: none; /* Permite que los controles no bloqueen la interacción con las diapositivas */
-  }
-  
-  .poem-carousel-controls button {
-    color: #333;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.5rem;
-    transition: background-color 0.3s;
-    pointer-events: all; /* Habilita la interacción con los botones */
-  }
-  
-  .poem-carousel-controls button:hover {
-    background-color: rgba(181, 227, 171, 0.8); /* var(--color3) con transparencia */
-  }
-  
-  .poem-slide p {
-    font-style: italic;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
-    text-align: center;
-  }
-  
-  /* Opcional: Responsividad para el carrusel del poema */
-  @media (max-width: 600px) {
-    .poem-carousel {
-      padding: 1rem;
-    }
-    
-    .poem-slide p {
-      font-size: 1rem;
-    }
-    
-    .poem-carousel-controls button {
-      font-size: 1.2rem;
-      padding: 0.4rem;
-    }
-  }
-
-    /* ------------------------------ */
-    /* ----------- TABS ------------ */
-    /* ------------------------------ */
-
-    .tabs {
-        margin: 2rem auto 0;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 0.2rem;
-        max-width: 800px;
-    }
-    
-    .tab {
-        background-color: var(--color2);
-        cursor: pointer;
-        padding: 0.8rem 1.5rem;
-        border-radius: 5px 5px 0 0;
-        font-weight: 600;
-        font-size: 1rem;
-        color: #333;
-        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-        position: relative;
-    }
-    
-    .tab::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0%;
-        height: 3px;
-        background-color: var(--color5);
-        transition: width 0.3s;
-    }
-    
-    .tab.active {
-        background-color: var(--color6);
-        color: var(--color5);
-        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .tab.active::after {
-        width: 100%;
-    }
-    
-    .tab:hover {
-        background-color: var(--color3);
-        color: #fff;
-    }
-    
-    /* ------------------------------ */
-    /* ----- TAB CONTENT ------------ */
-    /* ------------------------------ */
-    
-    .tab-content {
-        display: none;
-        background-color: var(--color6);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 0 5px 5px 5px;
-        padding: 2rem;
-        max-width: 800px;
-        margin: 0 auto 2rem;
-        text-align: left;
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    
-    .tab-content.active {
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .tab-content h2 {
-        font-family: 'Great Vibes', cursive;
-        font-size: 2.2rem;
-        margin-bottom: 1rem;
-        color: #333;
-    }
-    
-    .tab-content p {
-        font-size: 1rem;
-        line-height: 1.6;
-        color: #555;
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Opcional: Estilos para listas dentro de .tab-content */
-    .tab-content ol,
-    .tab-content ul {
-        margin-left: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .tab-content li {
-        margin-bottom: 0.8rem;
-        color: #555;
-    }
-    
-    /* Opcional: Enlaces dentro de .tab-content */
-    .tab-content a {
-        color: var(--color5);
-        text-decoration: none;
-        transition: color 0.3s;
-    }
-    
-    .tab-content a:hover {
-        color: var(--color3);
-        text-decoration: underline;
-    }
-
-    /* Películas - Cita 1 */
-    .peliculas-cine {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .pelicula {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background-color: var(--color1);
-      padding: 0.8rem;
-      border-radius: 5px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-      cursor: pointer; /* Para indicar que se puede clicar */
-    }
-    .pelicula img {
-      width: 60px;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-    .pelicula-title {
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    /* Centros comerciales - Cita 2 */
-    .centros-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .centro-card {
-      background-color: var(--color1);
-      border-radius: 5px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-      width: 180px;
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-    }
-    .centro-card:hover {
-      background-color: var(--color3);
-      color: #fff;
-    }
-
-    /* Carrusel pequeño en Cita 3 */
-    .carousel-sorpresa {
-      position: relative;
-      margin: 1rem auto;
-      max-width: 600px;
-    }
-    .slides-sorpresa {
-      position: relative;
-      overflow: hidden;
-    }
-    .sorpresa-slide {
-        display: none;
-        width: 100%;
-        height: 750px; /* Ajustar según el diseño */
-        object-fit: cover;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        margin: 0 auto;
-      }
-      
-      .sorpresa-slide.active {
-        display: block;
-      }
-    .carousel-controls-sorpresa {
-      margin-top: 1rem;
-    }
-    .carousel-controls-sorpresa button {
-      background-color: var(--color2);
-      color: #333;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      margin: 0 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-    .carousel-controls-sorpresa button:hover {
-      background-color: var(--color3);
-    }
-
-    @media (max-width: 600px) {
-      .tab {
-        padding: 0.5rem 1rem;
-      }
-      .tab-content {
-        border: none;
-      }
-      .pelicula img {
-        width: 50px;
-        height: 70px;
-      }
-      .slide {
-        height: 400px; /* Ajusta para móvil */
-      }
-      .centro-card {
-        width: 140px;
-      }
-    }
-  </style>
+  <!-- Enlace al CSS externo -->
+  <link rel="stylesheet" href="resources/styles.css">
 </head>
 <body>
 
@@ -631,93 +33,93 @@
 
     <!-- POEMA CAROUSEL -->
     <div class="poem-carousel">
-        <div class="poem-slides">
+      <div class="poem-slides">
         <div class="poem-slide active">
-            "Por que cuando un hombre ama a una mujer,<br/>
-            lo sabe desde el momento en que la ve,<br/>
-            y no importa si algo falla,<br/>
-            o de la mano de quien vaya,<br/>
-            si se ríe o si se calla..."
+          "Por que cuando un hombre ama a una mujer,<br/>
+          lo sabe desde el momento en que la ve,<br/>
+          y no importa si algo falla,<br/>
+          o de la mano de quien vaya,<br/>
+          si se ríe o si se calla..."
         </div>
         <div class="poem-slide">
-            "Que solo intento decir que por ti de repente<br/>
-            La cabeza me va a más de 220<br/>
-            Y solo hablo de ti, me lo dice la gente<br/>
-            Y no lo puedo evitar<br/>
-            Que solo intento explicar si no lo has entendido<br/>
-            Que me muero por ti desde que te he conocido<br/>
-            Solo puedo dormir<br/>
-            Cuando duermo contigo"
+          "Que solo intento decir que por ti de repente<br/>
+          La cabeza me va a más de 220<br/>
+          Y solo hablo de ti, me lo dice la gente<br/>
+          Y no lo puedo evitar<br/>
+          Que solo intento explicar si no lo has entendido<br/>
+          Que me muero por ti desde que te he conocido<br/>
+          Solo puedo dormir<br/>
+          Cuando duermo contigo"
         </div>
         <div class="poem-slide">
-            "Hoy te prometo<br/>
-            Amor eterno<br/>
-            Ser para siempre<br/>
-            Tuyo en el bien y en el mal<br/>
-            Hoy te demuestro<br/>
-            Cuánto te quiero<br/>
-            Amándote hasta mi final"
+          "Hoy te prometo<br/>
+          Amor eterno<br/>
+          Ser para siempre<br/>
+          Tuyo en el bien y en el mal<br/>
+          Hoy te demuestro<br/>
+          Cuánto te quiero<br/>
+          Amándote hasta mi final"
         </div>
         <div class="poem-slide">
-            "Porque eres la cuna que mece sin nada<br/>
-            Porque eres la lluvia que no hace mojar<br/>
-            Sin ti yo veía tardes de historias<br/>
-            Historias que nunca quise ver acabar<br/>
-            Tanto la quería, tanto que yo<br/>
-            Por ella moría, eso bien lo sabe Dios<br/>
-            Ella es la reina de mi inspiración<br/>
-            Por la que yo sufro la musa de mi amor..."
+          "Porque eres la cuna que mece sin nada<br/>
+          Porque eres la lluvia que no hace mojar<br/>
+          Sin ti yo veía tardes de historias<br/>
+          Historias que nunca quise ver acabar<br/>
+          Tanto la quería, tanto que yo<br/>
+          Por ella moría, eso bien lo sabe Dios<br/>
+          Ella es la reina de mi inspiración<br/>
+          Por la que yo sufro la musa de mi amor..."
         </div>
         <div class="poem-slide">
-            "I put my armor on, show you how strong I am<br/>
-            I put my armor on, I'll show you that I am<br/>
-            I'm unstoppable<br/>
-            I'm a Porsche with no brakes<br/>
-            I'm invincible<br/>
-            Yeah, I win every single game<br/>
-            I'm so powerful<br/>
-            I don't need batteries to play<br/>
-            I'm so confident<br/>
-            Yeah, I'm unstoppable today..."
+          "I put my armor on, show you how strong I am<br/>
+          I put my armor on, I'll show you that I am<br/>
+          I'm unstoppable<br/>
+          I'm a Porsche with no brakes<br/>
+          I'm invincible<br/>
+          Yeah, I win every single game<br/>
+          I'm so powerful<br/>
+          I don't need batteries to play<br/>
+          I'm so confident<br/>
+          Yeah, I'm unstoppable today..."
         </div>
         <!-- Agrega más .poem-slide según sea necesario -->
-        </div>
-        <div class="poem-carousel-controls">
-            <button id="prevPoem" class="ArrowLeft"><i class="fas fa-chevron-left"></i></button>
-            <button id="nextPoem" class="ArrowRight"><i class="fas fa-chevron-right"></i></button>
-          </div>
+      </div>
+      <div class="poem-carousel-controls">
+        <button id="prevPoem" class="ArrowLeft"><i class="fas fa-chevron-left"></i></button>
+        <button id="nextPoem" class="ArrowRight"><i class="fas fa-chevron-right"></i></button>
+      </div>
     </div>
 
     <br>
 
     <!-- Reproductor de música -->
     <div class="music-container">
-        <div class="music-info">
-          <h4 id="title">traitor</h4>
-          <div class="progress-container">
-            <div class="progress"></div>
-          </div>
-        </div>
-        <!-- audio -->
-        <audio id="audio"></audio>
-        <!-- cover image -->
-        <div class="img-container">
-          <img src="" alt="music-cover" id="cover" />
-        </div>
-        <!-- buttons -->
-        <div class="navigation">
-          <button id="prev" class="action-btn">
-            <i class="fas fa-backward"></i>
-          </button>
-          <button id="play" class="action-btn action-btn-big">
-            <i class="fas fa-play"></i>
-          </button>
-          <button id="next" class="action-btn">
-            <i class="fas fa-forward"></i>
-          </button>
+      <div class="music-info">
+        <h4 id="title">traitor</h4>
+        <div class="progress-container">
+          <div class="progress"></div>
         </div>
       </div>
-    
+      <!-- audio -->
+      <audio id="audio"></audio>
+      <!-- cover image -->
+      <div class="img-container">
+        <img src="" alt="music-cover" id="cover" />
+      </div>
+      <!-- buttons -->
+      <div class="navigation">
+        <button id="prev" class="action-btn">
+          <i class="fas fa-backward"></i>
+        </button>
+        <button id="play" class="action-btn action-btn-big">
+          <i class="fas fa-play"></i>
+        </button>
+        <button id="next" class="action-btn">
+          <i class="fas fa-forward"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- TABS -->
     <div class="tabs">
       <div class="tab active" data-target="cita1">Cita 1</div>
@@ -780,38 +182,38 @@
 
     <!-- CITA 2 (Ruta Especial por Madrid) -->
     <div id="cita2" class="tab-content">
-        <h2>Cita 2: Ruta Especial por Madrid</h2>
-        <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
-        <p style="font-style: italic; margin-bottom: 1rem;">
+      <h2>Cita 2: Ruta Especial por Madrid</h2>
+      <p>Como ambos sabemos que decidir cosas nunca ha sido nuestro fuerte... te propongo un día lleno de actividades especiales, recorriendo unos lugares muy chulos de Madrid.</p>
+      <p style="font-style: italic; margin-bottom: 1rem;">
         Tenemos que comenzar medio pronto, ya que nos esperan varios planes a los que debemos llegar a todos (lo se... voy tarde a todo, de ahi lo de comenzar pronto jajaja).Empezamos la tarde creando nuestra propia vela, disfrutando de una merienda única, seguimos con un atardecer en el Templo de Debod o Mirador del Palacio Real, y finalizaremos el día con un delicioso postre y una cena de autor en Cokima.
-        </p>
-    
-        <!-- Descripción de la Ruta -->
-        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+      </p>
+
+      <!-- Descripción de la Ruta -->
+      <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
         <ol>
-            <li>
+          <li>
             <strong>Oh La La Candle Cafe</strong><br>
             <p>Iniciamos nuestra ruta en este encantador café donde podrás merendar y crear tu propia vela. Tendrás la oportunidad de elegir el molde, la cera y los aromas que prefieras.</p>
-            </li>
-            <li>
+          </li>
+          <li>
             <strong>Atardecer en Palacio Real o Templo de Debod</strong><br>
             <p>Despues nos dirigimos a disfrutar de un atardecer en el Templo de Debod o el Mirador de el Palacio Real. Tu eliges!</p>
-            </li>
-            <li>
+          </li>
+          <li>
             <strong>Aux Merveilleux de Fred</strong><br>
             <p>Continuaremos hacia Aux Merveilleux de Fred. Donde nos espera algo que llevas tiempo pidiendo... sabes que es?</p>
-            </li>
-            <li>
+          </li>
+          <li>
             <strong>Restaurante Cokima</strong><br>
             <p>Finalizaremos el día cenando en Cokima, un espectacular restaurante con una amplia variedad de platos de autor. Aquí podremos probar diferentes combinaciones, ya que los platos se solicitan por unidades, permitiéndonos probar multitud de ellos.</p>
-            </li>
+          </li>
         </ol>
-        </div>
-    
-        <!-- Mapa de la Ruta -->
-        <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
-            <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
-        </div>
+      </div>
+
+      <!-- Mapa de la Ruta -->
+      <div class="mapa-container" style="max-width: 800px; margin: 0 auto;">
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1oCHeHJ76coAASuQltjviKhbojq1MtRs&ehbc=2E312F" width="100%" height="480"></iframe>
+      </div>
     </div>
 
     <!-- CITA 3 (Plan especial Madrid) -->
@@ -835,8 +237,8 @@
           <img src="assets/secretSite/secret1.png" class="sorpresa-slide active" alt="Sitio Secreto 1">
           <img src="assets/secretSite/secret2.png" class="sorpresa-slide" alt="Sitio Secreto 2">
           <img src="assets/secretSite/secret3.png" class="sorpresa-slide" alt="Sitio Secreto 3">
-          <img src="assets/secretSite/secret4.png" class="sorpresa-slide" alt="Sitio Secreto 3">
-          <img src="assets/secretSite/secret5.png" class="sorpresa-slide" alt="Sitio Secreto 3">
+          <img src="assets/secretSite/secret4.png" class="sorpresa-slide" alt="Sitio Secreto 4">
+          <img src="assets/secretSite/secret5.png" class="sorpresa-slide" alt="Sitio Secreto 5">
           <video 
                 autoplay="autoplay" 
                 loop="loop" 
@@ -855,534 +257,50 @@
       </div>
     </div>
 
-       <!-- CITA 4 (Desconexión en la Sierra) -->
-       <div id="cita4" class="tab-content">
-        <h2>Cita 4: Escapada a la Sierra y Hotel Hita</h2>
-        <p>Este plan es algo mas completo... un fin de semana de desconexión en la sierra de Madrid, tiempo de calidad por un tubo, coge el abrigo, guantes y gorro que nos vamos a la sierra!</p>
-        
-        <!-- Descripción del Plan -->
-        <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
-          <ol>
-            <li>
-              <strong>Ruta en la Sierra</strong><br>
-              <p>Debemos llegar medio pronto, sobre las 10-11 de la mañana, la idea es realizar una ruta por la Sierra, y... Si tenemos suerte estara nevada!</p>
-            </li>
-            <li>
-              <strong>Comida en Petit Raclette</strong><br>
-              <p>Después de la ruta, comeremos en Petit Raclette, un restaurante con auténtica comida suiza donde podremos degustar una deliciosa Racclette.</p>
-            </li>
-            <li>
-              <strong>Alojamiento en Hotel Hita</strong><br>
-              <p>Nos alojaremos en el Hotel Hita, un espectacular hotel en la montaña con vistas increibles. La idea es que tras la ruta y la comida, estemos destrozados, por eso este plan cierra con broche de oro, podemos disfrutar de la piscina privada y climatizada que tiene el hotel, ver el atardecer en su mirador con musica en directo y cerrarlo cenando en su restaurante.</p>
-            </li>
-            <li>
-              <strong>Regreso a Madrid</strong><br>
-              <p>El domingo, regresaremos a Madrid, con las pilas cargadas, las piernas cansadas y el cora lleno ;)</p>
-            </li>
-          </ol>
+    <!-- CITA 4 (Desconexión en la Sierra) -->
+    <div id="cita4" class="tab-content">
+      <h2>Cita 4: Escapada a la Sierra y Hotel Hita</h2>
+      <p>Este plan es algo mas completo... un fin de semana de desconexión en la sierra de Madrid, tiempo de calidad por un tubo, coge el abrigo, guantes y gorro que nos vamos a la sierra!</p>
+      
+      <!-- Descripción del Plan -->
+      <div class="ruta-container" style="text-align: left; max-width: 800px; margin: 0 auto 2rem;">
+        <ol>
+          <li>
+            <strong>Ruta en la Sierra</strong><br>
+            <p>Debemos llegar medio pronto, sobre las 10-11 de la mañana, la idea es realizar una ruta por la Sierra, y... Si tenemos suerte estara nevada!</p>
+          </li>
+          <li>
+            <strong>Comida en Petit Raclette</strong><br>
+            <p>Después de la ruta, comeremos en Petit Raclette, un restaurante con auténtica comida suiza donde podremos degustar una deliciosa Racclette.</p>
+          </li>
+          <li>
+            <strong>Alojamiento en Hotel Hita</strong><br>
+            <p>Nos alojaremos en el Hotel Hita, un espectacular hotel en la montaña con vistas increibles. La idea es que tras la ruta y la comida, estemos destrozados, por eso este plan cierra con broche de oro, podemos disfrutar de la piscina privada y climatizada que tiene el hotel, ver el atardecer en su mirador con musica en directo y cerrarlo cenando en su restaurante.</p>
+          </li>
+          <li>
+            <strong>Regreso a Madrid</strong><br>
+            <p>El domingo, regresaremos a Madrid, con las pilas cargadas, las piernas cansadas y el cora lleno ;)</p>
+          </li>
+        </ol>
+      </div>
+      <!-- Nuevo Carrusel para Cita 4 -->
+      <div class="carousel-cita4">
+        <div class="cita4-slides">
+          <img src="assets/cita4/atardecer.png" alt="Navacerrada" class="cita4-slide active">
+          <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
+          <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
+          <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
+          <img src="assets/cita4/terraza_hita.png" alt="Terraza Hita" class="cita4-slide">
+          <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
         </div>
-        <!-- Nuevo Carrusel para Cita 4 -->
-        <div class="carousel-cita4">
-            <div class="cita4-slides">
-            <img src="assets/cita4/atardecer.png" alt="Navacerrada" class="cita4-slide active">
-            <img src="assets/cita4/ruta_sierra.png" alt="Ruta en la Sierra" class="cita4-slide">
-            <img src="assets/cita4/petit_raclette.png" alt="Petit Raclette" class="cita4-slide">
-            <img src="assets/cita4/hotel_hita.png" alt="Hotel Hita" class="cita4-slide">
-            <img src="assets/cita4/terraza_hita.png" alt="Terraza Hita" class="cita4-slide">
-            <img src="assets/cita4/piscina_hita.png" alt="Piscina Hita" class="cita4-slide">
-            </div>
-            <div class="cita4-carousel-controls">
-            <button id="prevCita4">Anterior</button>
-            <button id="nextCita4">Siguiente</button>
-            </div>
+        <div class="cita4-carousel-controls">
+          <button id="prevCita4">Anterior</button>
+          <button id="nextCita4">Siguiente</button>
         </div>
+      </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // -------------------------------
-        // CONFIGURACIÓN DE TELEGRAM
-        // Sustituye tu BOT TOKEN y chat_id
-        // -------------------------------
-        const TELEGRAM_BOT_TOKEN = "5979062101:AAG3ifapspWVoTkQ4T1o0EzkqWxyvVyqF4g";
-        const TELEGRAM_CHAT_ID   = "72034934";
-      
-        function telegramSendMessage(text) {
-          const baseUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-          const encodedText = encodeURIComponent(text);
-          const finalUrl = `${baseUrl}?chat_id=${TELEGRAM_CHAT_ID}&text=${encodedText}`;
-      
-          fetch(finalUrl)
-            .then(res => {
-              if (!res.ok) {
-                console.error("Error al enviar mensaje a Telegram:", res.statusText);
-              } else {
-                console.log("Mensaje enviado a Telegram:", text);
-              }
-            })
-            .catch(err => console.error("Error en fetch Telegram:", err));
-        }
-      
-        // -------------------------------
-        // FUNCIÓN PARA ESTIMAR DISPOSITIVO
-        // -------------------------------
-        function guessDeviceDetails() {
-          const ua = navigator.userAgent || "Unknown UA";
-      
-          // Ejemplo muy simplificado (no es 100% fiable)
-          if (ua.includes("iPhone")) {
-            // Buscar la versión de iOS
-            const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
-            if (match) {
-              const major = match[1];
-              // Podríamos decir "iPhone (iOS 16)" etc.
-              return `iPhone (iOS ${major}) - *modelo aproximado*`;
-            } else {
-              return "iPhone (versión iOS desconocida)";
-            }
-          }
-      
-          if (ua.includes("iPad")) {
-            return "iPad";
-          }
-          if (ua.includes("Android")) {
-            return "Android device";
-          }
-          if (ua.includes("Mac OS")) {
-            return "Mac OS device";
-          }
-          if (ua.includes("Windows")) {
-            return "Windows PC";
-          }
-          return "Dispositivo desconocido";
-        }
-        
-        // -------------------------------
-        // FUNCIÓN PARA OBTENER LA IP Y GEOLocalIZACIÓN DEL USUARIO
-        // -------------------------------
-        async function getUserIPAndLocation() {
-            try {
-              // Obtener la IP
-              const ipResponse = await fetch('https://api.ipify.org?format=json');
-              const ipData = await ipResponse.json();
-              const userIP = ipData.ip;
-        
-              // Verificar si la IP es la de pruebas
-              if (userIP === '139.47.73.163') {
-                console.log("IP de pruebas detectada. No se enviará el mensaje a Telegram.");
-                return null; // No enviar mensaje
-              }
-        
-              // Obtener la ubicación basada en la IP
-              const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
-              const geoData = await geoResponse.json();
-        
-              // Construir la dirección aproximada
-              const direccion = geoData.city ? `${geoData.city}, ${geoData.region}, ${geoData.country_name}` : "Dirección desconocida";
-              const codigoPostal = geoData.postal ? geoData.postal : "Código postal desconocido";
-              const latitud = geoData.latitude ? geoData.latitude : "Latitud desconocida";
-              const longitud = geoData.longitude ? geoData.longitude : "Longitud desconocida";
-        
-              return {
-                ip: userIP,
-                direccion: direccion,
-                codigoPostal: codigoPostal,
-                pais: geoData.country_name,
-                region: geoData.region,
-                ciudad: geoData.city,
-                latitud: latitud,
-                longitud: longitud
-              };
-            } catch (error) {
-              console.error("Error al obtener la IP y geolocalización:", error);
-              return {
-                ip: 'IP desconocida',
-                direccion: 'Dirección desconocida',
-                latitud: 'Latitud desconocida',
-                longitud: 'Longitud desconocida'
-              };
-            }
-          }
-        
-          // ---------------------------------------
-          // NOTIFICACIÓN AL ABRIR LA PÁGINA
-          // ---------------------------------------
-          // Info básica
-          const plat = navigator.platform || "Unknown Platform";
-          const lang = navigator.language || "Unknown Lang";
-          const guessedDevice = guessDeviceDetails();
-        
-          // Obtener la IP y la ubicación, luego enviar el mensaje si no es la IP de pruebas
-          getUserIPAndLocation().then(locationData => {
-              if (locationData === null) return; // No enviar mensaje si es la IP de pruebas
-  
-              const { ip, direccion, codigoPostal, pais, region, ciudad, latitud, longitud } = locationData;
-              const deviceInfo = `Platform: ${plat}\nIP: ${ip}\nDirección Aproximada: ${direccion}, ${codigoPostal}, ${pais}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
-              telegramSendMessage(deviceInfo);
-          });
-    
-      
-        // ----------------------------------------------
-        // CARRUSEL PRINCIPAL (Dinámico)
-        // ----------------------------------------------
-        const carouselSlides = document.getElementById('carouselSlides');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-      
-        const imageList = [
-          'assets/images/slide1.jpeg',
-          'assets/images/slide10.jpeg',
-          'assets/images/slide11.jpeg',
-          'assets/images/slide12.jpeg',
-          'assets/images/slide13.jpeg',
-          'assets/images/slide14.jpeg',
-          'assets/images/slide15.jpeg',
-          'assets/images/slide16.jpeg',
-          'assets/images/slide17.jpeg',
-          'assets/images/slide18.jpeg',
-          'assets/images/slide19.jpeg',
-          'assets/images/slide2.jpeg',
-          'assets/images/slide20.jpeg',
-          'assets/images/slide21.jpeg',
-          'assets/images/slide22.jpeg',
-          'assets/images/slide23.jpeg',
-          'assets/images/slide24.jpeg',
-          'assets/images/slide25.jpeg',
-          'assets/images/slide26.jpeg',
-          'assets/images/slide27.jpeg',
-          'assets/images/slide28.jpeg',
-          'assets/images/slide29.jpeg',
-          'assets/images/slide3.jpeg',
-          'assets/images/slide30.jpeg',
-          'assets/images/slide31.jpeg',
-          'assets/images/slide32.jpeg',
-          'assets/images/slide33.jpeg',
-          'assets/images/slide34.jpeg',
-          'assets/images/slide35.jpeg',
-          'assets/images/slide36.jpeg',
-          'assets/images/slide37.jpeg',
-          'assets/images/slide38.jpeg',
-          'assets/images/slide39.jpeg',
-          'assets/images/slide4.jpeg',
-          'assets/images/slide40.jpeg',
-          'assets/images/slide41.jpeg',
-          'assets/images/slide42.jpeg',
-          'assets/images/slide43.jpeg',
-          'assets/images/slide44.jpeg',
-          'assets/images/slide45.jpeg',
-          'assets/images/slide46.jpeg',
-          'assets/images/slide47.jpeg',
-          'assets/images/slide5.jpeg',
-          'assets/images/slide6.jpeg',
-          'assets/images/slide7.jpeg',
-          'assets/images/slide8.jpeg',
-          'assets/images/slide9.jpeg',
-        ];
-      
-        let slides = [];
-        let currentIndex = 0;
-      
-        // Cargar imágenes en el carrusel principal
-        imageList.forEach((imgUrl, idx) => {
-          const img = document.createElement('img');
-          img.src = imgUrl;
-          img.alt = 'Slide ' + (idx + 1);
-          img.classList.add('slide');
-          if(idx === 0) {
-            img.classList.add('active');
-          }
-          carouselSlides.appendChild(img);
-        });
-        slides = Array.from(document.querySelectorAll('.slide'));
-      
-        // Función para mostrar una diapositiva específica
-        function showSlide(index) {
-          slides.forEach((img, i) => {
-            img.classList.remove('active');
-            if(i === index) {
-              img.classList.add('active');
-            }
-          });
-        }
-      
-        // Función para avanzar a la siguiente diapositiva
-        function nextSlide() {
-          currentIndex = (currentIndex + 1) % slides.length;
-          showSlide(currentIndex);
-        }
-      
-        // Función para retroceder a la diapositiva anterior
-        function prevSlide() {
-          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-          showSlide(currentIndex);
-        }
-      
-        // Event listeners para los botones de navegación del carrusel principal
-        prevBtn.addEventListener('click', () => {
-          prevSlide();
-          resetCarouselInterval();
-        });
-      
-        nextBtn.addEventListener('click', () => {
-          nextSlide();
-          resetCarouselInterval();
-        });
-      
-        // Intervalo para el cambio automático cada 5 segundos en el carrusel principal
-        let carouselInterval = setInterval(nextSlide, 5000);
-      
-        // Función para reiniciar el intervalo del carrusel principal (se usa al navegar manualmente)
-        function resetCarouselInterval() {
-          clearInterval(carouselInterval);
-          carouselInterval = setInterval(nextSlide, 5000);
-        }
-      
-        // ----------------------------------------------
-        // TABS
-        // ----------------------------------------------
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-      
-        tabs.forEach(tab => {
-          tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-      
-            tab.classList.add('active');
-            const targetId = tab.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
-          });
-        });
-      
-        // ----------------------------------------------
-        // Notificar PELÍCULA elegida (Cita 1)
-        // ----------------------------------------------
-        const peliculas = document.querySelectorAll('.pelicula');
-        peliculas.forEach(p => {
-          p.addEventListener('click', () => {
-            const movieTitle = p.dataset.movie || 'Película desconocida';
-            const message = `He elegido la película: ${movieTitle}`;
-            telegramSendMessage(message);
-            alert(`Has elegido: ${movieTitle}, petición solicitada.`);
-          });
-        });
-      
-        // ----------------------------------------------
-        // CARRUSEL PEQUEÑO (CITA 3) - SITIO SECRETO
-        // ----------------------------------------------
-        const secretSlides = Array.from(document.querySelectorAll('.sorpresa-slide'));
-        let secretIndex = 0;
-      
-        const prevSecretBtn = document.getElementById('prevSecret');
-        const nextSecretBtn = document.getElementById('nextSecret');
-      
-        function showSecretSlide(index) {
-          secretSlides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            if (i === index) {
-              slide.classList.add('active');
-            }
-          });
-        }
-      
-        function nextSecretSlide() {
-          secretIndex = (secretIndex + 1) % secretSlides.length;
-          showSecretSlide(secretIndex);
-        }
-      
-        function prevSecretSlide() {
-          secretIndex = (secretIndex - 1 + secretSlides.length) % secretSlides.length;
-          showSecretSlide(secretIndex);
-        }
-      
-        // Event listeners para los botones de navegación del carrusel secreto
-        if (prevSecretBtn && nextSecretBtn) {
-          prevSecretBtn.addEventListener('click', () => {
-            prevSecretSlide();
-            resetSecretInterval();
-          });
-          nextSecretBtn.addEventListener('click', () => {
-            nextSecretSlide();
-            resetSecretInterval();
-          });
-        }
-      
-        // Intervalo para el cambio automático cada 3 segundos en el carrusel secreto
-        let secretInterval = setInterval(nextSecretSlide, 3000);
-      
-        // Función para reiniciar el intervalo del carrusel secreto (se usa al navegar manualmente)
-        function resetSecretInterval() {
-          clearInterval(secretInterval);
-          secretInterval = setInterval(nextSecretSlide, 3000);
-        }
-      
-        // ----------------------------------------------
-        // CARRUSEL DEL POEMA
-        // ----------------------------------------------
-        const poemSlides = Array.from(document.querySelectorAll('.poem-slide'));
-        let poemCurrentIndex = 0;
-        const prevPoemBtn = document.getElementById('prevPoem');
-        const nextPoemBtn = document.getElementById('nextPoem');
-
-        // Función para mostrar una diapositiva específica con transiciones suaves
-        function showPoemSlide(newIndex) {
-            const currentSlide = poemSlides[poemCurrentIndex];
-            const nextSlide = poemSlides[newIndex];
-            
-            if (currentSlide === nextSlide) return; // Evita cambios si es la misma diapositiva
-
-            // Añade la clase 'active' a la nueva diapositiva para que comience a desvanecerse
-            nextSlide.classList.add('active');
-            
-            // Después de 0.5 segundos (duración de la transición), remueve 'active' de la diapositiva anterior
-            setTimeout(() => {
-                currentSlide.classList.remove('active');
-                poemCurrentIndex = newIndex; // Actualiza el índice actual
-            }, 500); // 500 ms = 0.5 segundos
-        }
-
-        // Función para avanzar a la siguiente diapositiva
-        function nextPoemSlide() {
-            const newIndex = (poemCurrentIndex + 1) % poemSlides.length;
-            showPoemSlide(newIndex);
-        }
-
-        // Función para retroceder a la diapositiva anterior
-        function prevPoemSlide() {
-            const newIndex = (poemCurrentIndex - 1 + poemSlides.length) % poemSlides.length;
-            showPoemSlide(newIndex);
-        }
-
-        // Event listeners para los botones de navegación
-        prevPoemBtn.addEventListener('click', () => {
-            prevPoemSlide();
-            resetPoemInterval();
-        });
-
-        nextPoemBtn.addEventListener('click', () => {
-            nextPoemSlide();
-            resetPoemInterval();
-        });
-
-        // Intervalo para el cambio automático cada 5.5 segundos
-        let poemInterval = setInterval(nextPoemSlide, 8500);
-
-        // Función para reiniciar el intervalo (se usa al navegar manualmente)
-        function resetPoemInterval() {
-            clearInterval(poemInterval);
-            poemInterval = setInterval(nextPoemSlide, 8500);
-        }
-      
-        // ----------------------------------------
-        // REPRODUCTOR DE MÚSICA CON LOCALSTORAGE
-        // ----------------------------------------
-      
-        const musicContainer = document.querySelector(".music-container");
-        const playBtn = document.querySelector("#play");
-        const prevButton = document.querySelector("#prev");
-        const nextButton = document.querySelector("#next");
-        const audio = document.querySelector("#audio");
-        const title = document.querySelector("#title");
-        const cover = document.querySelector("#cover");
-        const progress = document.querySelector(".progress");
-        const progressContainer = document.querySelector(".progress-container");
-      
-        const songs_list = [
-          { src: 'assets/music/promesa.mp3', cover: 'assets/music/promesa.png', title: 'La Promesa - Melendi' },
-          { src: 'assets/music/halloffame.mp3', cover: 'assets/music/halloffame.png', title: 'Hall Of Fame - The Script' },
-          { src: 'assets/music/memories.mp3', cover: 'assets/music/memories.png', title: 'Memories - Maroon 5' },
-          { src: 'assets/music/principiodealgo.mp3', cover: 'assets/music/principiodealgo.png', title: 'El principio de Algo - La La Love You' },
-          { src: 'assets/music/Dandelions.mp3', cover: 'assets/music/Dandelions.png', title: 'Dandelions - Ruth B' },
-          { src: 'assets/music/unstoppable.mp3', cover: 'assets/music/unstoppable.png', title: 'Unstoppable - Sia' },
-          { src: 'assets/music/tantolaqueria.mp3', cover: 'assets/music/tantolaqueria.png', title: 'Tanto la Queria - Andy y Lucas' },
-          { src: 'assets/music/business.mp3', cover: 'assets/music/business.png', title: 'The Business - Tiësto' },
-          { src: 'assets/music/millionReasons.mp3', cover: 'assets/music/millionReasons.png', title: 'Million Reasons - Lady Gaga' },
-          { src: 'assets/music/hastamifinal.mp3', cover: 'assets/music/hastamifinal.png', title: 'Hasta mi Final - Il Divo' }
-        ];
-      
-        let songIndex = localStorage.getItem('songIndex') ? parseInt(localStorage.getItem('songIndex')) : 0;
-        let currentTime = localStorage.getItem('currentTime') ? parseFloat(localStorage.getItem('currentTime')) : 0;
-      
-        function loadSong(song) {
-          title.innerText = song.title;
-          audio.src = song.src;
-          cover.src = song.cover;
-        }
-      
-        function playSong() {
-          musicContainer.classList.add('play');
-          playBtn.querySelector('i.fas').classList.remove('fa-play');
-          playBtn.querySelector('i.fas').classList.add('fa-pause');
-          audio.play();
-        }
-      
-        function pauseSong() {
-          musicContainer.classList.remove('play');
-          playBtn.querySelector('i.fas').classList.remove('fa-pause');
-          playBtn.querySelector('i.fas').classList.add('fa-play');
-          audio.pause();
-        }
-      
-        function prevSong() {
-          songIndex--;
-          if (songIndex < 0) {
-            songIndex = songs_list.length - 1;
-          }
-          loadSong(songs_list[songIndex]);
-          playSong();
-        }
-      
-        function nextSong() {
-          songIndex++;
-          if (songIndex > songs_list.length - 1) {
-            songIndex = 0;
-          }
-          loadSong(songs_list[songIndex]);
-          playSong();
-        }
-      
-        playBtn.addEventListener('click', () => {
-          const isPlaying = musicContainer.classList.contains('play');
-          if (isPlaying) {
-            pauseSong();
-          } else {
-            playSong();
-          }
-        });
-      
-        prevButton.addEventListener('click', prevSong);
-        nextButton.addEventListener('click', nextSong);
-      
-        audio.addEventListener('timeupdate', updateProgress);
-        progressContainer.addEventListener('click', setProgress);
-        audio.addEventListener('ended', nextSong);
-      
-        function updateProgress(e) {
-          const { duration, currentTime } = e.srcElement;
-          const progressPercent = (currentTime / duration) * 100;
-          progress.style.width = `${progressPercent}%`;
-          localStorage.setItem('currentTime', currentTime);
-        }
-      
-        function setProgress(e) {
-          const width = this.clientWidth;
-          const clickX = e.offsetX;
-          const duration = audio.duration;
-          audio.currentTime = (clickX / width) * duration;
-        }
-      
-        audio.addEventListener('loadedmetadata', () => {
-          audio.currentTime = currentTime;
-        });
-      
-        window.addEventListener('beforeunload', () => {
-          localStorage.setItem('songIndex', songIndex);
-          localStorage.setItem('currentTime', audio.currentTime);
-        });
-      
-        loadSong(songs_list[songIndex]);
-      
-      });
-  </script>
+  <!-- Enlace al JS externo -->
+  <script src="resources/scripts.js"></script>
 </body>
 </html>
