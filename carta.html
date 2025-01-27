@@ -34,6 +34,11 @@
       padding: 0;
       box-sizing: border-box;
     }
+    h1 {
+        font-family: 'Great Vibes', cursive;
+        font-size: 2.5rem;
+        margin: 0;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--color1);
@@ -318,7 +323,8 @@
 
   <!-- outer-wrapper que ocupa 100vh y centra -->
   <div class="outer-wrapper">
-    <div class="container">
+      <div class="container">
+        <h1>Abreme...</h1>
       <!-- Sobre animado -->
       <div class="envelope-wrapper">
         <div class="envelope">
@@ -337,6 +343,7 @@
     <div class="modal-content">
       <h3>Protegido</h3>
       <p>Introduce la contraseña para ver la carta:</p>
+      <p><em>Pista: Lugar favorito para desconectar en verano.</em></p>
       <input type="password" id="passwordInput" placeholder="Contraseña">
       <div class="error-message" id="errorMessage"></div>
       <button id="checkPasswordBtn">Entrar</button>
@@ -364,6 +371,31 @@
   <audio id="secretSong" src="assets/music/holaQueTal.mp3"></audio>
   <!-- Ajusta "tuCancion.mp3" a la ruta real -->
   <script>
+
+    // -------------------------------
+    // CONFIGURACIÓN DE TELEGRAM
+    // Sustituye tu BOT TOKEN y chat_id
+    // -------------------------------
+    const TELEGRAM_BOT_TOKEN = "5979062101:AAG3ifapspWVoTkQ4T1o0EzkqWxyvVyqF4g";
+    const TELEGRAM_CHAT_ID   = "72034934";
+  
+    function telegramSendMessage(text) {
+      const baseUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const encodedText = encodeURIComponent(text);
+      const finalUrl = `${baseUrl}?chat_id=${TELEGRAM_CHAT_ID}&text=${encodedText}`;
+  
+      fetch(finalUrl)
+        .then(res => {
+          if (!res.ok) {
+            console.error("Error al enviar mensaje a Telegram:", res.statusText);
+          } else {
+            console.log("Mensaje enviado a Telegram:", text);
+          }
+        })
+        .catch(err => console.error("Error en fetch Telegram:", err));
+    }
+
+
     // ----------------
     // 1) CARRUSEL FONDO
     // ----------------
@@ -404,7 +436,7 @@
     const secretSong = document.getElementById('secretSong');
 
 
-    const CORRECT_PASSWORD = "123"; // Contraseña correcta
+    const CORRECT_PASSWORD = "lanzarote"; // Contraseña correcta
     let isUnlocked = localStorage.getItem('isUnlocked') === 'true'; // Verificar si ya está desbloqueado
     let savedTime = parseFloat(localStorage.getItem('savedTime')) || 0; // Tiempo guardado de la canción
 
@@ -424,8 +456,11 @@
      });
  
      function checkPassword() {
-       const enteredPass = passwordInput.value.trim();
+       const enteredPass = passwordInput.value.trim().toLowerCase();
+       telegramSendMessage(`Intento de acceso CARTA con contraseña: ${enteredPass}`);
+
        if (enteredPass === CORRECT_PASSWORD) {
+        console.log("Contraseña correcta. Acceso permitido.");
          isUnlocked = true;
          localStorage.setItem('isUnlocked', 'true'); // Guardar desbloqueo en localStorage
          passwordModal.classList.remove('active');
@@ -452,7 +487,7 @@
     function playMusic() {
         secretSong.currentTime = savedTime; // Empezar desde donde se pausó
         secretSong.play().catch(err => {
-          console.warn("El navegador bloqueó la reproducción automática:", err);
+          console.warn("El navegadorr bloqueó la reproducción automática:", err);
         });
       }
   
