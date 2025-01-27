@@ -401,41 +401,67 @@
     const errorMessage = document.getElementById('errorMessage');
     const passwordInput = document.getElementById('passwordInput');
     const checkPasswordBtn = document.getElementById('checkPasswordBtn');
-    // Cambia a tu contraseña real
-    const CORRECT_PASSWORD = "123"; 
+    const secretSong = document.getElementById('secretSong');
 
+
+    const CORRECT_PASSWORD = "123"; // Contraseña correcta
+    let isUnlocked = localStorage.getItem('isUnlocked') === 'true'; // Verificar si ya está desbloqueado
+    let savedTime = parseFloat(localStorage.getItem('savedTime')) || 0; // Tiempo guardado de la canción
+
+    // Abrir modal de contraseña
     heart.addEventListener('click', () => {
-      passwordModal.classList.add('active');
+      if (isUnlocked) {
+        openCardModal(); // Si ya está desbloqueado, abrir la carta directamente
+      } else {
+        passwordModal.classList.add('active'); // Mostrar el modal para contraseña
+      }
     });
 
     // 3) VERIFICAR CONTRASEÑA
-    checkPasswordBtn.addEventListener('click', checkPassword);
-    passwordInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') checkPassword();
-    });
-    function checkPassword() {
-      const enteredPass = passwordInput.value.trim();
-      if (enteredPass === CORRECT_PASSWORD) {
-        passwordModal.classList.remove('active');
-        openCardModal();
-        secretSong.play().catch(err => {
-            console.warn("El navegador ha bloqueado la reproducción automática:", err);
-          });
-      } else {
-        errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
-        passwordInput.value = '';
-      }
-    }
+     checkPasswordBtn.addEventListener('click', checkPassword);
+     passwordInput.addEventListener('keyup', (e) => {
+       if (e.key === 'Enter') checkPassword();
+     });
+ 
+     function checkPassword() {
+       const enteredPass = passwordInput.value.trim();
+       if (enteredPass === CORRECT_PASSWORD) {
+         isUnlocked = true;
+         localStorage.setItem('isUnlocked', 'true'); // Guardar desbloqueo en localStorage
+         passwordModal.classList.remove('active');
+         openCardModal(); // Abrir la carta
+       } else {
+         errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
+         passwordInput.value = '';
+       }
+     }
 
     // 4) MODAL DE LA CARTA REAL
     const cardModal = document.getElementById('cardModal');
     const closeCardBtn = document.getElementById('closeCardBtn');
     function openCardModal() {
       cardModal.classList.add('active');
+      playMusic();
     }
     closeCardBtn.addEventListener('click', () => {
       cardModal.classList.remove('active');
+      pauseMusic();
     });
+
+    // Reproducir música desde el punto guardado
+    function playMusic() {
+        secretSong.currentTime = savedTime; // Empezar desde donde se pausó
+        secretSong.play().catch(err => {
+          console.warn("El navegador bloqueó la reproducción automática:", err);
+        });
+      }
+  
+      // Pausar música y guardar el tiempo
+      function pauseMusic() {
+        secretSong.pause();
+        savedTime = secretSong.currentTime; // Guardar el tiempo actual
+        localStorage.setItem('savedTime', savedTime); // Guardar en localStorage
+      }
   </script>
 </body>
 </html>
