@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carta Especial</title>
+
+  <!-- Fuentes similares a index (puedes reutilizar) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&family=Caveat&display=swap" 
+    rel="stylesheet"
+  >
+  
+  <style>
+    :root {
+      --color1: #E1D9D3; /* Fondo suave */
+      --color2: #E4BEAF;
+      --color3: #B5E3AB;
+      --color4: #E8BAD2;
+      --color5: #62CBB8;
+      --color6: #FBFEFE; /* Casi blanco */
+
+      /* Sobre */
+      --bg-envelope-color: #f5edd1;
+      --envelope-tab: #ecdeb8;
+      --envelope-cover: #e6cfa7;
+      --shadow-color: #1c1c1c;
+      --heart-color: #c2465d;
+      --primary: white;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--color1);
+      overflow: hidden; /* Evita scroll */
+    }
+
+    /* Fondo con el carrusel */
+    .background-carousel {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .background-carousel img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 3s ease-in-out, transform 10s ease-in-out;
+    }
+    .background-carousel img.active {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* Wrapper que ocupa toda la pantalla y centra vertical/horizontal */
+    .outer-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Contenedor translucido con la carta */
+    .container {
+      width: 90%;
+      max-width: 550px;
+      padding: 3rem;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============= SOBRE ANIMADO ============= */
+    .envelope-wrapper {
+      display: inline-block; 
+      background: transparent;
+      box-shadow: none;
+    }
+    .envelope {
+      position: relative;
+      width: 350px;
+      height: 250px;
+    }
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      border-top: 130px solid var(--envelope-tab);
+      border-right: 175px solid transparent;
+      border-left: 175px solid transparent;
+      transform-origin: top;
+      transition: all 0.5s ease-in-out 0.7s;
+    }
+    .envelope::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      right: 0;
+      width: 0px;
+      height: 0px;
+      border-top: 130px solid transparent;
+      border-right: 175px solid var(--envelope-cover);
+      border-bottom: 120px solid var(--envelope-cover);
+      border-left: 175px solid var(--envelope-cover);
+    }
+
+    .letter {
+      position: absolute;
+      right: 20%;
+      bottom: 0;
+      width: 54%;
+      height: 80%;
+      background: var(--primary);
+      text-align: center;
+      transition: all 1s ease-in-out;
+      box-shadow: 0 0 5px var(--shadow-color);
+      padding: 20px 10px;
+    }
+    .letter .text {
+      font-family: "Caveat", cursive;
+      font-style: normal;
+      color: #333;
+      text-align: justify;
+      font-size: 11px;
+      padding-right: 2px;
+    }
+
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 15px; 
+      height: 15px;
+      background: var(--heart-color);
+      z-index: 4;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: transform 0.5s ease-in-out 1s;
+      box-shadow: 0 1px 6px var(--shadow-color);
+      cursor: pointer;
+    }
+    .heart:before, 
+    .heart:after {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: var(--heart-color);
+      border-radius: 50%;
+    }
+    .heart:before {
+      top: -7.5px; right: 0;
+    }
+    .heart:after {
+      right: 7.5px;
+    }
+
+    .flap > .envelope:before {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+    .flap > .envelope > .letter {
+      bottom: 100px;
+      transform: scale(1.5);
+      transition-delay: 1s;
+    }
+    .flap > .heart {
+      transform: rotate(90deg);
+      transition-delay: 0.4s;
+    }
+
+    /* ============= MODAL PARA CONTRASEÑA ============= */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none; /* visible al abrir */
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .modal-content h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .modal-content input[type="password"] {
+      width: 80%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+    .modal-content button {
+      background-color: var(--color5);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .modal-content button:hover {
+      background-color: var(--color4);
+    }
+    .error-message {
+      color: red;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* ============= MODAL PARA MOSTRAR LA CARTA REAL ============= */
+    .modal-card-content {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: left;
+      max-width: 900px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .modal-card-content h2 {
+      font-family: "Great Vibes", cursive;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .modal-card-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: none; /* visible al abrir la carta */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-card-overlay.active {
+      display: flex;
+    }
+    .modal-card-content p {
+      margin-bottom: 1rem;
+      font-family: "Caveat", cursive;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+    .close-card {
+      display: inline-block;
+      margin-top: 1rem;
+      background-color: var(--color5);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .close-card:hover {
+      background-color: var(--color4);
+    }
+
+    /* ========== MEDIA QUERY PARA MÓVILES ========== */
+    @media (max-width: 600px) {
+      /* Ajustamos el sobre en pantallas pequeñas */
+      .envelope {
+        width: 280px;
+        height: 200px;
+      }
+      .envelope::before {
+        border-top: 100px solid var(--envelope-tab);
+        border-right: 140px solid transparent;
+        border-left: 140px solid transparent;
+      }
+      .envelope::after {
+        border-right: 140px solid var(--envelope-cover);
+        border-bottom: 90px solid var(--envelope-cover);
+        border-left: 140px solid var(--envelope-cover);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fondo del carrusel -->
+  <div class="background-carousel" id="backgroundCarousel"></div>
+
+  <!-- outer-wrapper que ocupa 100vh y centra -->
+  <div class="outer-wrapper">
+    <div class="container">
+      <!-- Sobre animado -->
+      <div class="envelope-wrapper">
+        <div class="envelope">
+          <div class="letter">
+            <!-- Pseudo-carta si quieres -->
+            <div class="text"></div>
+          </div>
+        </div>
+        <div class="heart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Overlay para pedir Contraseña -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal-content">
+      <h3>Protegido</h3>
+      <p>Introduce la contraseña para ver la carta:</p>
+      <input type="password" id="passwordInput" placeholder="Contraseña">
+      <div class="error-message" id="errorMessage"></div>
+      <button id="checkPasswordBtn">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Modal para mostrar la carta real si la contraseña es correcta -->
+  <div class="modal-card-overlay" id="cardModal">
+    <div class="modal-card-content">
+      <h2>Querida Paula:</h2>
+      <p>
+        Sé que no hace tanto tiempo que no te escribo, pero hoy siento la necesidad de hablarte, de poner en palabras todo lo que ha pasado desde que tomamos caminos separados. No busco revivir el pasado ni reprochar lo que ya no tiene sentido; solo quiero compartir contigo cómo he vivido estos días, estos meses, en los que tu ausencia ha sido una constante.<br>
+        Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.<br>
+        He tratado de entender qué es eso que me falta. Tal vez sea la manera en que sabías lo que pensaba sin necesidad de hablar, o cómo nuestras conversaciones fluían sin esfuerzo, sabiendo que eres la persona que mas me conoce del mundo, por encima de yo mismo. <br>
+        Recuerdo cada momento, no como un peso que arrastro, sino como un recordatorio de lo que alguna vez fue especial. No me malinterpretes, no estoy estancado en el pasado; sé que la vida sigue y que ambos tenemos derecho a encontrar nuestra felicidad. Pero quiero ser sincero: nadie ha logrado ocupar el lugar que dejaste en mi vida.<br>
+        He aprendido mucho desde que no estás. Aprendí a valorarme más, a entender mis emociones, y a ser paciente conmigo mismo. He descubierto que la confianza no se pide ni se exige, se gana con acciones sinceras y consistentes, en ella se encuentra la base de una relación. También entendí que algunas conexiones son únicas, y aunque intentemos replicarlas, siempre serán diferentes. No quiero decir que te idealicé o te idealizo, porque sé que ambos cometimos errores. Solo quiero reconocer que lo que compartimos fue muy importante.<br>
+        Esta carta no busca nada más que expresar lo que siento y que lo siento. No es un intento de volver ni de cambiar lo que ya es. Es simplemente una manera de decirte que, aunque el tiempo ha pasado, tu recuerdo sigue siendo parte de quien soy hoy.<br>
+        Y una vez más después del tiempo quiero decirte: Gracias por todo lo que vivimos. Gracias por los momentos buenos y también por los difíciles, porque de cada uno aprendí algo valioso. No sé dónde estás ni qué haces ahora, pero espero sinceramente que hayas encontrado la felicidad que tanto mereces.<br>
+        <em>Att: Pablo.</em>
+    </p>
+      <button class="close-card" id="closeCardBtn">Cerrar</button>
+    </div>
+  </div>
+  <!-- AUDIO Oculto: se reproducirá tras contraseña correcta -->
+  <audio id="secretSong" src="assets/music/holaQueTal.mp3"></audio>
+  <!-- Ajusta "tuCancion.mp3" a la ruta real -->
+  <script>
+    // ----------------
+    // 1) CARRUSEL FONDO
+    // ----------------
+    const backgroundCarousel = document.getElementById('backgroundCarousel');
+    const imagePaths = [
+      'assets/images/slide2.webp',
+      'assets/images/slide6.webp',
+      'assets/images/slide5.webp',
+      'assets/images/slide10.webp',
+      'assets/images/slide47.webp',
+      'assets/images/slide24.webp',
+      'assets/images/slide34.webp',
+      'assets/images/slide44.webp'
+    ];
+    imagePaths.forEach((path, index) => {
+      const img = document.createElement('img');
+      img.src = path;
+      if (index === 0) img.classList.add('active');
+      backgroundCarousel.appendChild(img);
+    });
+    const slides = Array.from(backgroundCarousel.querySelectorAll('img'));
+    let currentIndex = 0;
+    function changeSlide() {
+      slides[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % slides.length;
+      slides[currentIndex].classList.add('active');
+    }
+    setInterval(changeSlide, 3500);
+
+    // ----------------
+    // 2) SOBRE ANIMADO
+    // ----------------
+    const heart = document.querySelector('.heart');
+    const passwordModal = document.getElementById('passwordModal');
+    const errorMessage = document.getElementById('errorMessage');
+    const passwordInput = document.getElementById('passwordInput');
+    const checkPasswordBtn = document.getElementById('checkPasswordBtn');
+    // Cambia a tu contraseña real
+    const CORRECT_PASSWORD = "123"; 
+
+    heart.addEventListener('click', () => {
+      passwordModal.classList.add('active');
+    });
+
+    // 3) VERIFICAR CONTRASEÑA
+    checkPasswordBtn.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+    function checkPassword() {
+      const enteredPass = passwordInput.value.trim();
+      if (enteredPass === CORRECT_PASSWORD) {
+        passwordModal.classList.remove('active');
+        openCardModal();
+        secretSong.play().catch(err => {
+            console.warn("El navegador ha bloqueado la reproducción automática:", err);
+          });
+      } else {
+        errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
+        passwordInput.value = '';
+      }
+    }
+
+    // 4) MODAL DE LA CARTA REAL
+    const cardModal = document.getElementById('cardModal');
+    const closeCardBtn = document.getElementById('closeCardBtn');
+    function openCardModal() {
+      cardModal.classList.add('active');
+    }
+    closeCardBtn.addEventListener('click', () => {
+      cardModal.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

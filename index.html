@@ -273,6 +273,7 @@
     <div class="buttons">
       <button class="btn" id="btn-si">Sí</button>
       <button class="btn" id="btn-no">No</button>
+      <button class="btn" id="btn-carta">Carta</button>
     </div>
   </div>
 
@@ -307,6 +308,7 @@
   <script>
     const btnNo = document.getElementById('btn-no');
     const btnSi = document.getElementById('btn-si');
+    const btnCarta = document.getElementById('btn-carta');
 
     // Botón "Sí" -> redirige a planes.html
     btnSi.addEventListener('click', () => {
@@ -330,18 +332,21 @@
       btnNo.style.left = randomX + 'px';
       btnNo.style.top = randomY + 'px';
     });
-
+    // Botón "Carta" -> redirige a carta.html
+    btnCarta.addEventListener('click', () => {
+      window.location.href = 'carta.html';
+    });
     // Fondo del carrusel
     const backgroundCarousel = document.getElementById('backgroundCarousel');
     const imagePaths = [
       'assets/images/slide2.webp',
       'assets/images/slide6.webp',
       'assets/images/slide5.webp',
-      'assets/images/slide10.wbp',
-      'assets/images/slide47.wbp',
-      'assets/images/slide24.wbp',
-      'assets/images/slide34.wbp',
-      'assets/images/slide44.wbp'
+      'assets/images/slide10.webp',
+      'assets/images/slide47.webp',
+      'assets/images/slide24.webp',
+      'assets/images/slide34.webp',
+      'assets/images/slide44.webp'
     ];
 
     imagePaths.forEach((path, index) => {
