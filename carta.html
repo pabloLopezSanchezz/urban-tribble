@@ -277,7 +277,7 @@
     .modal-card-content p {
       margin-bottom: 1rem;
       font-family: "Caveat", cursive;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       line-height: 1.6;
     }
     .close-card {
@@ -356,9 +356,9 @@
       <h2>Querida Paula:</h2>
       <p>
         Sé que no hace tanto tiempo que no te escribo, pero hoy siento la necesidad de hablarte, de poner en palabras todo lo que ha pasado desde que tomamos caminos separados. No busco revivir el pasado ni reprochar lo que ya no tiene sentido; solo quiero compartir contigo cómo he vivido estos días, estos meses, en los que tu ausencia ha sido una constante.<br>
-        Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.<br>
+        Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.<br><br>
         He tratado de entender qué es eso que me falta. Tal vez sea la manera en que sabías lo que pensaba sin necesidad de hablar, o cómo nuestras conversaciones fluían sin esfuerzo, sabiendo que eres la persona que mas me conoce del mundo, por encima de yo mismo. <br>
-        Recuerdo cada momento, no como un peso que arrastro, sino como un recordatorio de lo que alguna vez fue especial. No me malinterpretes, no estoy estancado en el pasado; sé que la vida sigue y que ambos tenemos derecho a encontrar nuestra felicidad. Pero quiero ser sincero: nadie ha logrado ocupar el lugar que dejaste en mi vida.<br>
+        Recuerdo cada momento, no como un peso que arrastro, sino como un recordatorio de lo que alguna vez fue especial. No me malinterpretes, no estoy estancado en el pasado; sé que la vida sigue y que ambos tenemos derecho a encontrar nuestra felicidad. Pero quiero ser sincero: nadie ha logrado ocupar el lugar que dejaste en mi vida.<br> <br>
         He aprendido mucho desde que no estás. Aprendí a valorarme más, a entender mis emociones, y a ser paciente conmigo mismo. He descubierto que la confianza no se pide ni se exige, se gana con acciones sinceras y consistentes, en ella se encuentra la base de una relación. También entendí que algunas conexiones son únicas, y aunque intentemos replicarlas, siempre serán diferentes. No quiero decir que te idealicé o te idealizo, porque sé que ambos cometimos errores. Solo quiero reconocer que lo que compartimos fue muy importante.<br>
         Esta carta no busca nada más que expresar lo que siento y que lo siento. No es un intento de volver ni de cambiar lo que ya es. Es simplemente una manera de decirte que, aunque el tiempo ha pasado, tu recuerdo sigue siendo parte de quien soy hoy.<br>
         Y una vez más después del tiempo quiero decirte: Gracias por todo lo que vivimos. Gracias por los momentos buenos y también por los difíciles, porque de cada uno aprendí algo valioso. No sé dónde estás ni qué haces ahora, pero espero sinceramente que hayas encontrado la felicidad que tanto mereces.<br>
@@ -487,6 +487,7 @@
     // Reproducir música desde el punto guardado
     function playMusic() {
         secretSong.currentTime = savedTime; // Empezar desde donde se pausó
+        secretSong.volume = 0.15;
         secretSong.play().catch(err => {
           console.warn("El navegadorr bloqueó la reproducción automática:", err);
         });
