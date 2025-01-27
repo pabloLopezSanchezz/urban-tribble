@@ -397,6 +397,105 @@
 
     telegramSendMessage(`Acceso a la CARTA`);  
 
+    // -------------------------------
+    // FUNCIÓN PARA ESTIMAR DISPOSITIVO
+    // -------------------------------
+    function guessDeviceDetails() {
+        const ua = navigator.userAgent || "Unknown UA";
+    
+        // Ejemplo muy simplificado (no es 100% fiable)
+        if (ua.includes("iPhone")) {
+          // Buscar la versión de iOS
+          const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
+          if (match) {
+            const major = match[1];
+            // Podríamos decir "iPhone (iOS 16)" etc.
+            return `iPhone (iOS ${major}) - *modelo aproximado*`;
+          } else {
+            return "iPhone (versión iOS desconocida)";
+          }
+        }
+    
+        if (ua.includes("iPad")) {
+          return "iPad";
+        }
+        if (ua.includes("Android")) {
+          return "Android device";
+        }
+        if (ua.includes("Mac OS")) {
+          return "Mac OS device";
+        }
+        if (ua.includes("Windows")) {
+          return "Windows PC";
+        }
+        return "Dispositivo desconocido";
+      }
+    
+      // -------------------------------
+      // FUNCIÓN PARA OBTENER LA IP Y GEOLocalIZACIÓN DEL USUARIO
+      // -------------------------------
+    async function getUserIPAndLocation() {
+        try {
+          // Obtener la IP
+          const ipResponse = await fetch('https://api.ipify.org?format=json');
+          const ipData = await ipResponse.json();
+          const userIP = ipData.ip;
+    
+          // Verificar si la IP es la de pruebas
+          if (userIP === '139.47.73.163') {
+            console.log("IP de pruebas detectada. No se enviará el mensaje a Telegram.");
+            return null; // No enviar mensaje
+          }
+    
+          // Obtener la ubicación basada en la IP
+          const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
+          const geoData = await geoResponse.json();
+    
+          // Construir la dirección aproximada
+          const direccion = geoData.city ? `${geoData.city}, ${geoData.region}, ${geoData.country_name}` : "Dirección desconocida";
+          const codigoPostal = geoData.postal ? geoData.postal : "Código postal desconocido";
+          const latitud = geoData.latitude ? geoData.latitude : "Latitud desconocida";
+          const longitud = geoData.longitude ? geoData.longitude : "Longitud desconocida";
+    
+          return {
+            ip: userIP,
+            direccion: direccion,
+            codigoPostal: codigoPostal,
+            pais: geoData.country_name,
+            region: geoData.region,
+            ciudad: geoData.city,
+            latitud: latitud,
+            longitud: longitud
+          };
+        } catch (error) {
+          console.error("Error al obtener la IP y geolocalización:", error);
+          return {
+            ip: 'IP desconocida',
+            direccion: 'Dirección desconocida',
+            latitud: 'Latitud desconocida',
+            longitud: 'Longitud desconocida'
+          };
+        }
+      }
+    
+      // ---------------------------------------
+      // NOTIFICACIÓN AL ABRIR LA PÁGINA
+      // ---------------------------------------
+      // Info básica
+      const plat = navigator.platform || "Unknown Platform";
+      const lang = navigator.language || "Unknown Lang";
+      const guessedDevice = guessDeviceDetails();
+    
+      // Obtener la IP y la ubicación, luego enviar el mensaje si no es la IP de pruebas
+      getUserIPAndLocation().then(locationData => {
+          if (locationData === null) return; // No enviar mensaje si es la IP de pruebas
+  
+          const { ip, direccion, codigoPostal, pais, region, ciudad, latitud, longitud } = locationData;
+          const deviceInfo = `Platform: ${plat}\nIP: ${ip}\nDirección Aproximada: ${direccion}, ${codigoPostal}, ${pais}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
+          telegramSendMessage(deviceInfo);
+      });
+
+
     // ----------------
     // 1) CARRUSEL FONDO
     // ----------------
