@@ -388,6 +388,7 @@
     <div class="modal-content">
       <h3>Protegido</h3>
       <p>Introduce la contraseña para ver la carta:</p>
+    <p id="passwordHint" style="font-style: italic; color: #888; margin-bottom: 1rem;"></p>
       <input type="password" id="passwordInput" placeholder="Contraseña">
       <div class="error-message" id="errorMessage"></div>
       <button id="checkPasswordBtn">Entrar</button>
@@ -422,6 +423,7 @@
         Pero si alguna vez te preguntas si aún hay alguien dispuesto a darlo todo por ti, quiero que sepas que estoy aquí, luchando, sin otra opción que dar lo mejor de mí, porque tú siempre lo merecerás.
         Att: Pablo.`,
         password: "lanzarote",
+        hint: "Isla con gatos donde nos encataba ir a desconectar del mundo cada verano. ",
         music: "assets/music/holaQueTal.mp3"
       },
       {
@@ -439,6 +441,7 @@
         Te amo, y eso no cambiará. Porque aunque este sea un momento difícil, sé que el amor verdadero no solo se mide en los días felices, sino en cómo enfrentamos juntos las tormentas.
         Att: Pablo.`,
         password: "flash",
+        hint: "Tipo de postre/helado que te encataba comprar y nunca te comias. PD: Los sigo teniendo aqui...",
         music: "assets/music/demons.mp3"
       },
       {
@@ -452,11 +455,17 @@
         Si aún queda una chispa en tu corazón, si aún hay un espacio para mí, quiero llenarlo con el respeto, la paciencia y el amor que siempre debiste recibir.
         Estoy aquí, con el corazón en mis manos, esperando la oportunidad de demostrarte cuánto significas para mí. Por que realmente, tu eres el Amor de Mi Vida.
         Att: Pablo.`,
-        password: "flash",
+        password: "Manolo",
+        hint: "Como se llamaba mi abuelo Paterno?", 
         music: "assets/music/admv.mp3"
       }
       // Añade más cartas si lo deseas
     ];
+
+    function showPasswordHint(index) {
+        const hint = lettersData[index].hint;
+        document.getElementById('passwordHint').innerText = "Pista: " + hint;
+      }
 
     // =============================
     // 2) CARRUSEL DE FONDO (IMÁGENES)
@@ -591,6 +600,7 @@
       passwordInput.value = '';
       errorMessage.textContent = '';
       passwordModal.classList.add('active');
+      showPasswordHint(index);
     }
 
     checkPasswordBtn.addEventListener('click', checkPassword);
