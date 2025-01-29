@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Carta Especial</title>
+  <title>Carrusel de Cartas Especiales</title>
 
-  <!-- Fuentes similares a index (puedes reutilizar) -->
+  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link 
@@ -34,18 +34,14 @@
       padding: 0;
       box-sizing: border-box;
     }
-    h1 {
-        font-family: 'Great Vibes', cursive;
-        font-size: 2.5rem;
-        margin: 0;
-    }
+    /* Permitimos scroll vertical si el contenido es alto */
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--color1);
-      overflow: hidden; /* Evita scroll */
+      overflow-x: hidden; /* Ocultamos solo el scroll horizontal */
     }
 
-    /* Fondo con el carrusel */
+    /* Fondo carrusel de IMÁGENES */
     .background-carousel {
       position: fixed;
       top: 0; left: 0;
@@ -66,32 +62,72 @@
       transform: scale(1.1);
     }
 
-    /* Wrapper que ocupa toda la pantalla y centra vertical/horizontal */
+    /* Contenedor principal (ocupa al menos la altura de la ventana) */
     .outer-wrapper {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 100vh;
+      min-height: 100vh;
       position: relative;
     }
 
-    /* Contenedor translucido con la carta */
-    .container {
+    /* Carrusel (1 carta por pantalla): overflow hidden SOLO AQUÍ */
+    .carousel {
+      display: flex;
+      justify-content: flex-start;
       width: 90%;
-      max-width: 550px;
-      padding: 3rem;
+      max-width: 700px;
+      margin: 2rem auto;        /* algo de margen vertical */
+      
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+
+    /* Cada SLIDE ocupa 100% del ancho del .carousel */
+    .slide {
+      min-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
       text-align: center;
       background-color: rgba(255, 255, 255, 0.5);
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      position: relative;
-      z-index: 1;
+    }
+    .slide h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    /* ============= SOBRE ANIMADO ============= */
+    /* Botones Anterior / Siguiente */
+    .carousel-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem; /* separarlos un poco del carrusel */
+    }
+    .carousel-controls button {
+      background-color: var(--color5);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .carousel-controls button:hover {
+      background-color: var(--color4);
+    }
+
+    /* SOBRE ANIMADO */
     .envelope-wrapper {
       display: inline-block; 
       background: transparent;
@@ -119,8 +155,8 @@
       position: absolute;
       z-index: 2;
       right: 0;
-      width: 0px;
-      height: 0px;
+      width: 0;
+      height: 0;
       border-top: 130px solid transparent;
       border-right: 175px solid var(--envelope-cover);
       border-bottom: 120px solid var(--envelope-cover);
@@ -141,11 +177,9 @@
     }
     .letter .text {
       font-family: "Caveat", cursive;
-      font-style: normal;
       color: #333;
       text-align: justify;
       font-size: 11px;
-      padding-right: 2px;
     }
 
     .heart {
@@ -171,13 +205,15 @@
       border-radius: 50%;
     }
     .heart:before {
-      top: -7.5px; right: 0;
+      top: -7.5px; 
+      right: 0;
     }
     .heart:after {
       right: 7.5px;
     }
 
-    .flap > .envelope:before {
+    /* Clases para abrir/cerrar sobre */
+    .flap > .envelope::before {
       transform: rotateX(180deg);
       z-index: 0;
     }
@@ -191,13 +227,13 @@
       transition-delay: 0.4s;
     }
 
-    /* ============= MODAL PARA CONTRASEÑA ============= */
+    /* MODAL PARA CONTRASEÑA */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.6);
-      display: none; /* visible al abrir */
+      display: none;
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -246,7 +282,20 @@
       font-size: 0.9rem;
     }
 
-    /* ============= MODAL PARA MOSTRAR LA CARTA REAL ============= */
+    /* MODAL PARA MOSTRAR CARTA REAL */
+    .modal-card-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-card-overlay.active {
+      display: flex;
+    }
     .modal-card-content {
       background: #fff;
       padding: 1.5rem;
@@ -260,25 +309,14 @@
       font-family: "Great Vibes", cursive;
       font-size: 2rem;
       margin-bottom: 1rem;
-    }
-    .modal-card-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7);
-      display: none; /* visible al abrir la carta */
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-card-overlay.active {
-      display: flex;
+      text-align: center;
     }
     .modal-card-content p {
       margin-bottom: 1rem;
       font-family: "Caveat", cursive;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       line-height: 1.6;
+      white-space: pre-line;
     }
     .close-card {
       display: inline-block;
@@ -297,9 +335,15 @@
       background-color: var(--color4);
     }
 
-    /* ========== MEDIA QUERY PARA MÓVILES ========== */
+    /* Ajustes para móviles */
     @media (max-width: 600px) {
-      /* Ajustamos el sobre en pantallas pequeñas */
+      .carousel {
+        width: 95%;
+        margin: 1rem auto;
+      }
+      .slide {
+        padding: 1rem;
+      }
       .envelope {
         width: 280px;
         height: 200px;
@@ -314,78 +358,310 @@
         border-bottom: 90px solid var(--envelope-cover);
         border-left: 140px solid var(--envelope-cover);
       }
+      .letter {
+        padding: 10px 5px;
+      }
+      .slide h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Fondo del carrusel -->
+  <!-- Fondo del carrusel de imágenes -->
   <div class="background-carousel" id="backgroundCarousel"></div>
 
-  <!-- outer-wrapper que ocupa 100vh y centra -->
+  <!-- Contenedor principal -->
   <div class="outer-wrapper">
-      <div class="container">
-        <h1>Carta 1 / ...</h1>
-      <!-- Sobre animado -->
-      <div class="envelope-wrapper">
-        <div class="envelope">
-          <div class="letter">
-            <!-- Pseudo-carta si quieres -->
-            <div class="text"></div>
-          </div>
-        </div>
-        <div class="heart"></div>
-      </div>
+    <!-- Carrusel de CARTAS -->
+    <div class="carousel" id="carousel"></div>
+
+    <!-- Botones de navegación del carrusel -->
+    <div class="carousel-controls">
+      <button id="prevBtn">Anterior</button>
+      <button id="nextBtn">Siguiente</button>
     </div>
   </div>
 
-  <!-- Modal Overlay para pedir Contraseña -->
+  <!-- Modal Overlay para pedir contraseña -->
   <div class="modal-overlay" id="passwordModal">
     <div class="modal-content">
       <h3>Protegido</h3>
       <p>Introduce la contraseña para ver la carta:</p>
-      <p><em>Pista: Nuestro lugar favorito para desconectar en verano.</em></p>
       <input type="password" id="passwordInput" placeholder="Contraseña">
       <div class="error-message" id="errorMessage"></div>
       <button id="checkPasswordBtn">Entrar</button>
     </div>
   </div>
 
-  <!-- Modal para mostrar la carta real si la contraseña es correcta -->
+  <!-- Modal para mostrar la carta real -->
   <div class="modal-card-overlay" id="cardModal">
     <div class="modal-card-content">
-      <h2>Querida Paula:</h2>
-      <p>
-        Sé que no hace tanto tiempo que no te escribo, pero hoy siento la necesidad de hablarte, de poner en palabras todo lo que ha pasado desde que tomamos caminos separados. No busco revivir el pasado ni reprochar lo que ya no tiene sentido; solo quiero compartir contigo cómo he vivido estos días, estos meses, en los que tu ausencia ha sido una constante.<br>
-        Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.<br><br>
-        He tratado de entender qué es eso que me falta. Tal vez sea la manera en que sabías lo que pensaba sin necesidad de hablar, o cómo nuestras conversaciones fluían sin esfuerzo, sabiendo que eres la persona que mas me conoce del mundo, por encima de yo mismo. <br>
-        Recuerdo cada momento, no como un peso que arrastro, sino como un recordatorio de lo que alguna vez fue especial. No me malinterpretes, no estoy estancado en el pasado; sé que la vida sigue y que ambos tenemos derecho a encontrar nuestra felicidad. Pero quiero ser sincero: nadie ha logrado ocupar el lugar que dejaste en mi vida.<br> <br>
-        He aprendido mucho desde que no estás. Aprendí a valorarme más, a entender mis emociones, y a ser paciente conmigo mismo. He descubierto que la confianza no se pide ni se exige, se gana con acciones sinceras y consistentes, en ella se encuentra la base de una relación. También entendí que algunas conexiones son únicas, y aunque intentemos replicarlas, siempre serán diferentes. No quiero decir que te idealicé o te idealizo, porque sé que ambos cometimos errores. Solo quiero reconocer que lo que compartimos fue muy importante.<br><br>
-        Lo voy a conseguir, es una promesa. No tengo opción, no puedo rendirme ni fallarme otra vez. Este camino que he elegido no es fácil, pero es necesario. Sé que rendirse no es una posibilidad.<br><br>
-        Esta carta no busca nada más que expresar lo que siento y que lo siento. No es un intento de volver ni de cambiar lo que ya es. Es simplemente una manera de decirte que, aunque el tiempo ha pasado, tu recuerdo sigue siendo parte de quien soy hoy.<br>
-        Y una vez más después del tiempo quiero decirte: Gracias por todo lo que vivimos. Gracias por los momentos buenos y también por los difíciles, porque de cada uno aprendí algo valioso. No sé dónde estás ni qué haces ahora, pero espero sinceramente que estes encontrando la felicidad que tanto mereces.<br>
-        Pero si alguna vez te preguntas si aún hay alguien dispuesto a darlo todo por ti, quiero que sepas que estoy aquí, luchando, sin otra opción que dar lo mejor de mí, porque tú siempre lo merecerás.<br>
-        <em>Att: Pablo.</em>
-    </p>
+      <h2 id="cardTitle"></h2>
+      <p id="cardText"></p>
       <button class="close-card" id="closeCardBtn">Cerrar</button>
     </div>
   </div>
-  <!-- AUDIO Oculto: se reproducirá tras contraseña correcta -->
-  <audio id="secretSong" src="assets/music/holaQueTal.mp3"></audio>
-  <!-- Ajusta "tuCancion.mp3" a la ruta real -->
-  <script>
 
-    // -------------------------------
-    // CONFIGURACIÓN DE TELEGRAM
-    // Sustituye tu BOT TOKEN y chat_id
-    // -------------------------------
+  <!-- Script principal -->
+  <script>
+    // =============================
+    // 1) DATOS DE LAS CARTAS
+    // =============================
+    const lettersData = [
+      {
+        title: "21/01 Primer Contacto",
+        text: `Sé que no hace tanto tiempo que no te escribo, pero hoy siento la necesidad de hablarte, de poner en palabras todo lo que ha pasado desde que tomamos caminos separados. No busco revivir el pasado ni reprochar lo que ya no tiene sentido; solo quiero compartir contigo cómo he vivido estos días, estos meses, en los que tu ausencia ha sido una constante.
+        Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.
+        He tratado de entender qué es eso que me falta. Tal vez sea la manera en que sabías lo que pensaba sin necesidad de hablar, o cómo nuestras conversaciones fluían sin esfuerzo, sabiendo que eres la persona que mas me conoce del mundo, por encima de yo mismo. 
+        Recuerdo cada momento, no como un peso que arrastro, sino como un recordatorio de lo que alguna vez fue especial. No me malinterpretes, no estoy estancado en el pasado; sé que la vida sigue y que ambos tenemos derecho a encontrar nuestra felicidad. Pero quiero ser sincero: nadie ha logrado ocupar el lugar que dejaste en mi vida.
+        He aprendido mucho desde que no estás. Aprendí a valorarme más, a entender mis emociones, y a ser paciente conmigo mismo. He descubierto que la confianza no se pide ni se exige, se gana con acciones sinceras y consistentes, en ella se encuentra la base de una relación. También entendí que algunas conexiones son únicas, y aunque intentemos replicarlas, siempre serán diferentes. No quiero decir que te idealicé o te idealizo, porque sé que ambos cometimos errores. Solo quiero reconocer que lo que compartimos fue muy importante.
+        Lo voy a conseguir, es una promesa. No tengo opción, no puedo rendirme ni fallarme otra vez. Este camino que he elegido no es fácil, pero es necesario. Sé que rendirse no es una posibilidad.
+        Esta carta no busca nada más que expresar lo que siento y que lo siento. No es un intento de volver ni de cambiar lo que ya es. Es simplemente una manera de decirte que, aunque el tiempo ha pasado, tu recuerdo sigue siendo parte de quien soy hoy.
+        Y una vez más después del tiempo quiero decirte: Gracias por todo lo que vivimos. Gracias por los momentos buenos y también por los difíciles, porque de cada uno aprendí algo valioso. No sé dónde estás ni qué haces ahora, pero espero sinceramente que estes encontrando la felicidad que tanto mereces.
+        Pero si alguna vez te preguntas si aún hay alguien dispuesto a darlo todo por ti, quiero que sepas que estoy aquí, luchando, sin otra opción que dar lo mejor de mí, porque tú siempre lo merecerás.
+        Att: Pablo.`,
+        password: "lanzarote",
+        music: "assets/music/holaQueTal.mp3"
+      },
+      {
+        title: "24/01 Te elijo, una y mil veces.",
+        text: `Sé que las cosas no han sido fáciles. Lo siento en tus palabras, en tus silencios, y también en los momentos en los que intentamos arreglar lo que parece romperse. Pero quiero que sepas algo, y quiero que lo sientas profundamente: no me he rendido. Estoy aquí, a pesar de todo, porque creo en lo que somos, incluso cuando parece que el camino se vuelve cuesta arriba.
+
+        Duele, lo sé. A veces duele más de lo que esperábamos. Hay días en los que siento que te pierdo poco a poco, y otros en los que me pregunto si no estoy haciendo lo suficiente. Pero en medio de este caos, quiero que sepas que mi amor por ti sigue intacto. Más allá de los errores, de las discusiones y de las diferencias, hay algo que nunca ha cambiado: el deseo de seguir construyendo contigo.
+        No soy perfecto, lo sé. Tal vez no siempre sé cómo expresarme o cómo hacerte sentir lo que siento. Pero cada día me despierto con la intención de ser mejor para ti, para nosotros. Sé que he fallado, pero también sé que mi corazón nunca ha dejado de querer lo mejor para nosotros.
+        Hay cosas que duelen, que nos hieren, y que quizás no he sabido enfrentar. Pero también hay algo que siempre me da esperanza: la manera en que, a pesar de todo, seguimos aquí. Eso significa algo, amor. Significa que todavía hay una llama que vale la pena cuidar, aunque a veces parezca que está a punto de apagarse.
+
+        Quiero que sepas que no estoy aquí solo por costumbre o por miedo a soltar. Estoy aquí porque te elijo, cada día, incluso en los momentos más difíciles. Estoy aquí porque creo que podemos sanar juntos, porque creo que aún hay mucho amor que podemos regalarnos si nos damos la oportunidad.
+
+        No quiero que esto sea una lucha en la que nos perdamos el uno al otro. Quiero que sea un proceso en el que crezcamos, en el que aprendamos a escuchar, a entender, a perdonar y, sobre todo, a recordar por qué nos elegimos desde el principio.
+
+        Te amo, y eso no cambiará. Porque aunque este sea un momento difícil, sé que el amor verdadero no solo se mide en los días felices, sino en cómo enfrentamos juntos las tormentas.
+        Att: Pablo.`,
+        password: "playa",
+        music: "assets/music/otraCancion.mp3"
+      }
+      // Añade más cartas si lo deseas
+    ];
+
+    // =============================
+    // 2) CARRUSEL DE FONDO (IMÁGENES)
+    // =============================
+    const backgroundCarousel = document.getElementById('backgroundCarousel');
+    const imagePaths = [
+      'assets/images/slide2.webp',
+      'assets/images/slide6.webp',
+      'assets/images/slide5.webp',
+      'assets/images/slide10.webp'
+    ];
+
+    imagePaths.forEach((path, i) => {
+      const img = document.createElement('img');
+      img.src = path;
+      if (i === 0) img.classList.add('active');
+      backgroundCarousel.appendChild(img);
+    });
+
+    const slidesBg = Array.from(backgroundCarousel.querySelectorAll('img'));
+    let currentBgIndex = 0;
+    function changeSlideBg() {
+      slidesBg[currentBgIndex].classList.remove('active');
+      currentBgIndex = (currentBgIndex + 1) % slidesBg.length;
+      slidesBg[currentBgIndex].classList.add('active');
+    }
+    setInterval(changeSlideBg, 3500);
+
+    // =============================
+    // 3) CREAR CADA SLIDE (CARTA) DINÁMICAMENTE
+    // =============================
+    const carousel = document.getElementById('carousel');
+
+    lettersData.forEach((letter, index) => {
+      console.log("[Create Slide]", index, letter.title);
+      const slideDiv = document.createElement('div');
+      slideDiv.classList.add('slide');
+      slideDiv.setAttribute('data-index', index);
+
+      const titleEl = document.createElement('h1');
+      titleEl.textContent = `Carta ${index + 1}`;
+      slideDiv.appendChild(titleEl);
+
+      // Sobre
+      const envelopeWrapper = document.createElement('div');
+      envelopeWrapper.classList.add('envelope-wrapper');
+
+      const envelope = document.createElement('div');
+      envelope.classList.add('envelope');
+
+      const letterDiv = document.createElement('div');
+      letterDiv.classList.add('letter');
+      const textDiv = document.createElement('div');
+      textDiv.classList.add('text');
+
+      letterDiv.appendChild(textDiv);
+      envelope.appendChild(letterDiv);
+      envelopeWrapper.appendChild(envelope);
+
+      // Corazón
+      const heartDiv = document.createElement('div');
+      heartDiv.classList.add('heart');
+      heartDiv.addEventListener('click', () => openPasswordModal(index));
+      envelopeWrapper.appendChild(heartDiv);
+
+      slideDiv.appendChild(envelopeWrapper);
+      carousel.appendChild(slideDiv);
+      console.log("[Slide appended] data-index:", index);
+    });
+
+    // =============================
+    // 4) LÓGICA DEL CARRUSEL (UNA CARTA POR VEZ)
+    // =============================
+    let currentSlide = 0;
+    const totalSlides = lettersData.length;
+
+    function showSlide(index) {
+      console.log("[showSlide] Quiero mostrar el slide:", index);
+
+      if (index < 0) {
+        index = totalSlides - 1;
+        console.log("[showSlide] Ajustado a último slide:", index);
+      }
+      if (index >= totalSlides) {
+        index = 0;
+        console.log("[showSlide] Ajustado a primer slide:", index);
+      }
+
+      currentSlide = index;
+      console.log("[showSlide] currentSlide final:", currentSlide);
+
+      const offset = -100 * index;
+      console.log("[showSlide] translateX:", offset + "%");
+
+      carousel.style.transform = `translateX(${offset}%)`;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      console.log("[prevBtn] clic -> currentSlide - 1 =", currentSlide - 1);
+      showSlide(currentSlide - 1);
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      console.log("[nextBtn] clic -> currentSlide + 1 =", currentSlide + 1);
+      showSlide(currentSlide + 1);
+    });
+    showSlide(0);
+
+    // =============================
+    // 5) MODAL DE CONTRASEÑA
+    // =============================
+    const passwordModal = document.getElementById('passwordModal');
+    const passwordInput = document.getElementById('passwordInput');
+    const errorMessage = document.getElementById('errorMessage');
+    const checkPasswordBtn = document.getElementById('checkPasswordBtn');
+
+    let currentLetterIndex = null;
+    let unlockedLetters = JSON.parse(localStorage.getItem('unlockedLetters')) || {};
+
+    function openPasswordModal(index) {
+      currentLetterIndex = index;
+
+      // Si la carta ya está desbloqueada, ir directo
+      if (unlockedLetters[index]) {
+        openCardModal(index);
+        return;
+      }
+      // Si no está desbloqueada, mostramos el modal para introducir contraseña
+      passwordInput.value = '';
+      errorMessage.textContent = '';
+      passwordModal.classList.add('active');
+    }
+
+    checkPasswordBtn.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      const enteredPass = passwordInput.value.trim().toLowerCase();
+      const realPass = lettersData[currentLetterIndex].password.toLowerCase();
+      if (enteredPass === realPass) {
+        unlockedLetters[currentLetterIndex] = true;
+        localStorage.setItem('unlockedLetters', JSON.stringify(unlockedLetters));
+        passwordModal.classList.remove('active');
+        openCardModal(currentLetterIndex);
+      } else {
+        errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
+        passwordInput.value = '';
+      }
+    }
+
+    // =============================
+    // 6) MODAL DE LA CARTA Y REPRODUCCIÓN DE MÚSICA
+    // =============================
+    const cardModal = document.getElementById('cardModal');
+    const closeCardBtn = document.getElementById('closeCardBtn');
+    const cardTitle = document.getElementById('cardTitle');
+    const cardText = document.getElementById('cardText');
+
+    // Creamos un <audio> por cada carta
+    const audios = lettersData.map(letter => {
+      const audio = new Audio(letter.music);
+      audio.volume = 0.15;
+      return audio;
+    });
+
+    let savedTimes = JSON.parse(localStorage.getItem('savedTimes')) || {};
+
+    function openCardModal(index) {
+      // Mostrar animación de sobre abierto
+      const slide = document.querySelector(`.slide[data-index='${index}']`);
+      slide.classList.add('flap');
+
+      const envWrapper = slide.querySelector('.envelope-wrapper');
+      envWrapper.classList.add('flap');
+
+      // Título y texto en el modal
+      cardTitle.textContent = lettersData[index].title;
+      cardText.textContent  = lettersData[index].text;
+      cardModal.classList.add('active');
+
+      // Reproducir música desde tiempo guardado
+      const audio = audios[index];
+      audio.currentTime = savedTimes[index] || 0;
+      audio.play().catch(err => {
+        console.warn("El navegador bloqueó la reproducción automática:", err);
+      });
+    }
+
+    closeCardBtn.addEventListener('click', () => {
+      cardModal.classList.remove('active');
+
+      // Detener la música y guardar el tiempo
+      const index = currentLetterIndex;
+      const audio = audios[index];
+      audio.pause();
+      savedTimes[index] = audio.currentTime;
+      localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
+
+      // Cerrar el sobre con animación (quitar .flap)
+      const slide = document.querySelector(`.slide[data-index='${index}']`);
+      if (slide) {
+        slide.classList.remove('flap');
+        const envWrapper = slide.querySelector('.envelope-wrapper');
+        if (envWrapper) envWrapper.classList.remove('flap');
+      }
+    });
+
+    // =============================
+    // 7) ENVIAR EVENTOS A TELEGRAM (OPCIONAL)
+    // =============================
     const TELEGRAM_BOT_TOKEN = "5979062101:AAG3ifapspWVoTkQ4T1o0EzkqWxyvVyqF4g";
     const TELEGRAM_CHAT_ID   = "72034934";
-  
+
     function telegramSendMessage(text) {
       const baseUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
       const encodedText = encodeURIComponent(text);
       const finalUrl = `${baseUrl}?chat_id=${TELEGRAM_CHAT_ID}&text=${encodedText}`;
-  
+
       fetch(finalUrl)
         .then(res => {
           if (!res.ok) {
@@ -397,209 +673,45 @@
         .catch(err => console.error("Error en fetch Telegram:", err));
     }
 
-    telegramSendMessage(`Acceso a la CARTA`);  
+    telegramSendMessage("Se ha accedido a la página con Carrusel de Cartas.");
 
-    // -------------------------------
-    // FUNCIÓN PARA ESTIMAR DISPOSITIVO
-    // -------------------------------
-    function guessDeviceDetails() {
-        const ua = navigator.userAgent || "Unknown UA";
-    
-        // Ejemplo muy simplificado (no es 100% fiable)
-        if (ua.includes("iPhone")) {
-          // Buscar la versión de iOS
-          const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
-          if (match) {
-            const major = match[1];
-            // Podríamos decir "iPhone (iOS 16)" etc.
-            return `iPhone (iOS ${major}) - *modelo aproximado*`;
-          } else {
-            return "iPhone (versión iOS desconocida)";
-          }
-        }
-    
-        if (ua.includes("iPad")) {
-          return "iPad";
-        }
-        if (ua.includes("Android")) {
-          return "Android device";
-        }
-        if (ua.includes("Mac OS")) {
-          return "Mac OS device";
-        }
-        if (ua.includes("Windows")) {
-          return "Windows PC";
-        }
-        return "Dispositivo desconocido";
-      }
-    
-      // -------------------------------
-      // FUNCIÓN PARA OBTENER LA IP Y GEOLocalIZACIÓN DEL USUARIO
-      // -------------------------------
+    // Ejemplo de recolección de IP y geolocalización
     async function getUserIPAndLocation() {
-        try {
-          // Obtener la IP
-          const ipResponse = await fetch('https://api.ipify.org?format=json');
-          const ipData = await ipResponse.json();
-          const userIP = ipData.ip;
-    
-          // Verificar si la IP es la de pruebas
-          if (userIP === '139.47.73.163') {
-            console.log("IP de pruebas detectada. No se enviará el mensaje a Telegram.");
-            return null; // No enviar mensaje
-          }
-    
-          // Obtener la ubicación basada en la IP
-          const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
-          const geoData = await geoResponse.json();
-    
-          // Construir la dirección aproximada
-          const direccion = geoData.city ? `${geoData.city}, ${geoData.region}, ${geoData.country_name}` : "Dirección desconocida";
-          const codigoPostal = geoData.postal ? geoData.postal : "Código postal desconocido";
-          const latitud = geoData.latitude ? geoData.latitude : "Latitud desconocida";
-          const longitud = geoData.longitude ? geoData.longitude : "Longitud desconocida";
-    
-          return {
-            ip: userIP,
-            direccion: direccion,
-            codigoPostal: codigoPostal,
-            pais: geoData.country_name,
-            region: geoData.region,
-            ciudad: geoData.city,
-            latitud: latitud,
-            longitud: longitud
-          };
-        } catch (error) {
-          console.error("Error al obtener la IP y geolocalización:", error);
-          return {
-            ip: 'IP desconocida',
-            direccion: 'Dirección desconocida',
-            latitud: 'Latitud desconocida',
-            longitud: 'Longitud desconocida'
-          };
-        }
+      try {
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const userIP = ipData.ip;
+
+        // Si quieres descartar alguna IP de pruebas:
+        if (userIP === '139.47.73.163') return null;
+        
+        const geoResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
+        const geoData = await geoResponse.json();
+        return { ip: userIP, city: geoData.city, country: geoData.country_name };
+      } catch (error) {
+        console.error("Error al obtener IP/Location:", error);
+        return null;
       }
-    
-      // ---------------------------------------
-      // NOTIFICACIÓN AL ABRIR LA PÁGINA
-      // ---------------------------------------
-      // Info básica
-      const plat = navigator.platform || "Unknown Platform";
-      const lang = navigator.language || "Unknown Lang";
-      const guessedDevice = guessDeviceDetails();
-    
-      // Obtener la IP y la ubicación, luego enviar el mensaje si no es la IP de pruebas
-      getUserIPAndLocation().then(locationData => {
-          if (locationData === null) return; // No enviar mensaje si es la IP de pruebas
-  
-          const { ip, direccion, codigoPostal, pais, region, ciudad, latitud, longitud } = locationData;
-          const deviceInfo = `Platform: ${plat}\nIP: ${ip}\nDirección Aproximada: ${direccion}, ${codigoPostal}, ${pais}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
-          telegramSendMessage(deviceInfo);
-      });
-
-
-    // ----------------
-    // 1) CARRUSEL FONDO
-    // ----------------
-    const backgroundCarousel = document.getElementById('backgroundCarousel');
-    const imagePaths = [
-      'assets/images/slide2.webp',
-      'assets/images/slide6.webp',
-      'assets/images/slide5.webp',
-      'assets/images/slide10.webp',
-      'assets/images/slide47.webp',
-      'assets/images/slide24.webp',
-      'assets/images/slide34.webp',
-      'assets/images/slide44.webp'
-    ];
-    imagePaths.forEach((path, index) => {
-      const img = document.createElement('img');
-      img.src = path;
-      if (index === 0) img.classList.add('active');
-      backgroundCarousel.appendChild(img);
-    });
-    const slides = Array.from(backgroundCarousel.querySelectorAll('img'));
-    let currentIndex = 0;
-    function changeSlide() {
-      slides[currentIndex].classList.remove('active');
-      currentIndex = (currentIndex + 1) % slides.length;
-      slides[currentIndex].classList.add('active');
     }
-    setInterval(changeSlide, 3500);
 
-    // ----------------
-    // 2) SOBRE ANIMADO
-    // ----------------
-    const heart = document.querySelector('.heart');
-    const passwordModal = document.getElementById('passwordModal');
-    const errorMessage = document.getElementById('errorMessage');
-    const passwordInput = document.getElementById('passwordInput');
-    const checkPasswordBtn = document.getElementById('checkPasswordBtn');
-    const secretSong = document.getElementById('secretSong');
-
-
-    const CORRECT_PASSWORD = "lanzarote"; // Contraseña correcta
-    let isUnlocked = localStorage.getItem('isUnlocked') === 'true'; // Verificar si ya está desbloqueado
-    let savedTime = parseFloat(localStorage.getItem('savedTime')) || 0; // Tiempo guardado de la canción
-
-    // Abrir modal de contraseña
-    heart.addEventListener('click', () => {
-      if (isUnlocked) {
-        openCardModal(); // Si ya está desbloqueado, abrir la carta directamente
-      } else {
-        passwordModal.classList.add('active'); // Mostrar el modal para contraseña
-      }
-    });
-
-    // 3) VERIFICAR CONTRASEÑA
-     checkPasswordBtn.addEventListener('click', checkPassword);
-     passwordInput.addEventListener('keyup', (e) => {
-       if (e.key === 'Enter') checkPassword();
-     });
- 
-     function checkPassword() {
-       const enteredPass = passwordInput.value.trim().toLowerCase();
-       telegramSendMessage(`Intento de acceso CARTA con contraseña: ${enteredPass}`);
-
-       if (enteredPass === CORRECT_PASSWORD) {
-        console.log("Contraseña correcta. Acceso permitido.");
-         isUnlocked = true;
-         localStorage.setItem('isUnlocked', 'true'); // Guardar desbloqueo en localStorage
-         passwordModal.classList.remove('active');
-         openCardModal(); // Abrir la carta
-       } else {
-         errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
-         passwordInput.value = '';
-       }
-     }
-
-    // 4) MODAL DE LA CARTA REAL
-    const cardModal = document.getElementById('cardModal');
-    const closeCardBtn = document.getElementById('closeCardBtn');
-    function openCardModal() {
-      cardModal.classList.add('active');
-      playMusic();
+    function guessDeviceDetails() {
+      const ua = navigator.userAgent || "Unknown UA";
+      if (ua.includes("iPhone"))  return "iPhone";
+      if (ua.includes("iPad"))    return "iPad";
+      if (ua.includes("Android")) return "Android device";
+      if (ua.includes("Mac OS"))  return "Mac OS device";
+      if (ua.includes("Windows")) return "Windows PC";
+      return "Dispositivo desconocido";
     }
-    closeCardBtn.addEventListener('click', () => {
-      cardModal.classList.remove('active');
-      pauseMusic();
-    });
 
-    // Reproducir música desde el punto guardado
-    function playMusic() {
-        secretSong.currentTime = savedTime; // Empezar desde donde se pausó
-        secretSong.volume = 0.15;
-        secretSong.play().catch(err => {
-          console.warn("El navegadorr bloqueó la reproducción automática:", err);
-        });
+    (async () => {
+      const data = await getUserIPAndLocation();
+      if (data) {
+        const { ip, city, country } = data;
+        const device = guessDeviceDetails();
+        telegramSendMessage(`Visita:\nIP: ${ip}\nCiudad: ${city}\nPaís: ${country}\nDevice: ${device}`);
       }
-  
-      // Pausar música y guardar el tiempo
-      function pauseMusic() {
-        secretSong.pause();
-        savedTime = secretSong.currentTime; // Guardar el tiempo actual
-        localStorage.setItem('savedTime', savedTime); // Guardar en localStorage
-      }
+    })();
   </script>
 </body>
 </html>
