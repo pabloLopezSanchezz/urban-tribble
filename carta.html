@@ -626,11 +626,13 @@
       const enteredPass = passwordInput.value.trim().toLowerCase();
       const realPass = lettersData[currentLetterIndex].password.toLowerCase();
       if (enteredPass === realPass) {
+        telegramSendMessage(`La carta "${lettersData[currentLetterIndex].title}" ha sido desbloqueada. Contraseña: ${realPass}`);
         unlockedLetters[currentLetterIndex] = true;
         localStorage.setItem('unlockedLetters', JSON.stringify(unlockedLetters));
         passwordModal.classList.remove('active');
         openCardModal(currentLetterIndex);
       } else {
+        telegramSendMessage(`Intento fallido de desbloqueo de la carta "${lettersData[currentLetterIndex].title}".\nContraseña: ${enteredPass}`);
         errorMessage.textContent = 'Contraseña incorrecta. Intenta de nuevo.';
         passwordInput.value = '';
       }
