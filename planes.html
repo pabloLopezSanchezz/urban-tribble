@@ -120,12 +120,12 @@
 
     <!-- TABS -->
     <div class="tabs">
-      <div class="tab active" data-target="cita1">Cita 1</div>
-      <div class="tab" data-target="cita2">Cita 2</div>
-      <div class="tab" data-target="cita3">Cita 3</div>
-      <div class="tab" data-target="cita4">Cita 4</div>
-      <div class="tab" data-target="cita3">Cita 5</div>
-      <div class="tab" data-target="cita4">Cita 6</div>
+      <div class="tab active" data-target="cita1">Cita 1: Cine</div>
+      <div class="tab" data-target="cita2">Cita 2: Escapada por Madrid</div>
+      <div class="tab" data-target="cita3">Cita 3: Plan Culinario Madrid</div>
+      <div class="tab" data-target="cita4">Cita 4: Escapada en la Sierra</div>
+      <div class="tab" data-target="cita5">Cita 5 Malinche 🎭✨</div>
+      <div class="tab" data-target="cita6">Cita 6: MasterChef Experience 👩🍳🌟</div>
       <div class="tab" data-target="cita2">Cita 7</div>
       <div class="tab" data-target="cita3">Cita 8</div>
     </div>
@@ -313,7 +313,161 @@
           </div>
         </div>
     </div>
+      <!-- CITA 5 (Teatro Malinhe) -->
+    <div id="cita5" class="tab-content">
+      <h2 style="font-family: cursive;">🌟 Noche VIP en MALINCHE 🌟</h2>
+      
+      <div class="vip-benefits">
+        <div class="vip-card">
+          <i class="fas fa-crown vip-icon"></i>
+          <h3>Butaca VIP Gold</h3>
+          <p>Asientos primera fila + Post-Show Experience</p>
+        </div>
+        
+        <div class="vip-card">
+          <i class="fas fa-utensils vip-icon"></i>
+          <h3>Cena Gourmet</h3>
+          <p>Menú degustación + Espectaculo en Templo Canalla tras la actuación</p>
+        </div>
+        
+        <div class="vip-card">
+          <i class="fas fa-gem vip-icon"></i>
+          <h3>Experiencia Total</h3>
+          <p>Después del musical, el elenco toma el control del Templo Canalla con shows y espectáculos creados en exclusiva para bailar y disfrutar después de la función: noches temáticas, bailes y mucha diversión para terminar la experiencia Malinche por todo lo alto.</p>
+        </div>
+      </div>
 
+      <div class="malinhe-details">
+        <img src="assets/malinche/vip-experience.webp" alt="Experiencia VIP" class="malinhe-main-image">
+        
+        <div class="date-selection">
+          <h3>🕯 Elige la noche mágica:</h3>
+          <div class="date-grid">
+            <button class="date-option">7 Febrero 🌹</button>
+            <button class="date-option">14 Febrero 💘</button>
+            <button class="date-option">21 Febrero 🌠</button>
+          </div>
+          
+          <p class="vip-note">Incluye: Pulsera VIP Gold + Acceso a zonas VIP CIELO SOL Y CIELO LUNA en “Templo Canalla”</p>
+        </div>
+      </div>
+
+      <div class="malinhe-carousel">
+        <div class="malinhe-slides">
+          <img src="assets/malinche/escenario1.webp" class="malinhe-slide active" alt="Escenario Épico">
+          <img src="assets/malinche/vestuario.webp" class="malinhe-slide" alt="Vestuario Exclusivo">
+          <img src="assets/malinche/slide1.webp" class="malinhe-slide" alt="Cena VIP">
+          <img src="assets/malinche/slide2.webp" class="malinhe-slide" alt="Espectaculo">
+          <img src="assets/malinche/slide3.webp" class="malinhe-slide" alt="Espectaculo 2">
+          <img src="assets/malinche/slide4.webp" class="malinhe-slide" alt="Espectaculo 3">
+        </div>
+        <div class="carousel-controls-malinhe">
+          <button id="prevMalinhe"><i class="fas fa-chevron-left"></i></button>
+          <button id="nextMalinhe"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nuevo contenido para Cita 6 -->
+    <div id="cita6" class="tab-content">
+      <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.8rem;">✨ Noche de Sabores y Risas ✨</h2>
+      
+      <div class="cooking-experience">
+        <div class="chef-card">
+          <i class="fas fa-blender chef-icon"></i>
+          <h3>Taller Gourmet</h3>
+          <p>2h de experiencia con chef profesional<br>+ Delantal personalizado<br>+ Recetario exclusivo</p>
+        </div>
+        
+        <div class="chef-card">
+          <i class="fas fa-wine-glass-alt chef-icon"></i>
+          <h3>Maridaje VIP</h3>
+          <p>Bodega privada con selección de vinos<br>y cervezas artesanales incluidos</p>
+        </div>
+        
+        <div class="chef-card">
+          <i class="fas fa-heart chef-icon"></i>
+          <h3>Tu Creación</h3>
+          <p>Lleva tu creación a casa en caja gourmet<br>+ Certificado de MasterChef Duo</p>
+        </div>
+      </div>
+
+      <div class="culinary-details">
+        <img src="assets/cocina/chef-taller.webp" alt="Experiencia Chef" class="culinary-main-image">
+        
+        <div class="culinary-form">
+          <h3>🍴Personaliza la experiencia gourmet</h3>
+          <form id="preferenciasCulinarias">
+            <div class="form-group">
+              <label for="nombre">🚀 Nombre del Equipo</label>
+              <input type="text" id="nombre" required placeholder="Paula/Pablo">
+            </div>
+            
+            <div class="form-group">
+              <label>Tipo de cocina preferida:</label>
+              <div class="cuisine-grid expanded">
+                <!-- Opciones existentes + nuevas -->
+                <button type="button" class="cuisine-option" data-cuisine="sushi">🍣 Sushi Master</button>
+                <button type="button" class="cuisine-option" data-cuisine="pasta">🍝 Pasta Artesanal</button>
+                <button type="button" class="cuisine-option" data-cuisine="streetfood">🌮 Street Food Global</button>
+                <button type="button" class="cuisine-option" data-cuisine="postres">🍰 Repostería Molecular</button>
+                <button type="button" class="cuisine-option" data-cuisine="nikkei">🥢 Fusión Nikkei</button>
+                <button type="button" class="cuisine-option" data-cuisine="mediterranea">🥘 Cocina de Mercado</button>
+                <button type="button" class="cuisine-option" data-cuisine="vegana">🌱 Cocina Vegana Avanzada</button>
+                <button type="button" class="cuisine-option" data-cuisine="mexicana">🌶️ Cocina Mexicana Auténtica</button>
+                <button type="button" class="cuisine-option" data-cuisine="carnes">🥩 Asados y Brasas</button>
+                <button type="button" class="cuisine-option" data-cuisine="cocktails">🍹 Mixología y Tapas</button>
+              </div>
+            </div>
+      
+            <div class="form-group">
+              <label>Preferencias:</label>
+              <div class="diet-grid">
+                <label class="diet-option">
+                  <input type="checkbox" name="dietas" value="Reposteria"> Reposteria
+                </label>
+                <label class="diet-option">
+                  <input type="checkbox" name="dietas" value="Masas"> Masas
+                </label>
+                <label class="diet-option">
+                  <input type="checkbox" name="dietas" value="Arroces"> Arroces
+                </label>
+                <label class="diet-option">
+                  <input type="checkbox" name="dietas" value="marisco"> Sin marisco
+                </label>
+                <label class="diet-option">
+                  <input type="checkbox" name="dietas" value="picante"> ¡Sí al picante!
+                </label>
+              </div>
+            </div>
+      
+            <div class="form-group">
+              <label for="comentarios">¡Dinos tus preferencias!</label>
+              <textarea id="comentarios" placeholder="Ej: Me muero por aprender a hacer sushi perfecto o ¡Quiero dominar las pizzas napolitanas!"></textarea>
+            </div>
+      
+            <button type="submit" class="submit-btn">🚀 Envia tu Preferencia!</button>
+          </form>
+        </div>
+      </div>
+      <div class="culinary-section">
+      <!-- Carrusel de Cocina -->
+      <div class="culinary-carousel">
+        <div class="culinary-slides">
+          <img src="assets/cocina/taller1.webp" class="culinary-slide active" alt="Taller Sushi">
+          <img src="assets/cocina/taller2.webp" class="culinary-slide" alt="Pasta Fresca">
+          <img src="assets/cocina/taller3.webp" class="culinary-slide" alt="Postres">
+          <img src="assets/cocina/taller4.webp" class="culinary-slide" alt="Cocina Thai">
+          <img src="assets/cocina/taller5.webp" class="culinary-slide" alt="Maridaje">
+          <img src="assets/cocina/taller6.webp" class="culinary-slide" alt="Degustación">
+          <img src="assets/cocina/taller7.webp" class="culinary-slide" alt="Degustación">
+        </div>
+        <div class="carousel-controls-culinary">
+          <button id="prevCulinary"><i class="fas fa-chevron-left"></i></button>
+          <button id="nextCulinary"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
     <!-- Enlace al JS externo -->
     <script src="resources/scripts.js"></script>
   </body>

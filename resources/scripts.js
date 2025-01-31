@@ -520,4 +520,145 @@ document.addEventListener('DOMContentLoaded', () => {
       verifyPassword();
     }
   });
+
+
+  // Carrusel Malinhe
+  const malinheSlides = document.querySelectorAll('.malinhe-slide');
+  let currentMalinheSlide = 0;
+
+  function showMalinheSlide(n) {
+      malinheSlides.forEach(slide => slide.classList.remove('active'));
+      currentMalinheSlide = (n + malinheSlides.length) % malinheSlides.length;
+      malinheSlides[currentMalinheSlide].classList.add('active');
+  }
+
+  document.getElementById('prevMalinhe')?.addEventListener('click', () => {
+      showMalinheSlide(currentMalinheSlide - 1);
+  });
+
+  document.getElementById('nextMalinhe')?.addEventListener('click', () => {
+      showMalinheSlide(currentMalinheSlide + 1);
+  });
+
+  // Inicializar primer slide
+  showMalinheSlide(0);
+
+// ----------------------------------------------
+  // Notificar la fecha elegida
+  // ----------------------------------------------
+  const dateOptions = document.querySelectorAll('.date-option');
+  dateOptions.forEach(button => {
+    button.addEventListener('click', () => {
+      const selectedDate = button.innerText;
+      const message = `Se ha elegido la fecha: ${selectedDate} para ver el musical Malinche`;
+      telegramSendMessage(message);
+      alert(`Has elegido: ${selectedDate}, hemos notificado tu selección.`);
+    });
+  });
+
+  // Carrusel Culinary
+const culinarySlides = document.querySelectorAll('.culinary-slide');
+let currentCulinarySlide = 0;
+let culinaryInterval;
+
+function showCulinarySlide(n) {
+  // Validar y ajustar el índice
+  if (n >= culinarySlides.length) n = 0;
+  if (n < 0) n = culinarySlides.length - 1;
+  
+  // Remover clase active de todos los slides
+  culinarySlides.forEach(slide => slide.classList.remove('active'));
+  
+  // Actualizar índice y aplicar clase active
+  currentCulinarySlide = n;
+  culinarySlides[currentCulinarySlide].classList.add('active');
+}
+
+// Inicialización correcta
+function initCulinaryCarousel() {
+  // Mostrar primer slide
+  showCulinarySlide(0);
+  
+  // Configurar autoplay
+  culinaryInterval = setInterval(() => {
+      showCulinarySlide(currentCulinarySlide + 1);
+  }, 8500);
+}
+
+// Event listeners para controles
+document.getElementById('prevCulinary')?.addEventListener('click', () => {
+  clearInterval(culinaryInterval);
+  showCulinarySlide(currentCulinarySlide - 1);
+  initCulinaryCarousel();
+});
+
+document.getElementById('nextCulinary')?.addEventListener('click', () => {
+  clearInterval(culinaryInterval);
+  showCulinarySlide(currentCulinarySlide + 1);
+  initCulinaryCarousel();
+});
+
+// Inicializar al cargar
+initCulinaryCarousel();
+
+// Interactividad de selección de cocina
+document.querySelectorAll('.cuisine-option').forEach(button => {
+    button.addEventListener('click', function() {
+        // Remover selección anterior
+        document.querySelectorAll('.cuisine-option').forEach(btn => 
+            btn.style.backgroundColor = '');
+        
+        // Resaltar selección actual
+        this.style.backgroundColor = '#B5E3AB';
+        
+        // Aquí puedes agregar lógica para cambiar contenido según selección
+        const cuisineType = this.dataset.cuisine;
+        console.log(`Cocina seleccionada: ${cuisineType}`);
+    });
+});
+
+
+
+function startCulinaryAutoplay() {
+  culinaryInterval = setInterval(() => {
+    showCulinarySlide(currentCulinarySlide + 1);
+  }, 8000); // Cambia cada 8 segundos
+}
+
+// Pausar/reanudar autoplay con hover
+const culinaryCarousel = document.querySelector('.culinary-carousel');
+culinaryCarousel.addEventListener('mouseenter', () => clearInterval(culinaryInterval));
+culinaryCarousel.addEventListener('mouseleave', () => startCulinaryAutoplay());
+
+// Iniciar autoplay al cargar
+startCulinaryAutoplay();
+
+// Manejar envío de formulario
+document.getElementById('preferenciasCulinarias').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const formData = {
+    nombre: document.getElementById('nombre').value,
+    cocina: document.querySelector('.cuisine-option[style*="background"]')?.dataset.cuisine,
+    dietas: [...document.querySelectorAll('input[name="dietas"]:checked')].map(cb => cb.value),
+    comentarios: document.getElementById('comentarios').value
+  };
+
+  // Simular envío
+  console.log('Datos enviados:', formData);
+  alert('¡Preferencias guardadas!\nNos vemos en el taller chef 👩🍳');
+  
+  // Resetear formulario
+  e.target.reset();
+  document.querySelectorAll('.cuisine-option').forEach(btn => 
+    btn.style.backgroundColor = '');
+});
+
+// Limpiar intervalo al cambiar de pestaña
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    clearInterval(culinaryInterval);
+    startCulinaryAutoplay();
+  });
+});
 });

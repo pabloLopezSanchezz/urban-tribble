@@ -663,9 +663,423 @@ header h1 {
     background-color: var(--color4);
 }
   
-  .error-message {
-    color: red;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
+.error-message {
+color: red;
+margin-top: 0.5rem;
+font-size: 0.9rem;
+}
+
+/* ESTILOS CITA 5 - MALINCHE VIP */
+.vip-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .vip-card {
+    background: linear-gradient(135deg, #f7e9d2, #ffffff);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(228, 190, 175, 0.3);
+    transition: transform 0.3s;
+  }
+  
+  .vip-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .vip-icon {
+    font-size: 2.5rem;
+    color: #d4af37;
+    margin-bottom: 1rem;
+  }
+  
+  .malinhe-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin: 3rem 0;
+  }
+  
+  .malinhe-main-image {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+  
+  .date-selection {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .date-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .date-option {
+    background: var(--color5);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .date-option:hover {
+    background: #4a988b;
+    letter-spacing: 1px;
+  }
+  
+  .vip-note {
+    font-style: italic;
+    color: #d4af37;
+    font-weight: 600;
+    border-top: 2px solid #eee;
+    padding-top: 1rem;
+  }
+  
+  /* Carrusel Malinhe */
+  .malinhe-carousel {
+    position: relative;
+    margin: 4rem auto;
+    max-width: 800px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+  .malinhe-slides {
+    position: relative;
+    height: 450px;
+  }
+  
+  .malinhe-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); /* Transición más suave */
+    transform: scale(0.95);
+    filter: brightness(0.8);
+}
+  
+  .malinhe-slide.active {
+    opacity: 1;
+  }
+  
+  .carousel-controls-malinhe {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+  
+  .carousel-controls-malinhe button {
+    background: rgba(212, 175, 55, 0.8);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .carousel-controls-malinhe button:hover {
+    background: var(--color5);
+  }
+  
+  @media (max-width: 768px) {
+    .vip-benefits {
+      grid-template-columns: 1fr;
+    }
+    
+    .malinhe-details {
+      grid-template-columns: 1fr;
+    }
+    
+    .malinhe-carousel {
+      height: 300px;
+    }
+  }
+/* ESTILOS CITA 6 - COOKING EXPERIENCE */
+.culinary-section {
+    /* Ocupa ancho completo del contenedor .tab-content */
+    max-width: 1100px; /* o 1200px, ajusta a tu gusto */
+    margin: 2rem auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* separa el carrusel del grid */
   }
 
+.cooking-experience {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+  
+  .chef-card {
+    background: linear-gradient(135deg, #f7f3e9, #ffffff);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(228, 190, 175, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .chef-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(228, 190, 175, 0.4);
+  }
+  
+  .chef-icon {
+    font-size: 2.5rem;
+    color: #e4beaf;
+    margin-bottom: 1rem;
+  }
+  
+  .culinary-details {
+    /* FIX: Aseguramos dos columnas, cada una con espacio flexible */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    /* margin: 3rem auto; /* centrado horizontal 
+    max-width: 1200px; un ancho máximo para el bloque entero 
+    width: 100%; ocupar todo el ancho disponible */
+}
+  
+  .culinary-main-image {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+  }
+  
+  .culinary-main-image:hover {
+    transform: scale(1.02);
+  }
+  
+  .cuisine-selection {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+  }
+  
+  .cuisine-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .cuisine-option {
+    background: var(--color2);
+    color: #333;
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .cuisine-option:hover {
+    background: var(--color3);
+    letter-spacing: 1px;
+  }
+  
+  .culinary-carousel {
+    /* FIX: forzamos que el carrusel ocupe todo el ancho de la segunda columna */
+    width: 100%; 
+    max-width: 800px;    /* puedes ajustar si lo deseas */
+    height: 500px;       /* Altura fija para ver las imágenes */
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+  
+.culinary-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+  
+.culinary-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transform: scale(0.95);
+}
+
+.culinary-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+  
+.carousel-controls-culinary {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 2;
+}
+  
+  .carousel-controls-culinary button {
+    background: rgba(228, 190, 175, 0.8);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .carousel-controls-culinary button:hover {
+    background: var(--color5);
+  }
+  
+  @media (max-width: 768px) {
+    .cooking-experience {
+        grid-template-columns: 1fr;
+      }
+      .culinary-details {
+        grid-template-columns: 1fr; /* para que la imagen y el carrusel se apilen en pantallas pequeñas */
+        text-align: center;
+    }
+      .cuisine-grid {
+        grid-template-columns: 1fr;
+      }
+      .culinary-carousel {
+        height: 300px; /* algo menor en pantallas pequeñas */
+      }
+  }
+
+  /* Nuevos estilos para formulario y autoplay */
+.culinary-form {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    margin: 2rem auto;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  input[type="text"], 
+  textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e4beaf;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  input:focus, 
+  textarea:focus {
+    outline: none;
+    border-color: #B5E3AB;
+  }
+  
+  .diet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .diet-option {
+    background: #f8f8f8;
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .diet-option:hover {
+    background: #e4beaf;
+    transform: scale(1.02);
+  }
+  
+  .diet-option input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
+  
+  .submit-btn {
+    background: linear-gradient(45deg, #e4beaf, #B5E3AB);
+    color: #333;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(228, 190, 175, 0.4);
+  }
+  
+  /* Efecto de autoplay para carrusel */
+  .culinary-carousel:hover .culinary-slide {
+    animation-play-state: paused;
+  }
+  
+  @keyframes culinaryAutoplay {
+    0% { opacity: 0; transform: scale(0.95); }
+    20% { opacity: 1; transform: scale(1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.95); }
+  }
+  
+  .culinary-slide:not(.active) {
+    animation: culinaryAutoplay 8s infinite;
+  }
+  
+  .culinary-slide.active {
+    animation: none;
+  }
