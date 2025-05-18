@@ -300,6 +300,8 @@
     .modal-card-content {
       background: #fff;
       padding: 1.5rem;
+      max-height: 80vh;
+      overflow-y: auto;
       border-radius: 10px;
       text-align: left;
       max-width: 900px;
@@ -412,6 +414,39 @@
     // =============================
     const lettersData = [
       {
+        title: "Dia a Dia",
+        text: `Mis cosas: \nHola! Espero que todo vaya genial, que estes recuperándote, que estes sanándote que poco a poco la vida te este yendo a mejor, aunque siempre intento saber algo sobre ti, de como estas, que esta pasando nuevo en tu vida o que nuevos retos o ambiciones tienes, no tengo mucha información, mas allá de lo que me cuentan, y bueno, eso ahora mismo me esta matando… Por eso creo que lo mejor para calmar este sentimiento horrible que tengo por dentro, es escribirte, ya esta, escribirte, como si te tuviese aquí delante, hablar contigo, sin tener una respuesta, pero para mi ya es algo, imaginarte simplemente escuchándome. 
+              21-04:
+              Hola, he vuelto de Semana Santa, la he pasado en Torrevieja, la verdad que estuve agusto, pero se aleja mucho de estar bien, me rei?, si, salí? También, pero no me vuelvo con la sensación de disfrutar, al reves me vuelvo con una sensación agridulce, con un vacio, como que no me llena, en fin, quizás fue lo que tanto demandaba y he descubierto que eso no me llena.
+
+              28-04:
+              Bueno bueno bueno, la que me están liando con el diente, llevo ya un par de veces para que me arreglen el diente pocho ese que tenia, y cada vez que voy al dentista me tienen que quitar el que tengo, y es *MUY* desagradable, pues de momento he venido ya dos veces y ninguna han acertado con el color, me han puesto un diente de mentira mas falso que un billete de 2€, en fin, a ver si para el 7 mayo atinan con el diente.
+              
+              5-05:
+              Viaje a Cordoba, despedida de Soltero de Javi, todo apunta a viajazo, espero a que me recoja Javi Alonso con Luis y Alberto y de camino a Atocha, me doy cuenta que no llevo la cartera, y no se si me van a dejar pasar (otra patinada de las mias) finalmente me salvo otra vez el culo y no miran DNI. En el trayecto intento no pensar, pero hay un sentimiento que finalmente hable con Javi Alonso y Javi Martinez, todo el grupo, todo el viaje, mire a donde mire…. Me recuerda a ti. Intento estar bien, desconectar, pero no sales de mi cabeza (como si antes ya no estuviese), quizás hable mas de ti de lo que me hubiese gustado, quizás pregunté mas por ti de lo que hubiese querido, quizás pensé en ti mas de lo que necesitaba. Vaya tres días, distintos, raros, me lo pasé bien, pero sigue sin ser mi lugar.
+              
+              07-05: 
+              Me cago en todo, otra vez el diente, me decían que esta vez si que era la correcta, he ido, me han quitado el diente (prácticamente te lo rompen) y…… SORPRESA! Sigue sin ser el color exacto, me quiero pegar un tiro en la sien, me han dicho que para la siguiente lo clavan (no), pero que para asegurarme mejor, que me vaya yo directamente al laboratorio y que me vean exactamente el color allí in situ. Otra vuelta mas… Ya te contare el 15 de Mayo que es fiesta en Madrid.
+              PD: En estas ocasiones también te echo de menos
+              
+              13-05: 
+              Hola!! Espero que estes genial! He visto que te has apuntado a Crossfit con Roci, no sabes lo contento que me he puesto, solamente de verte, de saber de ti, de saber que estas progresando, que estas mejorando, aunque solamente sea en las fotos. Se que tienes un objetivo claro a nivel físico, y veo que lo estas cumpliendo, cada vez te veo mejor en las fotos.
+              
+              13-05 (noche):
+              He visto hoy en Tik-tok que has compartido un post que bueno… espero que no vaya por mi, es sobre Joe (You) no se a lo que te puedes referir, en fin… me he comenzado a ver la serie, los dos primero episodios muy guays ;)
+              
+              15-05:
+              Finalmente me han puesto el diente finalmente, estoy contento, creo que se acabaron tantas vueltas, por otro lado he retomado la Bachata, y me he apuntado a Salsa tambien, con la esperanza de poder enseñarte algun dia, de poder volver a tomar tu mano, mirarte a los ojos y perderme una vez mas, te echo mucho de menos Paula, intento cambiar mis dias para ver si consigo evadirme de ti, de tu presencia en mi cabeza, pero estas siempre ahi, en una esquina, sin hacer mucho ruido pero presente siempre. Ojala pudieses irte a dormir conmigo esta noche, como lo echo de menos.
+              
+              17-05:
+              Me ha tocado unos pases para ir a Desalia, WOW! Nunca me toca nada y sin quererlo, pues toma, a Desalia que me voy, ojala poder compartirlo contigo, ojala que te pudieses venir conmigo, pero bueno ahora mismo mis objetivos y aspiraciones estan enfocados en otro lado, hoy tambien que he jugado al Padel alli en Alcorcón, un poco a la desesperada me he pasado por tu calle (se que suena un poco creepy), con la esperanza de verte, aunque sea a traves de tu ventana.... esto mejor lo dejamos entre tu y yo jajaja.... de esperanzas se vive!
+              Tambien me he propuesto ( y de momento lo estoy siguiendo) un plan de comidas algo mas regular, estoy cansado de estar una y otra vez sobreviviendo de lo que tengo en casa del mismo dia o hacer las comprar para 1 o 2 dias. Pasito a pasito voy reordenando mi vida, estoy contento con estos pequeños cambios. Te seguire contando mas adelante!! :)  `,
+        password: "7 Julio", 
+        hint: "Muy pronto...",
+        music: "assets/music/next_summer.mp3",
+        isSpecial: true  // Campo especial para sobresalir visualmente
+      },
+      {
         title: "21/01 Primer Contacto",
         text: `Sé que no hace tanto tiempo que no te escribo, pero hoy siento la necesidad de hablarte, de poner en palabras todo lo que ha pasado desde que tomamos caminos separados. No busco revivir el pasado ni reprochar lo que ya no tiene sentido; solo quiero compartir contigo cómo he vivido estos días, estos meses, en los que tu ausencia ha sido una constante.
         Desde que nos alejamos, he intentado seguir adelante. He conocido personas, salido a nuevos planes, y buscado llenar el vacío que tengo. Algunas de esas personas han sido graciosas, otras interesantes, pero ninguna ha sido tú. No es que las compare, no busco encontrarte en otras miradas, pero es inevitable reconocer que hay algo en ti que simplemente no se repite.
@@ -425,7 +460,8 @@
         Att: Pablo.`,
         password: "Cacaolat",
         hint: "Bebida de chocolate que segun tu... hacias mejor 1000 veces desde casa que la marca comercial. ",
-        music: "assets/music/holaQueTal.mp3"
+        music: "assets/music/holaQueTal.mp3",
+        isSpecial: false
       },
       {
         title: "23/01 Te elijo, una y mil veces.",
@@ -443,7 +479,8 @@
         Att: Pablo.`,
         password: "flash",
         hint: "Tipo de postre/helado que te encataba comprar y nunca te comias. PD: Los sigo teniendo aqui...",
-        music: "assets/music/demons.mp3"
+        music: "assets/music/demons.mp3",
+        isSpecial: false
       },
       {
         title: "26/01 Confianza.",
@@ -458,7 +495,8 @@
         Att: Pablo.`,
         password: "Manolo",
         hint: "Como se llamaba mi abuelo Paterno?", 
-        music: "assets/music/thousandYears.mp3"
+        music: "assets/music/thousandYears.mp3",
+        isSpecial: false
       },
       {
         title: "30/01 Nervios.",
@@ -471,7 +509,8 @@
         Att: Pablo.`,
         password: "Nariz",
         hint: "Parte de mi cuerpo que cuando la tocas provoca una somnolencia inmediata?", 
-        music: "assets/music/perfect.mp3"
+        music: "assets/music/perfect.mp3",
+        isSpecial: false
       }
       // Añade más cartas si lo deseas
     ];
@@ -534,6 +573,11 @@
 
       const envelope = document.createElement('div');
       envelope.classList.add('envelope');
+
+      if (letter.isSpecial) {
+        envelope.style.setProperty('--envelope-tab', '#ff4b5c');
+        envelope.style.setProperty('--envelope-cover', '#ff4b5c');
+      }
 
       const letterDiv = document.createElement('div');
       letterDiv.classList.add('letter');
