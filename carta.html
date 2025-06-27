@@ -24,12 +24,15 @@
       --color5: #62CBB8;
       --color6: #FBFEFE; /* Casi blanco */
 
-      /* Sobre */
-      --bg-envelope-color: #f5edd1;
-      --envelope-tab: #ecdeb8;
-      --envelope-cover: #e6cfa7;
-      --shadow-color: #1c1c1c;
-      --heart-color: #c2465d;
+      /* Sobre moderno */
+      --bg-envelope-color: #f8f9fa;
+      --envelope-tab: #e9ecef;
+      --envelope-cover: #f1f3f4;
+      --envelope-accent: #dee2e6;
+      --envelope-shadow: rgba(0, 0, 0, 0.08);
+      --envelope-border: #e9ecef;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --heart-color: #ff6b6b;
       --primary: white;
     }
     * {
@@ -131,17 +134,32 @@
       background-color: var(--color4);
     }
 
-    /* SOBRE ANIMADO */
+    /* SOBRE ANIMADO CON ESTILO MEJORADO */
     .envelope-wrapper {
       display: inline-block; 
       background: transparent;
       box-shadow: none;
     }
+    
     .envelope {
       position: relative;
       width: 350px;
       height: 250px;
+      border-radius: 8px;
+      box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.1),
+        0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
     }
+    
+    .envelope:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Solapa triangular del sobre */
     .envelope::before {
       content: "";
       position: absolute;
@@ -154,6 +172,8 @@
       transform-origin: top;
       transition: all 0.5s ease-in-out 0.7s;
     }
+    
+    /* Cuerpo del sobre */
     .envelope::after {
       content: "";
       position: absolute;
@@ -176,44 +196,54 @@
       background: var(--primary);
       text-align: center;
       transition: all 1s ease-in-out;
-      box-shadow: 0 0 5px var(--shadow-color);
+      box-shadow: 0 4px 15px var(--shadow-color);
       padding: 20px 10px;
+      border-radius: 4px;
     }
+    
     .letter .text {
       font-family: "Caveat", cursive;
-      color: #333;
+      color: #495057;
       text-align: justify;
       font-size: 11px;
+      line-height: 1.4;
     }
 
     .heart {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 15px; 
-      height: 15px;
+      width: 18px; 
+      height: 18px;
       background: var(--heart-color);
       z-index: 4;
       transform: translate(-50%, -50%) rotate(45deg);
       transition: transform 0.5s ease-in-out 1s;
-      box-shadow: 0 1px 6px var(--shadow-color);
+      box-shadow: 0 2px 8px var(--shadow-color);
       cursor: pointer;
     }
+    
+    .heart:hover {
+      transform: translate(-50%, -50%) rotate(45deg) scale(1.1);
+    }
+    
     .heart:before, 
     .heart:after {
       content: "";
       position: absolute;
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       background-color: var(--heart-color);
       border-radius: 50%;
     }
+    
     .heart:before {
-      top: -7.5px; 
+      top: -9px; 
       right: 0;
     }
+    
     .heart:after {
-      right: 7.5px;
+      right: 9px;
     }
 
     /* Clases para abrir/cerrar sobre */
@@ -221,13 +251,15 @@
       transform: rotateX(180deg);
       z-index: 0;
     }
+    
     .flap > .envelope > .letter {
       bottom: 100px;
       transform: scale(1.5);
       transition-delay: 1s;
     }
+    
     .flap > .heart {
-      transform: rotate(90deg);
+      transform: translate(-50%, -50%) rotate(90deg);
       transition-delay: 0.4s;
     }
 
@@ -407,6 +439,7 @@
       .envelope {
         width: 280px;
         height: 200px;
+        border-radius: 6px;
       }
       .envelope::before {
         border-top: 100px solid var(--envelope-tab);
@@ -414,12 +447,28 @@
         border-left: 140px solid transparent;
       }
       .envelope::after {
+        border-top: 100px solid transparent;
         border-right: 140px solid var(--envelope-cover);
         border-bottom: 90px solid var(--envelope-cover);
         border-left: 140px solid var(--envelope-cover);
       }
       .letter {
-        padding: 10px 5px;
+        padding: 15px 8px;
+      }
+      .heart {
+        width: 16px;
+        height: 16px;
+      }
+      .heart:before, 
+      .heart:after {
+        width: 16px;
+        height: 16px;
+      }
+      .heart:before {
+        top: -8px;
+      }
+      .heart:after {
+        right: 8px;
       }
       .slide h1 {
         font-size: 2rem;
@@ -714,8 +763,9 @@
       envelope.classList.add('envelope');
 
       if (letter.isSpecial) {
-        envelope.style.setProperty('--envelope-tab', '#ff4b5c');
-        envelope.style.setProperty('--envelope-cover', '#ff4b5c');
+        envelope.style.setProperty('--envelope-tab', '#ffcccb');
+        envelope.style.setProperty('--envelope-cover', '#ffe4e1');
+        envelope.style.setProperty('--heart-color', '#ff4b5c');
         slideDiv.classList.add('special');
         
         // Crear contenedor de partículas
