@@ -12,6 +12,9 @@
     rel="stylesheet"
   >
   
+  <!-- Particles.js CDN -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
   <style>
     :root {
       --color1: #E1D9D3; /* Fondo suave */
@@ -338,6 +341,60 @@
       background-color: var(--color4);
     }
 
+    /* Efecto de partículas para carta especial */
+    .slide.special {
+      position: relative;
+      overflow: visible;
+    }
+    
+    .particles-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      height: 60%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 10px;
+      overflow: visible;
+    }
+    
+    .slide.special .envelope-wrapper {
+      position: relative;
+      z-index: 2;
+      animation: special-glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes special-glow {
+      0% {
+        filter: drop-shadow(0 0 5px rgba(255, 75, 92, 0.5));
+      }
+      100% {
+        filter: drop-shadow(0 0 20px rgba(255, 75, 92, 0.8));
+      }
+    }
+    
+    .slide.special::before {
+      content: "¡NUEVA!";
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: linear-gradient(45deg, #ff4b5c, #ff6b7d);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 3;
+      animation: bounce 1s ease-in-out infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
     /* Ajustes para móviles */
     @media (max-width: 600px) {
       .carousel {
@@ -659,6 +716,13 @@
       if (letter.isSpecial) {
         envelope.style.setProperty('--envelope-tab', '#ff4b5c');
         envelope.style.setProperty('--envelope-cover', '#ff4b5c');
+        slideDiv.classList.add('special');
+        
+        // Crear contenedor de partículas
+        const particlesContainer = document.createElement('div');
+        particlesContainer.classList.add('particles-container');
+        particlesContainer.id = `particles-${index}`;
+        slideDiv.appendChild(particlesContainer);
       }
 
       const letterDiv = document.createElement('div');
@@ -719,6 +783,93 @@
     showSlide(0);
 
     // =============================
+    // 4.5) INICIALIZAR PARTÍCULAS PARA CARTAS ESPECIALES
+    // =============================
+    function initParticles() {
+      lettersData.forEach((letter, index) => {
+        if (letter.isSpecial) {
+          const particlesId = `particles-${index}`;
+          if (typeof particlesJS !== 'undefined') {
+            particlesJS(particlesId, {
+              "particles": {
+                "number": {
+                  "value": 25,
+                  "density": {
+                    "enable": false
+                  }
+                },
+                "color": {
+                  "value": ["#ffd700", "#ffea00", "#fff700", "#ffffff", "#ff4b5c"]
+                },
+                "shape": {
+                  "type": "star",
+                  "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                  },
+                  "polygon": {
+                    "nb_sides": 5
+                  }
+                },
+                "opacity": {
+                  "value": 1,
+                  "random": true,
+                  "anim": {
+                    "enable": true,
+                    "speed": 2,
+                    "opacity_min": 0.2,
+                    "sync": false
+                  }
+                },
+                "size": {
+                  "value": 4,
+                  "random": true,
+                  "anim": {
+                    "enable": true,
+                    "speed": 4,
+                    "size_min": 1,
+                    "sync": false
+                  }
+                },
+                "line_linked": {
+                  "enable": false
+                },
+                "move": {
+                  "enable": true,
+                  "speed": 2,
+                  "direction": "top",
+                  "random": true,
+                  "straight": false,
+                  "out_mode": "out",
+                  "bounce": false,
+                  "attract": {
+                    "enable": false
+                  }
+                }
+              },
+              "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                  "onhover": {
+                    "enable": false
+                  },
+                  "onclick": {
+                    "enable": false
+                  },
+                  "resize": true
+                }
+              },
+              "retina_detect": true
+            });
+          }
+        }
+      });
+    }
+
+    // Inicializar partículas después de un pequeño delay para asegurar que el DOM esté listo
+    setTimeout(initParticles, 500);
+
+    // =============================
     // 5) MODAL DE CONTRASEÑA
     // =============================
     const passwordModal = document.getElementById('passwordModal');
@@ -747,6 +898,15 @@
     checkPasswordBtn.addEventListener('click', checkPassword);
     passwordInput.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') checkPassword();
+    });
+
+    // Cerrar modal al hacer clic fuera del contenido
+    passwordModal.addEventListener('click', (e) => {
+      if (e.target === passwordModal) {
+        passwordModal.classList.remove('active');
+        passwordInput.value = '';
+        errorMessage.textContent = '';
+      }
     });
 
     function checkPassword() {
