@@ -427,11 +427,152 @@
       50% { transform: translateY(-5px); }
     }
 
+    /* CONTADOR "ME HE ACORDADO DE TI" */
+    .memory-counter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      min-width: 200px;
+      text-align: center;
+      z-index: 100;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .memory-counter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .memory-counter h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2rem;
+      margin: 0 0 10px 0;
+      color: var(--color5);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .counter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .counter-btn {
+      flex: 1;
+      background: linear-gradient(45deg, var(--color5), var(--color4));
+      color: white;
+      border: none;
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .counter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .counter-btn:active {
+      transform: translateY(0);
+    }
+    
+    .counter-btn.pablo {
+      background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    }
+    
+    .counter-btn.paula {
+      background: linear-gradient(45deg, #FF6B9D, #C44569);
+    }
+    
+    .counter-display {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      color: #333;
+    }
+    
+    .score {
+      font-weight: bold;
+      color: var(--color5);
+    }
+    
+    /* Animación de confeti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #f39c12;
+      animation: confetti-fall 3s linear forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    .pulse {
+      animation: pulse-effect 0.6s ease-out;
+    }
+    
+    @keyframes pulse-effect {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
     /* Ajustes para móviles */
     @media (max-width: 600px) {
+      .memory-counter {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        padding: 12px;
+      }
+      
+      .memory-counter h3 {
+        font-size: 1rem;
+      }
+      
+      .counter-btn {
+        padding: 8px 6px;
+        font-size: 0.8rem;
+      }
+      
+      .counter-display {
+        font-size: 0.75rem;
+      }
       .carousel {
         width: 95%;
         margin: 1rem auto;
+        margin-top: 80px; /* Espacio para el contador en móvil */
       }
       .slide {
         padding: 1rem;
@@ -479,6 +620,19 @@
 <body>
   <!-- Fondo del carrusel de imágenes -->
   <div class="background-carousel" id="backgroundCarousel"></div>
+
+  <!-- Contador "Me he acordado de ti" -->
+  <div class="memory-counter" id="memoryCounter">
+    <h3>Me he acordado de ti ❤️</h3>
+    <div class="counter-buttons">
+      <button class="counter-btn pablo" onclick="incrementCounter('pablo')">Pablo</button>
+      <button class="counter-btn paula" onclick="incrementCounter('paula')">Paula</button>
+    </div>
+    <div class="counter-display">
+      <span>Pablo: <span class="score" id="pabloScore">0</span></span>
+      <span>Paula: <span class="score" id="paulaScore">0</span></span>
+    </div>
+  </div>
 
   <!-- Contenedor principal -->
   <div class="outer-wrapper">
@@ -1076,6 +1230,87 @@
     }
 
     
+
+    // =============================
+    // 8) CONTADOR "ME HE ACORDADO DE TI"
+    // =============================
+    
+    // Cargar contadores desde localStorage
+    let memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || {
+      pablo: 0,
+      paula: 0
+    };
+    
+    // Actualizar la visualización de contadores
+    function updateCounterDisplay() {
+      document.getElementById('pabloScore').textContent = memoryCounters.pablo;
+      document.getElementById('paulaScore').textContent = memoryCounters.paula;
+    }
+    
+    // Crear animación de confeti
+    function createConfetti() {
+      const colors = ['#ff6b9d', '#4ecdc4', '#45b7d1', '#f39c12', '#e74c3c', '#9b59b6', '#2ecc71'];
+      const container = document.body;
+      
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 2 + 's';
+          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          
+          container.appendChild(confetti);
+          
+          // Remover confeti después de la animación
+          setTimeout(() => {
+            if (confetti.parentNode) {
+              confetti.parentNode.removeChild(confetti);
+            }
+          }, 4000);
+        }, i * 20);
+      }
+    }
+    
+    // Incrementar contador
+    function incrementCounter(person) {
+      memoryCounters[person]++;
+      localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
+      updateCounterDisplay();
+      
+      // Animación de pulso en el botón
+      const button = document.querySelector(`.counter-btn.${person}`);
+      button.classList.add('pulse');
+      setTimeout(() => button.classList.remove('pulse'), 600);
+      
+      // Crear confeti
+      createConfetti();
+      
+      // Enviar notificación a Telegram
+      const now = new Date().toLocaleString('es-ES', {
+        timeZone: 'Europe/Madrid',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      telegramSendMessage(
+        `❤️ ¡${person.charAt(0).toUpperCase() + person.slice(1)} se ha acordado de ti!\n` +
+        `Hora: ${now}\n` +
+        `Marcador actual:\n` +
+        `Pablo: ${memoryCounters.pablo}\n` +
+        `Paula: ${memoryCounters.paula}`
+      );
+    }
+    
+    // Hacer la función global para que funcione el onclick
+    window.incrementCounter = incrementCounter;
+    
+    // Inicializar visualización de contadores al cargar la página
+    updateCounterDisplay();
 
     // Ejemplo de recolección de IP y geolocalización
     async function getUserIPAndLocation() {
