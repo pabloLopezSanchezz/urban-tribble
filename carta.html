@@ -469,9 +469,9 @@
       background: linear-gradient(45deg, var(--color5), var(--color4));
       color: white;
       border: none;
-      padding: 8px;
-      border-radius: 12px;
-      font-size: 0.8rem;
+      padding: 12px 8px;
+      border-radius: 15px;
+      font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -480,22 +480,24 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-      min-height: 60px;
+      gap: 8px;
+      min-height: 85px;
     }
     
     .counter-btn img {
-      width: 30px;
-      height: 30px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      border: 3px solid rgba(255, 255, 255, 0.9);
       object-fit: cover;
       transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     
     .counter-btn:hover img {
-      transform: scale(1.1);
+      transform: scale(1.15);
       border-color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     
     .counter-btn:hover {
@@ -581,14 +583,15 @@
       }
       
       .counter-btn {
-        padding: 6px;
-        font-size: 0.75rem;
-        min-height: 55px;
+        padding: 8px 6px;
+        font-size: 0.8rem;
+        min-height: 65px;
+        gap: 6px;
       }
       
       .counter-btn img {
-        width: 25px;
-        height: 25px;
+        width: 32px;
+        height: 32px;
       }
       
       .counter-display {
@@ -648,7 +651,7 @@
 
   <!-- Contador "Me he acordado de ti" -->
   <div class="memory-counter" id="memoryCounter">
-    <h3>Me he acordado de ti ❤️</h3>
+    <h3>¿Me has echado de menos? 💕</h3>
     <div class="counter-buttons">
       <button class="counter-btn pablo" onclick="incrementCounter('pablo')">
         <img src="assets/images/pabloFoto.webp" alt="Pablo">
@@ -1266,29 +1269,33 @@
     // 8) CONTADOR "ME HE ACORDADO DE TI" CON PERSISTENCIA EN LA NUBE
     // =============================
     
-    // Configuración JSONBin.io para persistencia entre dispositivos
-    const JSONBIN_BIN_ID = "677467b9ad19ca34f8c44da8";
-    const JSONBIN_API_KEY = "$2a$10$oHvQw1rKx0ELqsHpZf3j2OJ5vkLMW4Z8Dxz1YHgOaLw5d8X2b9HfO";
+    // Usar KV.MY - servicio gratuito sin autenticación
+    const KV_STORE_URL = "https://api.kv.my/citas-contador";
     
     let memoryCounters = {
       pablo: 0,
       paula: 0
     };
     
-    // Cargar datos desde JSONBin.io
+    // Cargar datos desde KV.MY
     async function loadCountersFromCloud() {
       try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+        const response = await fetch(`${KV_STORE_URL}?t=${Date.now()}`, {
           method: 'GET',
           headers: {
-            'X-Master-Key': JSONBIN_API_KEY
+            'Cache-Control': 'no-cache'
           }
         });
         
         if (response.ok) {
           const data = await response.json();
-          memoryCounters = data.record || { pablo: 0, paula: 0 };
-          console.log('Contadores cargados desde la nube:', memoryCounters);
+          if (data && (data.pablo !== undefined || data.paula !== undefined)) {
+            memoryCounters = { pablo: data.pablo || 0, paula: data.paula || 0 };
+            console.log('Contadores cargados desde la nube:', memoryCounters);
+          } else {
+            console.log('No hay datos en la nube, usando localStorage');
+            memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
+          }
         } else {
           console.warn('Error al cargar desde la nube, usando localStorage');
           memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
@@ -1301,27 +1308,25 @@
       updateCounterDisplay();
     }
     
-    // Guardar datos en JSONBin.io
+    // Guardar datos en KV.MY
     async function saveCountersToCloud() {
       try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-          method: 'PUT',
+        const response = await fetch(KV_STORE_URL, {
+          method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': JSONBIN_API_KEY
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(memoryCounters)
         });
         
         if (response.ok) {
           console.log('Contadores guardados en la nube:', memoryCounters);
-          // También guardar en localStorage como backup
-          localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
         } else {
           console.warn('Error al guardar en la nube');
-          // Fallback a localStorage
-          localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
         }
+        
+        // Siempre guardar en localStorage como backup
+        localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
       } catch (error) {
         console.error('Error al guardar en la nube:', error);
         // Fallback a localStorage
