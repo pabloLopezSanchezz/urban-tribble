@@ -15,6 +15,10 @@
   <!-- Particles.js CDN -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
   <style>
     :root {
       --color1: #E1D9D3; /* Fondo suave */
@@ -1266,72 +1270,101 @@
     
 
     // =============================
-    // 8) CONTADOR "ME HE ACORDADO DE TI" CON PERSISTENCIA EN LA NUBE
+    // 8) CONTADOR "ME HE ACORDADO DE TI" CON FIREBASE REALTIME DATABASE
     // =============================
     
-    // Usar KV.MY - servicio gratuito sin autenticación
-    const KV_STORE_URL = "https://api.kv.my/citas-contador";
+    // Configuración Firebase (reemplazar con tus credenciales)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMIS_j0JXlY5sjNENsYYeA6MI3uti-P38",
+      authDomain: "citas-contador.firebaseapp.com",
+      databaseURL: "https://citas-contador-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "citas-contador",
+      storageBucket: "citas-contador.firebasestorage.app",
+      messagingSenderId: "1085513169968",
+      appId: "1:1085513169968:web:f910ec6ddbee953853c1f5",
+      measurementId: "G-GT7NKZXMZ6"
+    };
+    
+    // Inicializar Firebase
+    let firebaseApp;
+    let database;
+    let countersRef;
+    
+    try {
+      firebaseApp = firebase.initializeApp(firebaseConfig);
+      database = firebase.database();
+      countersRef = database.ref('memoryCounters');
+      console.log('🔥 Firebase inicializado correctamente');
+    } catch (error) {
+      console.error('❌ Error al inicializar Firebase:', error);
+    }
     
     let memoryCounters = {
       pablo: 0,
       paula: 0
     };
     
-    // Cargar datos desde KV.MY
-    async function loadCountersFromCloud() {
-      try {
-        const response = await fetch(`${KV_STORE_URL}?t=${Date.now()}`, {
-          method: 'GET',
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          if (data && (data.pablo !== undefined || data.paula !== undefined)) {
-            memoryCounters = { pablo: data.pablo || 0, paula: data.paula || 0 };
-            console.log('Contadores cargados desde la nube:', memoryCounters);
-          } else {
-            console.log('No hay datos en la nube, usando localStorage');
-            memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
-          }
-        } else {
-          console.warn('Error al cargar desde la nube, usando localStorage');
-          memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
-        }
-      } catch (error) {
-        console.error('Error al conectar con la nube:', error);
-        memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
+    // Escuchar cambios en tiempo real desde Firebase
+    function setupFirebaseListener() {
+      if (!countersRef) {
+        console.warn('Firebase no disponible, usando localStorage');
+        loadFromLocalStorage();
+        return;
       }
       
+      countersRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          memoryCounters = {
+            pablo: data.pablo || 0,
+            paula: data.paula || 0
+          };
+          console.log('🔄 Contadores actualizados desde Firebase:', memoryCounters);
+          updateCounterDisplay();
+          // También guardar en localStorage como backup
+          localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
+        } else {
+          console.log('📭 No hay datos en Firebase, iniciando contadores en 0');
+          initializeFirebaseCounters();
+        }
+      }, (error) => {
+        console.error('❌ Error al escuchar Firebase:', error);
+        loadFromLocalStorage();
+      });
+    }
+    
+    // Inicializar contadores en Firebase si no existen
+    function initializeFirebaseCounters() {
+      if (countersRef) {
+        countersRef.set(memoryCounters).then(() => {
+          console.log('✅ Contadores inicializados en Firebase');
+        }).catch((error) => {
+          console.error('❌ Error al inicializar Firebase:', error);
+        });
+      }
+    }
+    
+    // Cargar desde localStorage como fallback
+    function loadFromLocalStorage() {
+      memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
       updateCounterDisplay();
     }
     
-    // Guardar datos en KV.MY
-    async function saveCountersToCloud() {
-      try {
-        const response = await fetch(KV_STORE_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(memoryCounters)
-        });
-        
-        if (response.ok) {
-          console.log('Contadores guardados en la nube:', memoryCounters);
-        } else {
-          console.warn('Error al guardar en la nube');
-        }
-        
-        // Siempre guardar en localStorage como backup
+    // Guardar en Firebase
+    function saveToFirebase() {
+      if (!countersRef) {
+        console.warn('Firebase no disponible, guardando solo en localStorage');
         localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
-      } catch (error) {
-        console.error('Error al guardar en la nube:', error);
+        return;
+      }
+      
+      countersRef.set(memoryCounters).then(() => {
+        console.log('✅ Contadores guardados en Firebase:', memoryCounters);
+      }).catch((error) => {
+        console.error('❌ Error al guardar en Firebase:', error);
         // Fallback a localStorage
         localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
-      }
+      });
     }
     
     // Actualizar la visualización de contadores
@@ -1367,7 +1400,7 @@
     }
     
     // Incrementar contador
-    async function incrementCounter(person) {
+    function incrementCounter(person) {
       memoryCounters[person]++;
       updateCounterDisplay();
       
@@ -1379,8 +1412,8 @@
       // Crear confeti
       createConfetti();
       
-      // Guardar en la nube
-      await saveCountersToCloud();
+      // Guardar en Firebase (se sincroniza automáticamente)
+      saveToFirebase();
       
       // Enviar notificación a Telegram
       const now = new Date().toLocaleString('es-ES', {
@@ -1404,8 +1437,8 @@
     // Hacer la función global para que funcione el onclick
     window.incrementCounter = incrementCounter;
     
-    // Cargar contadores al inicializar la página
-    loadCountersFromCloud();
+    // Inicializar Firebase cuando cargue la página
+    setupFirebaseListener();
 
     // Ejemplo de recolección de IP y geolocalización
     async function getUserIPAndLocation() {
