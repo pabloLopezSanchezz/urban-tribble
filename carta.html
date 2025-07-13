@@ -469,14 +469,33 @@
       background: linear-gradient(45deg, var(--color5), var(--color4));
       color: white;
       border: none;
-      padding: 10px 8px;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      padding: 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-height: 60px;
+    }
+    
+    .counter-btn img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+    
+    .counter-btn:hover img {
+      transform: scale(1.1);
+      border-color: white;
     }
     
     .counter-btn:hover {
@@ -562,8 +581,14 @@
       }
       
       .counter-btn {
-        padding: 8px 6px;
-        font-size: 0.8rem;
+        padding: 6px;
+        font-size: 0.75rem;
+        min-height: 55px;
+      }
+      
+      .counter-btn img {
+        width: 25px;
+        height: 25px;
       }
       
       .counter-display {
@@ -625,8 +650,14 @@
   <div class="memory-counter" id="memoryCounter">
     <h3>Me he acordado de ti ❤️</h3>
     <div class="counter-buttons">
-      <button class="counter-btn pablo" onclick="incrementCounter('pablo')">Pablo</button>
-      <button class="counter-btn paula" onclick="incrementCounter('paula')">Paula</button>
+      <button class="counter-btn pablo" onclick="incrementCounter('pablo')">
+        <img src="assets/images/pabloFoto.webp" alt="Pablo">
+        Pablo
+      </button>
+      <button class="counter-btn paula" onclick="incrementCounter('paula')">
+        <img src="assets/images/paulaFoto.webp" alt="Paula">
+        Paula
+      </button>
     </div>
     <div class="counter-display">
       <span>Pablo: <span class="score" id="pabloScore">0</span></span>
@@ -1232,14 +1263,71 @@
     
 
     // =============================
-    // 8) CONTADOR "ME HE ACORDADO DE TI"
+    // 8) CONTADOR "ME HE ACORDADO DE TI" CON PERSISTENCIA EN LA NUBE
     // =============================
     
-    // Cargar contadores desde localStorage
-    let memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || {
+    // Configuración JSONBin.io para persistencia entre dispositivos
+    const JSONBIN_BIN_ID = "677467b9ad19ca34f8c44da8";
+    const JSONBIN_API_KEY = "$2a$10$oHvQw1rKx0ELqsHpZf3j2OJ5vkLMW4Z8Dxz1YHgOaLw5d8X2b9HfO";
+    
+    let memoryCounters = {
       pablo: 0,
       paula: 0
     };
+    
+    // Cargar datos desde JSONBin.io
+    async function loadCountersFromCloud() {
+      try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+          method: 'GET',
+          headers: {
+            'X-Master-Key': JSONBIN_API_KEY
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          memoryCounters = data.record || { pablo: 0, paula: 0 };
+          console.log('Contadores cargados desde la nube:', memoryCounters);
+        } else {
+          console.warn('Error al cargar desde la nube, usando localStorage');
+          memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
+        }
+      } catch (error) {
+        console.error('Error al conectar con la nube:', error);
+        memoryCounters = JSON.parse(localStorage.getItem('memoryCounters')) || { pablo: 0, paula: 0 };
+      }
+      
+      updateCounterDisplay();
+    }
+    
+    // Guardar datos en JSONBin.io
+    async function saveCountersToCloud() {
+      try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': JSONBIN_API_KEY
+          },
+          body: JSON.stringify(memoryCounters)
+        });
+        
+        if (response.ok) {
+          console.log('Contadores guardados en la nube:', memoryCounters);
+          // También guardar en localStorage como backup
+          localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
+        } else {
+          console.warn('Error al guardar en la nube');
+          // Fallback a localStorage
+          localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
+        }
+      } catch (error) {
+        console.error('Error al guardar en la nube:', error);
+        // Fallback a localStorage
+        localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
+      }
+    }
     
     // Actualizar la visualización de contadores
     function updateCounterDisplay() {
@@ -1274,9 +1362,8 @@
     }
     
     // Incrementar contador
-    function incrementCounter(person) {
+    async function incrementCounter(person) {
       memoryCounters[person]++;
-      localStorage.setItem('memoryCounters', JSON.stringify(memoryCounters));
       updateCounterDisplay();
       
       // Animación de pulso en el botón
@@ -1286,6 +1373,9 @@
       
       // Crear confeti
       createConfetti();
+      
+      // Guardar en la nube
+      await saveCountersToCloud();
       
       // Enviar notificación a Telegram
       const now = new Date().toLocaleString('es-ES', {
@@ -1309,8 +1399,8 @@
     // Hacer la función global para que funcione el onclick
     window.incrementCounter = incrementCounter;
     
-    // Inicializar visualización de contadores al cargar la página
-    updateCounterDisplay();
+    // Cargar contadores al inicializar la página
+    loadCountersFromCloud();
 
     // Ejemplo de recolección de IP y geolocalización
     async function getUserIPAndLocation() {
